@@ -24,4 +24,4 @@ def signup_view(request):
         return redirect('homepage')
     else:
         signup_form = SignupForm()
-    return render(request, 'registration/signup.html', {'signup_form': signup_form})
+    return render(request, 'account/signup.html', {'signup_form': signup_form})

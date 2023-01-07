@@ -34,13 +34,29 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party apps
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
     # local apps
-    'account',
+    'accounts',
+    'crispy_forms',
 ]
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,8 +145,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# account config
-AUTH_USER_MODEL = 'account.CustomUserModel'
+# accounts config
+AUTH_USER_MODEL = 'accounts.CustomUserModel'
 
 # media files
 MEDIA_URL = '/media/'
@@ -142,3 +158,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+# crispy forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
