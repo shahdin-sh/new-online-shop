@@ -10,8 +10,8 @@
     <h1>Signup form</h1>
 <form method="post" action="">
     {% csrf_token %}
-    {{ signup_form|crispy }}
-    <input type="submit" value="log in">
+    {{ form|crispy }}
+    <input type="submit" value="sign up">
 </form>
 {% endblock %}
 
