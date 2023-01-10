@@ -36,7 +36,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 DEBUG = env("DJANGO_DEBUG")
 
 ALLOWED_HOSTS = [
-    '127.0.0.1:8000',
+    '127.0.0.1',
     'local host'
 ]
 
@@ -165,6 +165,9 @@ LOGOUT_REDIRECT_URL = 'homepage'
 # allauth config, set additional config later.
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_SESSION_REMEMBER = False
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 3
 # ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.CustomSignupForm'
 ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}
