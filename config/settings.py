@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     # local apps
     'accounts',
     'crispy_forms',
+    'products.apps.ProductConfig'
+
 ]
 SITE_ID = 1
 
