@@ -11,7 +11,7 @@ from django.contrib.auth import login, authenticate
 #         # refresh_from_db() method  handle synchronism issue, basically reloading the database after the signal
 #         user.refresh_from_db()
 #         # choose basic avatar photo for every user
-#         user.profile_avatar = 'default/img_avatar.png'
+#         user.profile_avatar = 'default_avatar/img_avatar.png'
 #         user.save()
 #         # cleaned_data is holding the validated form data
 #         username = signup_form.cleaned_data.get('username')

@@ -26,10 +26,10 @@ urlpatterns = [
     # path('accounts/', include('accounts.urls')),
     # path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('allauth.urls')),
-    # getting sign up form from here!! all auth sign up form should be override.
+    path('products/', include('products.urls')),
 
 
 
-] +static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

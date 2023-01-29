@@ -29,7 +29,7 @@ class CustomSignupForm(SignupForm, forms.Form):
         # Add your own processing here.
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
-        user.profile_avatar = 'default/img_avatar.png'
+        user.profile_avatar = 'default_avatar/img_avatar.png'
         user.save()
         # You must return the original result.
         return user
