@@ -19,7 +19,9 @@
             </ul>
         {% endfor %}
     {% else %}
-        <p>display the products of this category!</p>
+         {% with products as products_list %}
+            {% include 'products/product_list_view.html' %}
+         {% endwith %}
     {% endif %}
 
 {% endblock %}

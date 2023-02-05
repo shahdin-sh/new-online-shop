@@ -42,11 +42,11 @@ class Category(models.Model):
 class Product(models.Model):
 
     PRODUCT_QUALITY_CHOICES = (
-        ('1', 'perfect'),
-        ("2", 'good'),
-        ('3', 'not bad'),
-        ("4", 'bad'),
-        ("5", 'very bad')
+        ('PERFECT', 'perfect'),
+        ('GOOD', 'good'),
+        ('NOT BAD', 'not bad'),
+        ('BAD', 'bad'),
+        ('VERY BAD', 'very bad')
     )
 
     name = models.CharField(max_length=200)
@@ -56,9 +56,9 @@ class Product(models.Model):
     price = models.PositiveIntegerField()
     datetime_created = models.DateTimeField(auto_now_add=True)
     material = models.CharField(max_length=300)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='products')
     slug = models.SlugField(unique=True)
-    quality = models.CharField(choices=PRODUCT_QUALITY_CHOICES, max_length=len(PRODUCT_QUALITY_CHOICES))
+    quality = models.CharField(choices=PRODUCT_QUALITY_CHOICES, max_length=200)
     image = models.ImageField(upload_to='product/', default='product_default/shopping_kart.jpj')
 
     def __str__(self):
