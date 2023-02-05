@@ -1,9 +1,15 @@
+{# later you should add a navbar in your _base.html that includes categories and sub categories #}
 {% extends '_base.html' %}
 
 {% block page_title %}Homepage{% endblock %}
 
 {% block content %}
-    <p1>
-    Welcome to this website, I hope you enjoy our company very fucking well.
-    </p1>
+    <h1>Categories</h1>
+    {% for category in categories %}
+        <br>
+        <a href="{% url 'category_detail' category.slug %}">{{ category.name }}</a>
+        <br>
+        <tr>{{ category.description }}</tr>
+        <br>
+    {% endfor %}
 {% endblock content %}

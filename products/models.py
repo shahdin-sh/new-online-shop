@@ -3,24 +3,23 @@ from django.shortcuts import reverse
 
 
 class Category(models.Model):
-
-    Category_Choices = (
-        ('NONE CATEGORY', 'none category'),
-        ('HOME AND KITCHEN', 'home and kitchen'),
-        ('SPORT', 'sport'),
-        ('LOCAL PRODUCTS', 'local products'),
-        ('TOYS', 'toys'),
-        ('COMMODITY', 'commodity'),
-        ('FASHION AND CLOTHING', 'fashion and clothing'),
-        ('TOOLS AND EQUIPMENT', 'tools and equipment'),
-        ('DIGITAL COMMODITY', 'digital commodity')
-    )
-    category_name = models.CharField(max_length=200, choices=Category_Choices, blank=True, default=Category_Choices[0])
-    subcategory_name = models.CharField(max_length=200, null=True, blank=True)
+    # Category_Choices = (
+    #     ('NONE CATEGORY', 'none category'),
+    #     ('HOME AND KITCHEN', 'home and kitchen'),
+    #     ('SPORT', 'sport'),
+    #     ('LOCAL PRODUCTS', 'local products'),
+    #     ('TOYS', 'toys'),
+    #     ('COMMODITY', 'commodity'),
+    #     ('FASHION AND CLOTHING', 'fashion and clothing'),
+    #     ('TOOLS AND EQUIPMENT', 'tools and equipment'),
+    #     ('DIGITAL COMMODITY', 'digital commodity')
+    # )
+    name = models.CharField(max_length=200)
     slug = models.SlugField()
+    is_featured = models.BooleanField(null=True)
     # it determines the subcategory (children) of the category (parent)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
-    category_description = models.TextField(blank=True)
+    description = models.TextField(blank=True)
 
     class Meta:
         # enforcing that there can not be two categories under a parent with same slug
@@ -31,11 +30,6 @@ class Category(models.Model):
         verbose_name_plural = "categories"
 
     def __str__(self):
-        if self.category_name:
-            return self.category_name
-        return self.subcategory_name
-
-    def __unicode__(self):
         full_path = [self.name]
         k = self.parent
         # it means the main category have subcategory and that subcategory could have sub subcategory
@@ -62,7 +56,7 @@ class Product(models.Model):
     price = models.PositiveIntegerField()
     datetime_created = models.DateTimeField(auto_now_add=True)
     material = models.CharField(max_length=300)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     slug = models.SlugField(unique=True)
     quality = models.CharField(choices=PRODUCT_QUALITY_CHOICES, max_length=len(PRODUCT_QUALITY_CHOICES))
     image = models.ImageField(upload_to='product/', default='product_default/shopping_kart.jpj')

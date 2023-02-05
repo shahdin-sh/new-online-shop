@@ -1,21 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product
+from .models import Product, Category
 
 
-def products_list_view(request):
-    products = Product.objects.filter(is_active=True)
-
+def home_page(request):
+    # showing main category
+    categories = Category.objects.filter(is_featured=True)
     context = {
-        'products': products
+        'categories': categories,
     }
-    return render(request, 'products/products_list_view.html', context)
+    return render(request, 'home.html', context)
 
 
-def product_detail_view(request, pk):
-    products = Product.objects.filter(is_active=True)
-    products_detail = get_object_or_404(products, pk=pk)
-
+def category_detail(request, slug):
+    # with parent or none parent categories included.
+    categories = Category.objects.all()
+    category = get_object_or_404(categories, slug=slug)
     context = {
-        'product_details': products_detail,
+        'category': category,
     }
-    return render(request, 'products/product_detail_view.html', context)
+    return render(request, 'cateogories/category_detail_view.html', context)
+
+
