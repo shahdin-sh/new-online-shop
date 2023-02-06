@@ -5,8 +5,10 @@ from .models import Product, Category
 def home_page(request):
     # showing main category
     categories = Category.objects.filter(is_featured=True)
+    products = Product.objects.filter(is_featured=True)
     context = {
         'categories': categories,
+        'products': products,
     }
     return render(request, 'home.html', context)
 

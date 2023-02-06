@@ -1,17 +1,3 @@
 
 {% block content %}
-    <h1>Products</h1>
-    {% for product in products_list %}
-         <h3>
-             <a href="{% url 'product_detail' product.category.slug product.slug %}">{{ product.name }}</a>
-         </h3>
-        <ul>
-            <li>product description: {{ product.description }}</li>
-            <li>product quantity: {{ product.quantity }}</li>
-            <li>product price: {{ product.price }}</li>
-            <li>product date: {{ product.datetime_created }}</li>
-            <li>product category: {{ product.category }}</li>
-            <li>product quality: {{ product.quality }}</li>
-        </ul>
-    {% endfor %}
 {% endblock  %}

@@ -3,7 +3,7 @@ from .models import Category,Product
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'quantity', 'category', 'is_active', 'price']
+    list_display = ['name', 'quantity', 'category', 'is_active', 'is_featured', 'price']
     prepopulated_fields = {'slug': ('name',)}
 
 

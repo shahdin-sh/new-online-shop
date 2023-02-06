@@ -53,13 +53,19 @@ class Product(models.Model):
     description = models.TextField()
     quantity = models.IntegerField()
     is_active = models.BooleanField(default=True)
+    is_featured = models.BooleanField(default=False)
     price = models.PositiveIntegerField()
-    datetime_created = models.DateTimeField(auto_now_add=True)
-    material = models.CharField(max_length=300)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='products')
     slug = models.SlugField(unique=True)
     quality = models.CharField(choices=PRODUCT_QUALITY_CHOICES, max_length=200)
-    image = models.ImageField(upload_to='product/', default='product_default/shopping_kart.jpj')
+    # problem with this default property
+    image = models.ImageField(upload_to='product/', default='product_default/shopping_kart.jpg')
+
+    # add choices
+    color = models.CharField(max_length=200, default='black', null=True, blank=True)
+    size = models.CharField(max_length=200, null=True, blank=True)
+    datetime_created = models.DateTimeField(auto_now_add=True)
+    material = models.CharField(max_length=300, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='products')
 
     def __str__(self):
         return self.name
