@@ -4,12 +4,4 @@
 {% block page_title %}Homepage{% endblock %}
 
 {% block content %}
-    <h1>Categories</h1>
-    {% for category in categories %}
-        <br>
-        <a href="{% url 'category_detail' category.slug %}">{{ category.name }}</a>
-        <br>
-        <tr>{{ category.description }}</tr>
-        <br>
-    {% endfor %}
 {% endblock content %}

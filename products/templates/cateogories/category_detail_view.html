@@ -1,27 +1,27 @@
 {% extends '_base.html' %}
 
 {% block content %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
-        {% if category.parent %}
-             <li class="breadcrumb-item"><a href={% url 'category_detail' category.parent.slug %}>
-                 {{ category.parent.name }}</a></li>
-        {% endif %}
-        <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
-      </ol>
-    </nav>
-
-    {% if category.children.all %}
-        {% for subcategory in category.children.all %}
-            <ul>
-                <li><a href="{% url 'category_detail' subcategory.slug %}">{{ subcategory.name }}</a></li>
-            </ul>
-        {% endfor %}
-    {% else %}
-         {% with products as products_list %}
-            {% include 'products/product_list_view.html' %}
-         {% endwith %}
-    {% endif %}
+{#    <nav aria-label="breadcrumb">#}
+{#      <ol class="breadcrumb">#}
+{#        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>#}
+{#        {% if category.parent %}#}
+{#             <li class="breadcrumb-item"><a href={% url 'category_detail' category.parent.slug %}>#}
+{#                 {{ category.parent.name }}</a></li>#}
+{#        {% endif %}#}
+{#        <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>#}
+{#      </ol>#}
+{#    </nav>#}
+{##}
+{#    {% if category.children.all %}#}
+{#        {% for subcategory in category.children.all %}#}
+{#            <ul>#}
+{#                <li><a href="{% url 'category_detail' subcategory.slug %}">{{ subcategory.name }}</a></li>#}
+{#            </ul>#}
+{#        {% endfor %}#}
+{#    {% else %}#}
+{#         {% with products as products_list %}#}
+{#            {% include 'products/product_list_view.html' %}#}
+{#         {% endwith %}#}
+{#    {% endif %}#}
 
 {% endblock %}
