@@ -25,10 +25,11 @@ def category_detail(request, slug):
     return render(request, 'cateogories/category_detail_view.html', context)
 
 
-def product_detail_view(request, category_slug, product_slug):
-    products = Product.objects.filter(is_active=True, category__slug=category_slug)
-    product = get_object_or_404(products, slug=product_slug)
+def product_detail_view(request, product_slug):
+    products = Product.objects.filter(is_active=True)
+    product_detail = get_object_or_404(products, slug=product_slug)
+    # develop comment system for users and guest!
     context = {
-        'product_detail': product
+        'product_detail': product_detail
     }
     return render(request, 'products/product_detail_view.html', context)
