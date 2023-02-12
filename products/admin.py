@@ -8,11 +8,11 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'parent', 'slug']
+    list_display = ['category_or_subcategory', 'parent', 'slug']
     ordering = ['is_featured']
     prepopulated_fields = {'slug': ('name',)}
 
-    def name(self, obj):
+    def category_or_subcategory(self, obj):
         # by returning the object, it displays __str__ method of our obj.
         return obj
 

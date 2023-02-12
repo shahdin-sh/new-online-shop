@@ -1,6 +1,6 @@
 from django.db import models
 from django.shortcuts import reverse
-
+from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     # Category_Choices = (
@@ -16,7 +16,7 @@ class Category(models.Model):
     # )
     name = models.CharField(max_length=200)
     slug = models.SlugField()
-    is_featured = models.BooleanField(null=True)
+    is_featured = models.BooleanField(null=True, default=False)
     # it determines the subcategory (children) of the category (parent)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     description = models.TextField(blank=True)
@@ -34,6 +34,7 @@ class Category(models.Model):
         k = self.parent
         # it means the main category have subcategory and that subcategory could have sub subcategory
         while k is not None:
+            # k.name = self.parent.name
             full_path.append(k.name)
             k = k.parent
         return ' -> '.join(full_path[::-1])
@@ -50,7 +51,7 @@ class Product(models.Model):
     )
 
     name = models.CharField(max_length=200)
-    description = models.TextField()
+    description = RichTextField()
     quantity = models.IntegerField()
     is_active = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)

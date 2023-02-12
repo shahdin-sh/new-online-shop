@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     "debug_toolbar",
+    "ckeditor",
 
     # local apps
     'accounts',
@@ -158,6 +159,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+# collectstatic. Collects the static files into STATIC_ROOT.
+# Duplicate file names are by default resolved in a similar way to how template resolution works: 
+# the file that is first found in one of the specified locations will be used.
+# If you're confused, the findstatic command can help show you which files are found.
 
 STATIC_URL = 'static/'
 
