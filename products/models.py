@@ -64,10 +64,14 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('product_detail_view', args=[self.pk])
+    
+    def clean_price(self):
+        return f'{self.price: ,}'
 
 
 class Comments(models.Model):
     content = models.TextField()
+    is_active = models.BooleanField(default=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="comments")
     # author here is just users who signed in before! (authenticated users)
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comments')
@@ -76,16 +80,14 @@ class Comments(models.Model):
     datetime_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.author} for {self.product}'
+        return self.content
 
     @property
     def children(self):
-        return Comment.objects.filter(parent=self).reverse()
+        return Comments.objects.filter(parent=self).reverse()
 
     @property
     def is_parent(self):
         if self.parent is None:
             return True
         return False
-
-

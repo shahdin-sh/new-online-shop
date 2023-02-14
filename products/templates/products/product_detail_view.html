@@ -1,6 +1,10 @@
 {% extends '_base.html' %}
 {% load  static %}
 
+{% block styles%}
+    <link rel="stylesheet" href="{% static "css/comment.css" %}"/>
+{% endblock styles %}
+
 {% block page_title %}Products detail{% endblock page_title %}
 
 {% block content %}
@@ -105,7 +109,7 @@
 
                     <h5 class="font-weight--reguler mb-10">{{ product_detail.name }}</h5>
 
-                    <h3 class="price">{{ product_detail.price }}</h3>
+                    <h3 class="price">{{ product_detail.clean_price }}</h3>
 
 
 
@@ -245,7 +249,7 @@
                             <a data-bs-toggle="tab" role="tab" href="#sheet">اطلاعات تکمیلی</a>
                         </li>
                         <li role="presentation">
-                            <a data-bs-toggle="tab" role="tab" href="#reviews">برسی</a>
+                            <a data-bs-toggle="tab" role="tab" href="#reviews">بررسی</a>
                         </li>
                     </ul>
                 </div>
@@ -316,9 +320,7 @@
                     <!-- End Single Content -->
                     <!-- Start Single Content -->
                     <div class="product_tab_content tab-pane" id="reviews" role="tabpanel">
-
-                        <!-- Start RAting Area -->
-                        <div class="rating_wrap mb-30">
+                        {% comment %} <div class="rating_wrap mb-30">
                             <h4 class="rating-title-2">اولین نفری باشید که برای "عنوان محصول" دیدگاهی ارسال می کنید</h4>
                             <p>امتیاز شما</p>
                             <div class="rating_list">
@@ -330,9 +332,66 @@
                                     <i class="yellow icon_star"></i>
                                 </div>
                             </div>
-                        </div>
-                        <!-- End RAting Area -->
-                        <div class="comments-area comments-reply-area">
+                        </div> {% endcomment %}
+                        {% for comment in comments %}
+                            <div>
+                                <p>{{comment.author}} | {{comment.datetime_created}}</p>
+                                <p>{{comment.content}}</p>
+
+                                {% if comment.children %}
+                                    <br
+                                    <h3>Replies</h3>
+                                    {% for reply in comment.replies.all%}
+                                        <p>{{reply.author}} | {{reply.datetime_created}}</p>
+                                        <p>{{reply.content}}</p>
+                                    {% endfor %}
+                                {% endif %}
+                                <br>
+                                {% if user.is_authenticated%}
+                                    <h5>Add Reply</h5>
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        {{comment_form}}
+                                        <!-- Hidden input for parent comment.id -->
+                                        <input type='hidden' name="parent_id" value="{{ comment.id }}">
+                                        <input class="btn btn-primary" type="submit" value="Replay">
+                                    </form>
+                                {% else %}
+                                    <h4>developing reply system for guest</h4>
+                                {% endif %}
+                            </div>
+                            <br>
+                        {% empty %}
+                            <p>be the first person who gives us his opinion on this product.</p>
+                        {% endfor %}
+                        <br>
+                        {% if user.is_authenticated %}
+                            <div class="row">
+                                <div class="col-10">
+                                    <div class="comment-box ml-2">
+                                        <h4>Add a comment</h4>
+                                        <div class="rating">
+                                            <input type="submit" name="rating" value="5" id="5"><label for="5">☆</label>
+                                            <input type="submit" name="rating" value="4" id="4"><label for="4">☆</label>
+                                            <input type="submit" name="rating" value="3" id="3"><label for="3">☆</label>
+                                            <input type="submit" name="rating" value="2" id="2"><label for="2">☆</label>
+                                            <input type="submit" name="rating" value="1" id="1"><label for="1">☆</label>
+                                        </div>
+                                        <div class="comment-area">
+                                            <form action='', method='post'>
+                                                {% csrf_token %}
+                                                {{comment_form}}
+                                                <br>
+                                                <button type='submit' "btn btn-primary">Send</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <h4>developing comment section for guests</h4>
+                        {% endif %}
+                        {% comment %} <div class="comments-area comments-reply-area">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <form action="#" class="comment-form-area">
@@ -357,7 +416,7 @@
                                     </form>
                                 </div>
                             </div>
-                        </div>
+                        </div> {% endcomment %}
                     </div>
                     <!-- End Single Content -->
                 </div>

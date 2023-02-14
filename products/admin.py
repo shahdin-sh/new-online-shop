@@ -21,13 +21,12 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class CommentsAdmin(admin.ModelAdmin):
-    list_dispaly = ['author', 'parent', 'datetime_created', 'is_comment']
-    ordering = ['-datetime_created']
+    list_display = ['content','author', 'parent', 'datetime_created', 'is_comment']
 
     def is_comment(self, obj):
         if obj.parent:
             return f'replay of {obj.parent}'
-        return comment
+        return 'comment'
  
 
 admin.site.register(Product, ProductAdmin)
