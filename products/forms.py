@@ -6,8 +6,10 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comments
         # we fill author and product manually in the product_detail_views
-        fields = ['content', ]
+        fields = ['content']
 
         # widgets = {
-        #     'content' : forms.TextInput(),
+        #     'rating' : forms.HiddenInput(),
         # }
+
+    

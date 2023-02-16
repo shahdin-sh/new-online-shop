@@ -21,7 +21,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class CommentsAdmin(admin.ModelAdmin):
-    list_display = ['content','author', 'parent', 'datetime_created', 'is_comment']
+    list_display = ['content','author', 'product', 'parent', 'datetime_created', 'is_comment', 'rating']
 
     def is_comment(self, obj):
         if obj.parent:

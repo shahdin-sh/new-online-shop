@@ -31,7 +31,7 @@ def product_detail_view(request, product_slug):
     product_detail = get_object_or_404(products, slug=product_slug)
     current_user = request.user
     # comment section 
-    comments = product_detail.comments.filter(is_active=True, parent=None).order_by('datetime_created')
+    comments = product_detail.comments.filter(is_active=True, parent=None).order_by('-datetime_created')
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid:
@@ -55,6 +55,9 @@ def product_detail_view(request, product_slug):
             new_comment = comment_form.save(commit=False)
             new_comment.product = product_detail
             new_comment.author = current_user
+            # getting rating from stars label
+            rating = request.POST.get('rating')
+            new_comment.rating = rating
             new_comment.save()
         return redirect(product_detail_view, product_slug=product_slug)
     else:
@@ -66,3 +69,5 @@ def product_detail_view(request, product_slug):
         'comment_form': comment_form,
     }
     return render(request, 'products/product_detail_view.html', context)
+
+

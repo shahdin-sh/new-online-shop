@@ -2,6 +2,7 @@ from django.db import models
 from django.shortcuts import reverse
 from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator, MinValueValidator 
 
 
 class Category(models.Model):
@@ -78,6 +79,7 @@ class Comments(models.Model):
     parent = models.ForeignKey('self' , null=True , blank=True , on_delete=models.CASCADE , related_name='replies')
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
+    rating = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.content
