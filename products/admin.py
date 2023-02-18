@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category,Product, Comments
+from .models import Category,Product, Comment
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -20,7 +20,7 @@ class CategoryAdmin(admin.ModelAdmin):
         return obj
 
 
-class CommentsAdmin(admin.ModelAdmin):
+class CommentAdmin(admin.ModelAdmin):
     list_display = ['content','author', 'product', 'parent', 'datetime_created', 'is_comment', 'rating']
 
     def is_comment(self, obj):
@@ -31,5 +31,4 @@ class CommentsAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Comments, CommentsAdmin)
-
+admin.site.register(Comment, CommentAdmin)

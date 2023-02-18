@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Category, Comments
+from .models import Product, Category, Comment
 from .forms import CommentForm
 
 
@@ -45,7 +45,7 @@ def product_detail_view(request, product_slug):
                 parent_id = None
             # if parent_id has been submitted get parent_obj
             if parent_id:
-                parent_obj = Comments.objects.get(id=parent_id)
+                parent_obj = Comment.objects.get(id=parent_id)
                 # if parent_obj exist
                 if parent_obj:
                     reply_comment = comment_form.save(commit=False)
@@ -71,3 +71,9 @@ def product_detail_view(request, product_slug):
     return render(request, 'products/product_detail_view.html', context)
 
 
+def add_to_wishlist(request, wished_item_slug):
+    products = Product.objects.filter(is_active=True)
+    product_detail = get_object_or_404(products, slug=wished_item_slug)
+    if request.user not in product_detail.user_wished_product.all():
+        product_detail.user_wished_product.add(request.user)
+        return redirect(product_detail_view, wished_item_slug=wished_item_slug)

@@ -59,6 +59,7 @@ class Product(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     material = models.CharField(max_length=300, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='products')
+    user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
 
     def __str__(self):
         return self.name
@@ -70,7 +71,7 @@ class Product(models.Model):
         return f'{self.price: ,}'
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     content = models.TextField()
     is_active = models.BooleanField(default=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="comments")
@@ -86,10 +87,12 @@ class Comments(models.Model):
 
     @property
     def children(self):
-        return Comments.objects.filter(parent=self).reverse()
+        return Comment.objects.filter(parent=self).reverse()
 
     @property
     def is_parent(self):
         if self.parent is None:
             return True
         return False
+
+

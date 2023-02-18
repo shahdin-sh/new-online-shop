@@ -1,10 +1,10 @@
 from django import forms
-from .models import Comments
+from .models import Comment
 
 
 class CommentForm(forms.ModelForm):
     class Meta:
-        model = Comments
+        model = Comment
         # we fill author and product manually in the product_detail_views
         fields = ['content']
 
