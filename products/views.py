@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
 from .models import Product, Category, Comment
 from .forms import CommentForm
 
@@ -71,9 +72,21 @@ def product_detail_view(request, product_slug):
     return render(request, 'products/product_detail_view.html', context)
 
 
-def add_to_wishlist(request, wished_item_slug):
+def add_to_wishlist(request, product_slug):
     products = Product.objects.filter(is_active=True)
-    product_detail = get_object_or_404(products, slug=wished_item_slug)
+    product_detail = get_object_or_404(products, slug=product_slug)
+    print(product_detail.user_wished_product.all())
     if request.user not in product_detail.user_wished_product.all():
         product_detail.user_wished_product.add(request.user)
-        return redirect(product_detail_view, wished_item_slug=wished_item_slug)
+        return redirect(product_detail_view, product_slug=product_slug)
+    return HttpResponse('this product has already added to your wishlist.')
+
+
+def remove_from_wishlist(request, product_slug):
+    products = Product.objects.filter(is_active=True)
+    product_detail = get_object_or_404(products, slug=product_slug)
+    if request.user in product_detail.user_wished_product.all():
+        product_detail.user_wished_product.remove(request.user)
+        redirect(product_detail_view, product_slug=product_slug)
+        return redirect(product_detail_view, product_slug=product_slug)
+    return HttpResponse('this product has already removed from your wishlist.')

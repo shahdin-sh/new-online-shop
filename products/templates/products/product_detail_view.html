@@ -181,21 +181,21 @@
                             </div>
 
                             <div class="quickview-button">
-                                <div class="quickview-cart button">
-                                    <a href="product-details.html" class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</a>
+                            <div class="quickview-cart button">
+                                <a href="product-details.html" class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</a>
+                            </div>
+                                <div class="quickview-wishlist button">
+                                    {% if user not in product_detail.user_wished_product.all %}
+                                        <a title="Add to wishlist" href="{% url 'add_to_wishlist' product_detail.slug %}"  onclick="document.getElementById('wishlist_form').submit()">
+                                            <i class="far fa-heart"></i>
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'remove_from_wishlist' product_detail.slug %}" title="remove from wishlist">
+                                            <i class="fas fa-heart"></i>
+                                        </a>
+                                    {% endif %}
                                 </div>
-                                {% if user not in product_detail.user_wished_product%}
-                                    <div class="quickview-wishlist button">
-                                        <form action='' method='post' id='wishlist_form'>
-                                            {% csrf_token %}
-                                            <a title="Add to wishlist" href="{% url 'add_to_wishlist' product_detail.slug %}"  onclick="document.getElementById('wishlist_form').submit()">
-                                                <i class="far fa-heart"></i>
-                                            </a>
-                                        </form>
-                                    </div>
-                                {% else %}
-                                    <a href='#'>remove from wishlist</a>
-                                {% endif %}
+                                
                             </div>
                         </div>
 
