@@ -110,63 +110,99 @@
                     <h5 class="font-weight--reguler mb-10">{{ product_detail.name }}</h5>
 
                     <h3 class="price">{{ product_detail.clean_price }}</h3>
-
+                    {% if not product_detail.is_active %}
+                        <div class="stock out-of-stock mt-10">
+                            <p>وضعیت : <span>اتمام موجودی</span></p>
+                        </div>
+                    {% else %}
+                        <div class="stock mt-10">
+                            <p>وضعیت : <span>موجود</span></p>
+                        </div>
+                    {% endif %}
 
 
                     <div class="quickview-peragraph mt-10">
                         <p>{{ product_detail.desription }}</p>
                     </div>
 
-
-
+                    {% comment %}  clean the code below {% endcomment %}
                     <div class="product-size-wrapper mt-20">
                         <div class="tab-content d-flex">
                             <label class="mr-2">اندازه :</label>
-                            <div class="tab-pane fade show active" id="tab_list_l">
-                                بزرگ
-                            </div>
-                            <div class="tab-pane fade" id="tab_list_m">
-                                متوسط
-                            </div>
+                            {% if 'LARGE' in product_detail.size %}
+                                <div class="tab-pane fade" id="tab_list_l">
+                                    بزرگ
+                                </div>
+                            {% endif %}
+                            {% if 'MEDIUM' in product_detail.size %} 
+                                <div class="tab-pane fade" id="tab_list_m">
+                                    متوسط
+                                </div>
+                            {% endif %}
+                            {% if 'SMALL' in product_detail.size %}
                             <div class="tab-pane fade" id="tab_list_s">
                                 کوچک
                             </div>
+                            {% endif %}
                         </div>
-
                         <ul class="nav product-size-menu" role="tablist">
-
-                            <li class="tab__item nav-item active">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#tab_list_l" role="tab">L</a>
-                            </li>
-                            <li class="tab__item nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#tab_list_m" role="tab">M</a>
-                            </li>
-                            <li class="tab__item nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#tab_list_s" role="tab">S</a>
-                            </li>
+                            {% if 'LARGE' in product_detail.size %}
+                                <li class="tab__item nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#tab_list_l" role="tab">L</a>
+                                </li>
+                            {% endif %}
+                            {% if 'MEDIUM' in product_detail.size %}  
+                                <li class="tab__item nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#tab_list_m" role="tab">M</a>
+                                </li>
+                            {% endif %}
+                            {% if 'SMALL' in product_detail.size %}
+                                <li class="tab__item nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#tab_list_s" role="tab">S</a>
+                                </li>
+                            {% endif %}
 
                         </ul>
                     </div>
 
 
+                    {% comment %}  clean the code below {% endcomment %}
                     <div class="product-color-wrapper mt-20">
                         <div class="tab-content d-flex">
                             <label class="mr-2">رنگ :</label>
-                            <div class="tab-pane fade show active" id="tab_list_black">
-                                مشکی
-                            </div>
-                            <div class="tab-pane fade" id="tab_list_white">
-                                سفید
-                            </div>
+                            {% if 'BLACK' in product_detail.color %}
+                                <div class="tab-pane fade" id="tab_list_black">
+                                    مشکی
+                                </div>
+                            {% endif %}
+                            {% if 'WHITE' in product_detail.color %}
+                                <div class="tab-pane fade" id="tab_list_white">
+                                    سفید
+                                </div>
+                            {% endif %}
+                            {% if 'PINK' in product_detail.color %}
+                                <div class="tab-pane fade" id="tab_list_pink">
+                                    صورتی
+                                </div>
+                            {% endif %}
                         </div>
 
                         <ul class="nav product-color-menu" role="tablist">
-                            <li class="tab__item nav-item active">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#tab_list_black" role="tab"></a>
-                            </li>
-                            <li class="tab__item nav-item">
-                                <a class="nav-link" data-bs-toggle="tab" href="#tab_list_white" role="tab"></a>
-                            </li>
+                            {% if 'BLACK' in product_detail.color %}
+                                <li class="tab__item nav-item active">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#tab_list_black" role="tab"></a>
+                                </li>
+                            {% endif %}
+                            {% if 'WHITE' in product_detail.color %}
+                                <li class="tab__item nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#tab_list_white" role="tab"></a>
+                                </li>
+                            {% endif %}
+                            {% if 'PINK' in product_detail.color %}
+                                <li class="tab__item nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#tab_list_pink" role="tab"></a>
+                                </li>
+                            {% endif %}
                         </ul>
 
                     </div>

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .models import Product, Category, Comment
 from .forms import CommentForm
@@ -19,7 +20,7 @@ def category_detail(request, slug):
     # with parent or none parent categories included.
     categories = Category.objects.all()
     category = get_object_or_404(categories, slug=slug)
-    products = category.products.filter(is_active=True)
+    products = category.products.all()
     context = {
         'category': category,
         'products': products,
@@ -28,11 +29,11 @@ def category_detail(request, slug):
 
 
 def product_detail_view(request, product_slug):
-    products = Product.objects.filter(is_active=True)
+    products = Product.objects.all()
     product_detail = get_object_or_404(products, slug=product_slug)
     current_user = request.user
     # comment section 
-    comments = product_detail.comments.filter(is_active=True, parent=None).order_by('-datetime_created')
+    comments = product_detail.comments.filter(parent=None).order_by('-datetime_created')
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid:
@@ -72,8 +73,9 @@ def product_detail_view(request, product_slug):
     return render(request, 'products/product_detail_view.html', context)
 
 
+@login_required
 def add_to_wishlist(request, product_slug):
-    products = Product.objects.filter(is_active=True)
+    products = Product.objects.all()
     product_detail = get_object_or_404(products, slug=product_slug)
     print(product_detail.user_wished_product.all())
     if request.user not in product_detail.user_wished_product.all():
@@ -82,8 +84,9 @@ def add_to_wishlist(request, product_slug):
     return HttpResponse('this product has already added to your wishlist.')
 
 
+@login_required
 def remove_from_wishlist(request, product_slug):
-    products = Product.objects.filter(is_active=True)
+    products = Product.objects.all()
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user in product_detail.user_wished_product.all():
         product_detail.user_wished_product.remove(request.user)

@@ -42,8 +42,10 @@
                             <div class="header-right-side text-end">
                                 <div class="header-right-items  d-none d-md-block"> <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="icon-user"></i> </a>
                                 </div>
-                                <div class="header-right-items d-none d-md-block"> <a href="{% url 'wishlist_view' %}" class="header-cart"> <i class="icon-heart"></i> <span class="item-counter">{{ user.wished_product.count }}</span> </a>
-                                </div>
+                                {% if user.is_authenticated%}
+                                    <div class="header-right-items d-none d-md-block"> <a href="{% url 'wishlist_view' %}" class="header-cart"> <i class="icon-heart"></i> <span class="item-counter">{{ user.wished_product.count }}</span> </a>
+                                    </div>
+                                {% endif %}
                                 <div class="header-right-items"> <a href="#miniCart" class=" header-cart minicart-btn toolbar-btn header-icon"> <i class="icon-bag2"></i> <span class="item-counter">3</span> </a>
                                 </div>
                                 <div class="header-right-items d-block d-md-none"> <a href="javascript:void(0)" class="search-icon" id="search-overlay-trigger"> <i class="icon-magnifier"></i> </a>

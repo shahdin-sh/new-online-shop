@@ -25,18 +25,26 @@
                                         </tr>                                             
                                     </thead>                                         
                                     <tbody>
-                                        {% for product in user.wished_product.all %} 
-                                            <tr> 
-                                                <td class="product-remove">  <a href="{% url 'remove_from_wishlist' product.slug %}"><i class="icon-cross2"></i></a>  </td> 
-                                                <td class="product-img">  <a href="#"><img src="{% static 'images/product/small/cart-01.webp' %}" alt=""/></a>  </td> 
-                                                <td class="product-name"><a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a></td> 
-                                                <td class="product-price"><span class="amount">{{ product.clean_price }} تومان</span></td>
-                                                {% if product.is_active %} 
-                                                    <td class="product-stock-status">  <p>موجود در انبار</p>  </td> 
-                                                {% endif %}
-                                                <td class="product-wishlist-cart"><a href="#">افزودن به سبد خرید</a></td> 
-                                            </tr> 
-                                        {% endfor %}                                              
+                                        {% if user.wished_product.all%}
+                                            {% for product in user.wished_product.all %} 
+                                                <tr> 
+                                                    <td class="product-remove">  <a href="{% url 'remove_from_wishlist' product.slug %}"><i class="icon-cross2"></i></a>  </td> 
+                                                    <td class="product-img">  <a href="#"><img src="{% static 'images/product/small/cart-01.webp' %}" alt=""/></a>  </td> 
+                                                    <td class="product-name"><a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a></td> 
+                                                    <td class="product-price"><span class="amount">{{ product.clean_price }} تومان</span></td>
+                                                    {% if product.is_active %} 
+                                                        <td class="product-stock-status">  <p>موجود در انبار</p>  </td> 
+                                                    {% endif %}
+                                                    <td class="product-wishlist-cart"><a href="#">افزودن به سبد خرید</a></td> 
+                                                </tr> 
+                                            {% endfor %}
+                                        {% else %}
+                                                <tr>
+                                                    <td>
+                                                        <h2>your wishlist is empty</h2>
+                                                    </td>
+                                                </tr>
+                                        {% endif %}
                                     </tbody>                                         
                                 </table>                                     
                             </div>                                 

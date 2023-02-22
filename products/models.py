@@ -49,15 +49,12 @@ class Product(models.Model):
     is_featured = models.BooleanField(default=False)
     price = models.PositiveIntegerField()
     slug = models.SlugField(unique=True)
+    size = models.CharField(max_length=200, null=True, blank=True)
+    color = models.CharField(max_length=200, null=True, blank=True)
     quality = models.CharField(choices=PRODUCT_QUALITY_CHOICES, max_length=200)
     # problem with this default property
     image = models.ImageField(upload_to='product/', default='product_default/shopping_kart.jpg')
-
-    # add choices
-    color = models.CharField(max_length=200, default='black', null=True, blank=True)
-    size = models.CharField(max_length=200, null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
-    material = models.CharField(max_length=300, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
 

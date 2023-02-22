@@ -1,10 +1,12 @@
 from django.contrib import admin
 from .models import Category,Product, Comment
+from .forms import SizeAndColorForm
 
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'quantity', 'category', 'is_active', 'is_featured', 'product_price']
     prepopulated_fields = {'slug': ('name',)}
+    form = SizeAndColorForm
 
     def product_price(self, obj):
         return f"{obj.price:,} T"
