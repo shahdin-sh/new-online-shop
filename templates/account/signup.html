@@ -1,0 +1,41 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block page_title %}Sign up{% endblock %}
+
+
+{% block content %}
+    <div class="my-account-page-warpper section-space--ptb_120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-7 m-auto">
+                    <div class="myaccount-box-wrapper">
+                        <div class="helendo-tabs">
+                            <ul class="nav" role="tablist">
+                                <li class="tab__item nav-item active">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#tab_list_06" role="tab">ثبت نام</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content content-modal-box">
+                            <div class="tab-pane fade show active" id="tab_list_06" role="tabpanel">
+                                <form action="#" class="account-form-box" method='post'>
+                                    {% csrf_token %}
+                                    {{form|crispy}}
+                                    <div class="button-box mt-25">
+                                        <input type='submit' class="btn btn--full btn--black" value='Sign up'>
+                                    </div>
+                                    <p>Already have an acccount? <a href="{% url 'account_login' %}">login</a></p>
+                                    <a href="{% url 'account_reset_password' %}">Forget password?</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

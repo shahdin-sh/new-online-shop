@@ -176,15 +176,29 @@ AUTH_USER_MODEL = 'accounts.CustomUserModel'
 LOGIN_REDIRECT_URL = 'homepage'
 LOGOUT_REDIRECT_URL = 'homepage'
 
+
 # allauth config, set additional config later.
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_SESSION_REMEMBER = False
 ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = ("email")
+ACCOUNT_SESSION_REMEMBER = None
+ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 4
-# ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.CustomSignupForm'
-ACCOUNT_FORMS = {'signup': 'accounts.forms.CustomSignupForm'}
+# custom config for allauth
+FIRST_NAME_MIN_LENGHT = 30
+LAST_NAME_MIN_LENGHT = 30
+ACCOUNT_FORMS = {
+    'login': 'allauth.account.forms.LoginForm',
+    'signup': 'accounts.forms.CustomSignupForm',
+    'add_email': 'allauth.account.forms.AddEmailForm',
+    'change_password': 'allauth.account.forms.ChangePasswordForm',
+    'set_password': 'allauth.account.forms.SetPasswordForm',
+    'reset_password': 'allauth.account.forms.ResetPasswordForm',
+    'reset_password_from_key': 'allauth.account.forms.ResetPasswordKeyForm',
+    'disconnect': 'allauth.socialaccount.forms.DisconnectForm',
+}
 
 
 # media files

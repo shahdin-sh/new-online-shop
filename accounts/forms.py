@@ -1,7 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUserModel
-from allauth.account.forms import SignupForm
+from allauth.account.forms import SignupForm, BaseSignupForm
 from django import forms
+from config import settings
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -17,25 +18,32 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class CustomSignupForm(SignupForm, forms.Form):
-    first_name = forms.CharField(max_length=30)
-    last_name = forms.CharField(max_length=30)
-    profile_avatar = forms.ImageField().hidden_widget
 
-    def save(self, request):
-        # Ensure you call the parent class's save.
-        # .save() returns a User object.
-        user = super(CustomSignupForm, self).save(request)
+    first_name = forms.CharField(
+        max_length=settings.FIRST_NAME_MIN_LENGHT,
+        widget=forms.TextInput(
+            attrs= {
+                'placeholder': 'First Name',
+                }
+        ),
+    )
+    last_name = forms.CharField(
+        max_length=settings.LAST_NAME_MIN_LENGHT,
+        widget=forms.TextInput(
+            attrs= {
+                'placeholder': 'Last Name',
+                }
+        ),
+    )
+    profile_avatar = forms.ImageField.hidden_widget
+    # forms.ImageField(widget=forms.HiddenInput())
 
-        # Add your own processing here.
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
+    # overriding the init method
+    def __init__(self, *args, **kwargs):
+        # call the init of the parent class which here is Sign up Form
+        super().__init__(*args, **kwargs)
+        # self.fields['username'].widget = forms.HiddenInput()
+
+    def custom_signup(self, request, user):
         user.profile_avatar = 'default_avatar/img_avatar.png'
         user.save()
-        # You must return the original result.
-        return user
-
-
-
-
-
-
