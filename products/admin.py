@@ -4,8 +4,9 @@ from .forms import SizeAndColorForm
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'quantity', 'category', 'is_active', 'is_featured', 'product_price']
+    list_display = ['name', 'quantity', 'category', 'is_active', 'is_featured', 'product_price', 'datetime_created']
     prepopulated_fields = {'slug': ('name',)}
+    ordering = ['datetime_created']
     form = SizeAndColorForm
 
     def product_price(self, obj):

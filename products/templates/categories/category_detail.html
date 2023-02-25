@@ -1,0 +1,622 @@
+{% extends '_base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <!-- Product Area Start -->
+    <div class="product-wrapper section-space--ptb_120">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="shop-toolbar__items shop-toolbar__item--left">
+                        <div class="shop-toolbar__item shop-toolbar__item--result">
+                            <p class="result-count"> نمایش 1–9 از 21 نتیجه</p>
+                        </div>
+
+                        <div class="shop-toolbar__item shop-short-by">
+                            <ul>
+                                <li>
+                                    <a href="#">مرتب سازی بر اساس <i class="fa fa-angle-down angle-down"></i></a>
+                                    <ul>
+                                        <li class="active"><a href="#">پیشفرض</a></li>
+                                        <li><a href="#">محبوبیت</a></li>
+                                        <li><a href="#">رتبه بندی</a></li>
+                                        <li><a href="#">جدیدترین</a></li>
+                                        <li><a href="#">قیمت : کم به زیاد</a></li>
+                                        <li><a href="#">قیمت : زیاد به کم</a></li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="shop-toolbar__items shop-toolbar__item--right">
+                        <div class="shop-toolbar__items-wrapper">
+                            <div class="shop-toolbar__item">
+                                <ul class="nav toolber-tab-menu justify-content-start" role="tablist">
+                                    <li class="tab__item nav-item active">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_columns_01" role="tab">
+                                            <img src="{% static 'images/svg/column-03.svg' %}" class="img-fluid" alt="Columns 03">
+                                        </a>
+                                    </li>
+                                    <li class="tab__item nav-item">
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#tab_columns_02" role="tab"><img src="{% static 'images/svg/column-04.svg' %}" class="img-fluid" alt="Columns 03"> </a>
+                                    </li>
+                                    <li class="tab__item nav-item">
+                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_columns_03" role="tab"><img src="{% static 'images/svg/column-05.svg' %}" class="img-fluid" alt="Columns 03"> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% comment %} <div class="product-filter-wrapper">
+                <div class="row">
+                    <!-- Product Filter -->
+                    <div class=" mb-20 col__20">
+                        <div class="product-filter">
+                            <h5>رنگ</h5>
+                            <ul class="widget-nav-list">
+                                <li><a href="#"><span class="swatch-color black"></span> مشکی</a></li>
+                                <li><a href="#"><span class="swatch-color green"></span> سبز</a></li>
+                                <li><a href="#"><span class="swatch-color grey"></span> خاکستری</a></li>
+                                <li><a href="#"><span class="swatch-color red"></span> قرمز</a></li>
+                                <li><a href="#"><span class="swatch-color white"></span> سفید</a></li>
+                                <li><a href="#"><span class="swatch-color yellow"></span> زرد</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Product Filter -->
+                    <div class=" mb-20 col__20">
+                        <div class="product-filter">
+                            <h5>اندازه</h5>
+                            <ul class="widget-nav-list">
+                                <li><a href="#">بزرگ</a></li>
+                                <li><a href="#">متوسط</a></li>
+                                <li><a href="#">کوچک</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Product Filter -->
+                    <div class=" mb-20 col__20">
+                        <div class="product-filter">
+                            <h5>محدوده قیمت</h5>
+                            <ul class="widget-nav-list">
+                                <li><a href="#">0 - 500.000 تومان</a></li>
+                                <li><a href="#">500.000 - 1.000.000 تومان</a></li>
+                                <li><a href="#">1.000.000 - 5.000.000 تومان</a></li>
+                                <li><a href="#">5.000.000 - 10.000.000 تومان</a></li>
+                                <li><a href="#">10.000.000+ تومان</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Product Filter -->
+                    <div class=" mb-20 col__20">
+                        <div class="product-filter">
+                            <h5>دسته بندی ها</h5>
+                            <ul class="widget-nav-list">
+                                <li><a href="#">همه</a></li>
+                                <li><a href="#">جانبی</a></li>
+                                <li><a href="#">صندلی</a></li>
+                                <li><a href="#">تزیین</a></li>
+                                <li><a href="#">مبلمان</a></li>
+                                <li><a href="#">میز</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class=" mb-20 col__20">
+                        <div class="product-filter">
+                            <h5>برچسب ها</h5>
+                            <div class="tagcloud"><a href="#" class="selected">همه</a><a href="#" class="">لوازم جانبی</a><a href="#" class="">جعبه</a><a href="#" class="">صندلی</a><a href="#" class="">مبلمان</a><a href="#" class="">شیشه</a><a href="#" class="">میز</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+
+            <div class="tab-content">
+                <div class="tab-pane fade" id="tab_columns_01">
+                    <div class="row">
+                        <!-- Single Product Item Start -->
+                        {% for product in category.products.all %}
+                            <div class="col-lg-4 col-md-4 col-sm-6">
+                                <div class="single-product-item text-center">
+                                    <div class="products-images">
+                                        <a href="product-details.html" class="product-thumbnail">
+                                            <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                        </a>
+                                        <div class="product-actions">
+                                            <a href="{% url 'product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                            <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            {% if user not in product.user_wished_product.all %}
+                                                <a href={% url 'add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            {% else %}
+                                                <a href={% url 'remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <h6 class="prodect-title"><a href="product-details.html">{{ product.name }}</a></h6>
+                                        <div class="prodect-price">
+                                            <span class="new-price">{{ product.clean_price}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <!-- Single Product Item End -->
+                    </div>
+                </div>
+                <div class="tab-pane fade show active" id="tab_columns_02">
+                    <div class="row">
+                        {% for product in category.products.all %}
+                            <div class="col-lg-4 col-md-4 col-sm-6">
+                                <div class="single-product-item text-center">
+                                    <div class="products-images">
+                                        <a href="product-details.html" class="product-thumbnail">
+                                            <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                        </a>
+                                        <div class="product-actions">
+                                            <a href="{% url 'product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                            <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            {% if user not in product.user_wished_product.all %}
+                                                <a href={% url 'add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            {% else %}
+                                                <a href={% url 'remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
+                                            {% endif %}
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <h6 class="prodect-title"><a href="product-details.html">{{ product.name }}</a></h6>
+                                        <div class="prodect-price">
+                                            <span class="new-price">{{ product.clean_price}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="tab_columns_03">
+                    <div class="row">
+                        {% for product in category.products.all %}
+                            <div class="col-lg-4 col-md-4 col-sm-6">
+                                <div class="single-product-item text-center">
+                                    <div class="products-images">
+                                        <a href="product-details.html" class="product-thumbnail">
+                                            <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                        </a>
+                                        <div class="product-actions">
+                                            <a href="{% url 'product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                            <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            {% if user not in product.user_wished_product.all %}
+                                                <a href={% url 'add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            {% else %}
+                                                <a href={% url 'remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
+                                            {% endif %}
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <h6 class="prodect-title"><a href="product-details.html">{{ product.name }}</a></h6>
+                                        <div class="prodect-price">
+                                            <span class="new-price">{{ product.clean_price}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                         {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <!-- Famous Product Area Start -->
+                <div class="product-wrapper section-space--pb_90">
+                    <div class="row align-items-center">
+                        <div class="col-lg-3 col-md-4">
+                            <div class="section-title text-md-start text-center tablet-mt__20 small-mt__20">
+                                <h3 class="section-title">محصولات پرطرفدار</h3>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-md-8">
+                            <ul class="nav product-tab-menu  justify-content-center justify-content-md-end" role="tablist">
+                                <li class="tab__item nav-item active">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#tab_list_01" role="tab">همه</a>
+                                </li>
+                                <li class="tab__item nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#tab_list_02" role="tab">جانبی</a>
+                                </li>
+                                <li class="tab__item nav-item">
+                                    <a class="nav-link" data-bs-toggle="tab" href="#tab_list_03" role="tab">صندلی</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="tab_list_01">
+                            <!-- product-slider-active -->
+                            <div class="product-slider-active">
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_1-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                                <span class="ribbon out-of-stock ">
+                                                اتمام موجودی
+                                            </span>
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">400.000</span> - <span class="old-price"> 800.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_2-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">400.000</span> - <span class="old-price"> 800.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_3-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">500.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_4-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                                <span class="ribbon onsale">
+                                            -14%
+                                            </span>
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">400.000</span> - <span class="old-price"> 800.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_5-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">400.000</span> - <span class="old-price"> 800.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_6-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">500.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_7-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">500.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_8-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">400.000</span> - <span class="old-price"> 800.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab_list_02">
+                            <div class="product-slider-active">
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_1-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                                <span class="ribbon out-of-stock ">
+                                                اتمام موجودی
+                                            </span>
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">400.000</span> - <span class="old-price"> 800.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_8-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">400.000</span> - <span class="old-price"> 800.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab_list_03">
+                            <!-- product-slider-active -->
+                            <div class="product-slider-active">
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_4-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                                <span class="ribbon onsale">
+                                            -14%
+                                            </span>
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">400.000</span> - <span class="old-price"> 800.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_5-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">400.000</span> - <span class="old-price"> 800.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_6-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">500.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_7-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">500.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <!-- Single Product Item Start -->
+                                    <div class="single-product-item text-center">
+                                        <div class="products-images">
+                                            <a href="product-details.html" class="product-thumbnail">
+                                                <img src="assets/images/product/1_8-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+
+                                            </a>
+                                            <div class="product-actions">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                                <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                                <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="product-content">
+                                            <h6 class="prodect-title"><a href="product-details.html">عنوان محصول</a></h6>
+                                            <div class="prodect-price">
+                                                <span class="new-price">400.000</span> - <span class="old-price"> 800.000 تومان</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- Single Product Item End -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <!-- Product Area End -->
+{% endblock %}

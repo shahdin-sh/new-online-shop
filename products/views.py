@@ -6,27 +6,25 @@ from .forms import CommentForm
 
 
 def home_page(request):
-    # showing main category
-    categories = Category.objects.filter(is_featured=True)
-    products = Product.objects.filter(is_featured=True)
+    # showing featured products
+    return render(request, 'home.html')
+
+
+def shop_categories(request):
+    products = Product.objects.filter(category__isnull=False)
     context = {
-        'categories': categories,
         'products': products,
     }
-    return render(request, 'home.html', context)
+    return render(request, 'categories/shop_categories.html', context)
 
 
-def category_detail(request, slug):
-    # with parent or none parent categories included.
+def products_or_category_detail(request, category_slug):
     categories = Category.objects.all()
-    category = get_object_or_404(categories, slug=slug)
-    products = category.products.all()
+    category = get_object_or_404(categories, slug=category_slug)
     context = {
         'category': category,
-        'products': products,
     }
-    return render(request, 'cateogories/category_detail_view.html', context)
-
+    return render(request, 'categories/category_detail.html', context)
 
 def product_detail_view(request, product_slug):
     products = Product.objects.all()
@@ -75,21 +73,22 @@ def product_detail_view(request, product_slug):
 
 @login_required
 def add_to_wishlist(request, product_slug):
+    # this view is using in product_detail
     products = Product.objects.all()
     product_detail = get_object_or_404(products, slug=product_slug)
     print(product_detail.user_wished_product.all())
     if request.user not in product_detail.user_wished_product.all():
         product_detail.user_wished_product.add(request.user)
-        return redirect(product_detail_view, product_slug=product_slug)
+        return redirect('wishlist_view')
     return HttpResponse('this product has already added to your wishlist.')
 
 
 @login_required
 def remove_from_wishlist(request, product_slug):
+    # this view is using in product_detail
     products = Product.objects.all()
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user in product_detail.user_wished_product.all():
         product_detail.user_wished_product.remove(request.user)
-        redirect(product_detail_view, product_slug=product_slug)
-        return redirect(product_detail_view, product_slug=product_slug)
+        return redirect('wishlist_view')
     return HttpResponse('this product has already removed from your wishlist.')
