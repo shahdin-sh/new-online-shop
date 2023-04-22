@@ -4,16 +4,17 @@ from django.http import HttpResponse
 from .models import Product, Category, Comment
 from .forms import CommentForm
 
-
+# move this function to the pages app.
 def home_page(request):
     # showing featured products
     return render(request, 'home.html')
 
 
 def shop_categories(request):
-    products = Product.objects.filter(category__isnull=False)
+    #  only showing the products that have category
+    categories = Category.objects.all()
     context = {
-        'products': products,
+        'categories': categories,
     }
     return render(request, 'categories/shop_categories.html', context)
 
@@ -26,7 +27,8 @@ def products_or_category_detail(request, category_slug):
     }
     return render(request, 'categories/category_detail.html', context)
 
-def product_detail_view(request, product_slug):
+
+def product_detail_view(request, product_slug, category_slug):
     products = Product.objects.all()
     product_detail = get_object_or_404(products, slug=product_slug)
     current_user = request.user

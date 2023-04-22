@@ -125,13 +125,13 @@
                             <div class="col-lg-4 col-md-4 col-sm-6">
                                 <div class="single-product-item text-center">
                                     <div class="products-images">
-                                        <a href="product-details.html" class="product-thumbnail">
+                                        <a href="{% url 'product_detail' product.category.slug product.slug %}" class="product-thumbnail">
                                             <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                         </a>
                                         <div class="product-actions">
-                                            <a href="{% url 'product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
-                                            <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            <a href="{% url 'product_detail' product.category.slug product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                            <a href="{% url 'product_detail' product.category.slug product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
                                             {% if user not in product.user_wished_product.all %}
                                                 <a href={% url 'add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
                                             {% else %}
@@ -140,7 +140,7 @@
                                         </div>
                                     </div>
                                     <div class="product-content">
-                                        <h6 class="prodect-title"><a href="product-details.html">{{ product.name }}</a></h6>
+                                        <h6 class="prodect-title"><a href="{% url 'product_detail' product.category.slug product.slug %}">{{ product.name }}</a></h6>
                                         <div class="prodect-price">
                                             <span class="new-price">{{ product.clean_price}}</span>
                                         </div>
@@ -157,13 +157,13 @@
                             <div class="col-lg-4 col-md-4 col-sm-6">
                                 <div class="single-product-item text-center">
                                     <div class="products-images">
-                                        <a href="product-details.html" class="product-thumbnail">
+                                        <a href="{% url 'product_detail' product.category.slug product.slug %}" class="product-thumbnail">
                                             <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                         </a>
                                         <div class="product-actions">
-                                            <a href="{% url 'product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
-                                            <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            <a href="{% url 'product_detail' product.category.slug product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                            <a href="{% url 'product_detail' product.category.slug product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
                                             {% if user not in product.user_wished_product.all %}
                                                 <a href={% url 'add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
                                             {% else %}
@@ -173,7 +173,7 @@
                                         </div>
                                     </div>
                                     <div class="product-content">
-                                        <h6 class="prodect-title"><a href="product-details.html">{{ product.name }}</a></h6>
+                                        <h6 class="prodect-title"><a href="{% url 'product_detail' product.category.slug product.slug %}">{{ product.name }}</a></h6>
                                         <div class="prodect-price">
                                             <span class="new-price">{{ product.clean_price}}</span>
                                         </div>
@@ -189,13 +189,13 @@
                             <div class="col-lg-4 col-md-4 col-sm-6">
                                 <div class="single-product-item text-center">
                                     <div class="products-images">
-                                        <a href="product-details.html" class="product-thumbnail">
+                                        <a href="{% url 'product_detail' product.category.slug product.slug %}" class="product-thumbnail">
                                             <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                         </a>
                                         <div class="product-actions">
-                                            <a href="{% url 'product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
-                                            <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            <a href="{% url 'product_detail' product.category.slug product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                            <a href='#'><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
                                             {% if user not in product.user_wished_product.all %}
                                                 <a href={% url 'add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
                                             {% else %}
@@ -205,7 +205,7 @@
                                         </div>
                                     </div>
                                     <div class="product-content">
-                                        <h6 class="prodect-title"><a href="product-details.html">{{ product.name }}</a></h6>
+                                        <h6 class="prodect-title"><a href="{% url 'product_detail' product.category.slug product.slug %}">{{ product.name }}</a></h6>
                                         <div class="prodect-price">
                                             <span class="new-price">{{ product.clean_price}}</span>
                                         </div>

@@ -6,15 +6,16 @@
     <div class="categories-shop-area section-space--pt_90">
         <div class="container">
             <div class="row row--5">
-                {% for product in products %}
+                {% for category in categories %}
                     <div class="col-lg-3 col-md-3">
                         <div class="hero-product-image mt-10">
                             <a href="#">
                                 <img src="{% static "images/banners/h-g-1.webp" %}" class="img-fluid" alt="Banner images">
                             </a>
                             <div class="product-banner-title">
-                                <h4><a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a></h4>
-                                <h6><a href="{% url 'category_detail' product.category.slug %}">{{ product.category }}</a></h6>
+                                <h6>
+                                    <a href="{% url 'category_detail' category.slug %}">{{ category.name }}</a>
+                                </h6>
                             </div>
                         </div>
                     </div>
