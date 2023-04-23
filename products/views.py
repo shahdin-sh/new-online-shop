@@ -6,7 +6,6 @@ from .forms import CommentForm
 
 
 def home_page(request):
-    # showing featured products
     return render(request, 'home.html')
 
 
