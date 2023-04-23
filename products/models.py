@@ -5,6 +5,19 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator 
 
 
+
+class IsFeatureManager(models.Manager):
+    
+    def get_queryset(self):
+        return super(IsFeatureManager, self).get_queryset().filter(is_featured=False)
+
+
+class IsActiveManager(models.Manager):
+    
+    def get_queryset(self):
+        return super(IsActiveManager, self).get_queryset().filter(is_active=True)
+    
+
 class Category(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField()
@@ -12,6 +25,11 @@ class Category(models.Model):
     # it determines the subcategory (children) of the category (parent)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     description = models.TextField(blank=True)
+
+
+    # Custom Managers
+    objects = models.Manager() # our default django manager
+    is_featured_manager = IsFeatureManager()
 
     class Meta:
         # enforcing that there can not be two categories under a parent with same slug
@@ -58,6 +76,12 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
 
+
+    # Custom Managers
+    objects = models.Manager() # our default django manager
+    # is_featured_manager = IsFeatureManager()
+    is_active_manager = IsActiveManager()
+
     def __str__(self):
         return self.name
 
@@ -79,6 +103,11 @@ class Comment(models.Model):
     datetime_modified = models.DateTimeField(auto_now=True)
     rating = models.PositiveIntegerField(null=True, blank=True)
 
+
+    # Custom Managers
+    objects = models.Manager() # our default django manager
+    is_active_manager = IsActiveManager()
+
     def __str__(self):
         return self.content
 
@@ -91,5 +120,4 @@ class Comment(models.Model):
         if self.parent is None:
             return True
         return False
-
-
+    

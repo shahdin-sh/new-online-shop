@@ -10,7 +10,7 @@ def home_page(request):
 
 
 def shop_categories(request):
-    products = Product.objects.filter(category__isnull=False)
+    products = Product.is_active_manager.filter(category__isnull=False, is_featured=False)
     context = {
         'products': products,
     }
@@ -18,7 +18,7 @@ def shop_categories(request):
 
 
 def products_or_category_detail(request, category_slug):
-    categories = Category.objects.all()
+    categories = Category.is_featured_manager.all()
     category = get_object_or_404(categories, slug=category_slug)
     context = {
         'category': category,
@@ -26,7 +26,7 @@ def products_or_category_detail(request, category_slug):
     return render(request, 'categories/category_detail.html', context)
 
 def product_detail_view(request, product_slug):
-    products = Product.objects.all()
+    products = Product.is_active_manager.filter(is_featrued=False)
     product_detail = get_object_or_404(products, slug=product_slug)
     current_user = request.user
     # comment section 
@@ -73,7 +73,7 @@ def product_detail_view(request, product_slug):
 @login_required
 def add_to_wishlist(request, product_slug):
     # this view is using in product_detail
-    products = Product.objects.all()
+    products = Product.is_active_manager.filter(is_fetaured=False)
     product_detail = get_object_or_404(products, slug=product_slug)
     print(product_detail.user_wished_product.all())
     if request.user not in product_detail.user_wished_product.all():
@@ -85,7 +85,7 @@ def add_to_wishlist(request, product_slug):
 @login_required
 def remove_from_wishlist(request, product_slug):
     # this view is using in product_detail
-    products = Product.objects.all()
+    products = Product.is_active_manager.filter(is_fetaured=False)
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user in product_detail.user_wished_product.all():
         product_detail.user_wished_product.remove(request.user)

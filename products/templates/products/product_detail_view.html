@@ -388,7 +388,7 @@
 
                                 {% if comment.children %}
                                     <br
-                                    <h3>Replies</h3>
+                                    <h4>Replies</h4>
                                     {% for reply in comment.replies.all%}
                                         <p>{{reply.author}} | {{reply.datetime_created}}</p>
                                         <p>{{reply.content}}</p>
