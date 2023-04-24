@@ -1,5 +1,6 @@
 {% extends '_base.html' %}
 {% load  static %}
+{% load comment_tags %}
 
 {% block styles%}
     <link rel="stylesheet" href="{% static "css/comment.css" %}"/>
@@ -122,7 +123,7 @@
 
 
                     <div class="quickview-peragraph mt-10">
-                        <p>{{ product_detail.desription }}</p>
+                        <p>{{ product_detail.description }}</p>
                     </div>
 
                     {% comment %}  clean the code below {% endcomment %}
@@ -378,7 +379,7 @@
                                 </div>
                             </div>
                         </div> {% endcomment %}
-                        {% for comment in comments %}
+                        {% for comment in comments|only_active_comments %}
                             <div>
                                 <p>{{comment.author}} | {{comment.datetime_created}}</p>
                                 <p>{{comment.content}}</p>
@@ -387,14 +388,12 @@
                                 {% endif %}
 
                                 {% if comment.children %}
-                                    <br
                                     <h4>Replies</h4>
                                     {% for reply in comment.replies.all%}
                                         <p>{{reply.author}} | {{reply.datetime_created}}</p>
                                         <p>{{reply.content}}</p>
                                     {% endfor %}
                                 {% endif %}
-                                <br>
                                 {% if user.is_authenticated%}
                                     <h5>Add Reply</h5>
                                     <form action="" method="post">

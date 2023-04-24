@@ -33,10 +33,12 @@
                                                     <td class="product-name"><a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a></td> 
                                                     <td class="product-price"><span class="amount">{{ product.clean_price }} تومان</span></td>
                                                     {% if product.is_active %} 
-                                                        <td class="product-stock-status">  <p>موجود در انبار</p>  </td> 
+                                                        <td class="product-stock-status"><p>موجود در انبار</p></td> 
+                                                    {% else %}
+                                                        <td class="product-stock-status" id='unavailable_product'><p>ناموجود در انبار</p></td>
                                                     {% endif %}
                                                     <td class="product-wishlist-cart"><a href="#">افزودن به سبد خرید</a></td> 
-                                                </tr> 
+                                                </tr>
                                             {% endfor %}
                                         {% else %}
                                                 <tr>
@@ -54,5 +56,10 @@
             </div>                 
         </div>             
         <!-- wishlist end -->             
-    </div>         
+    </div>
+    <style>
+        #unavailable_product {
+            color:red;
+        }
+    </style>
 {% endblock content %}
