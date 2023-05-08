@@ -39,11 +39,13 @@ class TestProductViews(TestCase):
         self.remove_from_wishlist = reverse('remove_from_wishlist', args=['some_random_slug'])
     
     # checkout why AssertionError: 404 != 200
+
+
     # def test_home_page_view_GET_request_and_template_used(self):
     #     response = self.client.get(self.home_page)
     #     print(response)
-        # self.assertEqual(response.status_code, 200)
-        # self.assertTemplateUsed(response, 'home.html')
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTemplateUsed(response, 'home.html')
     
     # def test_shop_categories_view_GET_request_and_template_used(self):
     #     response = self.client.get(self.shop_categories)

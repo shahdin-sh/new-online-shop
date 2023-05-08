@@ -61,11 +61,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     "debug_toolbar",
     "ckeditor",
-
     # local apps
     'accounts',
     'crispy_forms',
-    'products.apps.ProductConfig'
+    'products.apps.ProductConfig',
+    
 
 ]
 SITE_ID = 1
