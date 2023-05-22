@@ -71,7 +71,7 @@
                                     </table>                                     
                                 </div>                                 
                             </form>
-                        {% else %}
+                        {% elif not user.wished_product.all %}
                         <tr>
                             <td>
                                 <h2>your wishlist is empty</h2>

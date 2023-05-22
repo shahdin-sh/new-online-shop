@@ -31,6 +31,7 @@ class TestProductViews(TestCase):
             category = self.category,
         )
         self.client = Client()
+        # handling products Urls
         self.home_page = reverse('homepage'),
         self.shop_categories = reverse('product_categories'),
         self.category_detail_or_products = reverse('category_detail', args=['some_random_slug']),
@@ -49,7 +50,7 @@ class TestProductViews(TestCase):
     
     # def test_shop_categories_view_GET_request_and_template_used(self):
     #     response = self.client.get(self.shop_categories)
-    #     # self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(response.status_code, 200)
     #     self.assertTemplateUsed(response, 'category/shop_categories.html')
     
     # def test_product_detail_view_GET_request_and_template_used(self):
@@ -57,9 +58,10 @@ class TestProductViews(TestCase):
     #     self.assertEqual(response.status_code, 200)
     #     self.assertTemplateUsed(response, 'category/category_detail.html')
 
-
-    
-
+    # def test_product_detail_view_POST_request(self):
+    #     response = self.client.post(self.product_detail)
+    #     print(response)
+    #     self.assertEqual(response.status_code, 302)
 
 
 
