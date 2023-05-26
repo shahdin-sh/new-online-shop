@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'accounts',
     'crispy_forms',
     'products.apps.ProductConfig',
+    'cart.apps.CartConfig',
     
 
 ]

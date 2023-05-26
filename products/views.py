@@ -90,3 +90,5 @@ def remove_from_wishlist(request, product_slug):
         product_detail.user_wished_product.remove(request.user)
         return redirect('wishlist_view')
     return HttpResponse('this product has already removed from your wishlist.')
+
+# Every function based views should be impelemented as class based views too: 
