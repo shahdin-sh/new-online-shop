@@ -25,6 +25,8 @@ urlpatterns = [
     path('', include('products.urls')),
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('accounts.urls')),
+    path('cart/', include('cart.urls')),
+    # third party urls
     path('__debug__/', include('debug_toolbar.urls')),
 
 
