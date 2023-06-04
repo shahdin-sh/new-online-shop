@@ -6,6 +6,7 @@ from .forms import CommentForm
 
 
 def home_page(request):
+    print(request)
     return render(request, 'home.html')
 
 
