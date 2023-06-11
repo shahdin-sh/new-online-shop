@@ -2,6 +2,9 @@ from django.urls import path, include, re_path
 from .views import home_page, shop_categories, product_detail_view, add_to_wishlist, remove_from_wishlist, products_or_category_detail
 
 # The first element is the type and the second is the parameter name to use when calling the view, <slug:category_slug>
+
+app_name = 'products'
+
 urlpatterns = [
     path('', home_page, name='homepage'),
     path('shop_categories/', shop_categories, name='product_categories'),

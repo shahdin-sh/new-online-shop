@@ -15,10 +15,10 @@
                             <div class="col-lg-6  col-md-6 col-sm-6">
                                 <!-- breadcrumb-list start -->
                                     <ul class="breadcrumb-list text-center text-sm-end">
-                                        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">
+                                        <li class="breadcrumb-item"><a href="{% url 'products:homepage' %}">
                                             Homepage
                                         </a></li>
-                                        <li class="breadcrumb-item"><a href="{% url 'product_categories' %}">
+                                        <li class="breadcrumb-item"><a href="{% url 'products:product_categories' %}">
                                             Shop Categories
                                         </a></li>
                                         <li class="breadcrumb-item active">{{ category.name }}</li>
@@ -153,17 +153,17 @@
                             <div class="col-lg-4 col-md-4 col-sm-6">
                                 <div class="single-product-item text-center">
                                     <div class="products-images">
-                                        <a href="{% url 'product_detail' product.slug %}" class="product-thumbnail">
+                                        <a href="{% url 'products:product_detail' product.slug %}" class="product-thumbnail">
                                             <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                         </a>
                                         <div class="product-actions">
-                                            <a href="{% url 'product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
-                                            <a href="{% url 'product_detail' product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
                                             {% if user not in product.user_wished_product.all %}
-                                                <a href={% url 'add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                                <a href={% url 'products:add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
                                             {% else %}
-                                                <a href={% url 'remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
+                                                <a href={% url 'products:remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -190,12 +190,12 @@
 
                                         </a>
                                         <div class="product-actions">
-                                            <a href="{% url 'product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
                                             <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
                                             {% if user not in product.user_wished_product.all %}
-                                                <a href={% url 'add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                                <a href={% url 'products:add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
                                             {% else %}
-                                                <a href={% url 'remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
+                                                <a href={% url 'products:remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
                                             {% endif %}
                                            
                                         </div>
@@ -222,12 +222,12 @@
 
                                         </a>
                                         <div class="product-actions">
-                                            <a href="{% url 'product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
                                             <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
                                             {% if user not in product.user_wished_product.all %}
-                                                <a href={% url 'add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                                <a href={% url 'products:add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
                                             {% else %}
-                                                <a href={% url 'remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
+                                                <a href={% url 'products:remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
                                             {% endif %}
                                            
                                         </div>

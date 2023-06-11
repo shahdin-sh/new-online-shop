@@ -37,14 +37,13 @@ class TestProductViews(TestCase):
         # )
         self.client = Client()
         # handling products Urls
-        self.cart_detail_view = reverse('cart_detail_view')
+        self.cart_detail_view = reverse('cart:cart_detail_view')
     
     # checkout why AssertionError: 404 != 200
 
 
     def test_cart_detail_view_GET_request_and_template_used(self):
         response = self.client.get(self.cart_detail_view)
-        print(response)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'cart_detail_view.html')
     

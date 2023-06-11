@@ -9,7 +9,7 @@ from ..views import cart_detail_view
 class TestProductUrls(TestCase):
 
     def test_cart_detail_view_is_resolved(self):
-        url = reverse('cart_detail_view')
+        url = reverse('cart:cart_detail_view')
         self.assertEqual(resolve(url).func, cart_detail_view)
 
     
