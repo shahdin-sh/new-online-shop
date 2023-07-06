@@ -186,7 +186,9 @@
                                                 {% for item in cart %}                                                   
                                                     <div class="your-order-middle"> 
                                                         <ul>
-                                                            <li>{{item.product_obj.name}} X {{item.quantity}} <span>{{item.product_obj.price}}</span></li>
+                                                            <li><input name='item_quantity' value={{item.quantity}} type='number'> {{item.product_obj.name}} X 
+                                                                <span>{{item.product_obj.price}}</span>
+                                                            </li>
                                                         </ul>                                                         
                                                     </div>       
                                                 {% endfor %} 

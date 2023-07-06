@@ -212,35 +212,58 @@
 
 
                     <div class="quickview-action-wrap mt-30">
-                        <div class="quickview-cart-box">
-                            <div class="quickview-quality">
-                                <form action={% url 'cart:add_to_cart' product_detail.id %} method='post'>
-                                    {% comment %} <div class="cart-plus-minus">
-                                        <input class="cart-plus-minus-box" type="text" name="qtybutton" value="0">
-                                    </div> {% endcomment %}
-                                    {% csrf_token%}
-                                    {{add_to_cart_form}}
-                                    <br>
-                                    <div class="quickview-cart button">
-                                        <button type='submit' >Add to Cart</button>
+                        <form action={% url 'cart:add_to_cart' product_detail.id%} method='post'>
+                            {% csrf_token %}
+                            <div class="quickview-cart-box">
+                                <div class="quickview-quality">
+                                    <div class="cart-plus-minus">
+                                        <input class="cart-plus-minus-box" type="text" name="quantity" min="1" max=product_detail.quantity>
                                     </div>
-                                </form>
-                            </div>
-                            <div class="quickview-button">
-                                <div class="quickview-wishlist button">
-                                    {% if user not in product_detail.user_wished_product.all %}
-                                        <a title="Add to wishlist" href="{% url 'products:add_to_wishlist' product_detail.slug %}"  onclick="document.getElementById('wishlist_form').submit()">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                    {% else %}
-                                        <a href="{% url 'products:remove_from_wishlist' product_detail.slug %}" title="remove from wishlist">
-                                            <i class="fas fa-heart"></i>
-                                        </a>
-                                    {% endif %}
+                                </div>
+
+                                <div class="quickview-button">
+                                    <div class="quickview-cart button">
+                                        <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</button>
+                                    </div>
+                                    <div class="quickview-wishlist button">
+                                        {% if user not in product_detail.user_wished_product.all %}
+                                            <a title="Add to wishlist" href="{% url 'products:add_to_wishlist' product_detail.slug %}"  onclick="document.getElementById('wishlist_form').submit()">
+                                                <i class="far fa-heart"></i>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'products:remove_from_wishlist' product_detail.slug %}" title="remove from wishlist">
+                                                <i class="fas fa-heart"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
+                        </form>
+                            {% comment %} <div class="quickview-quality">
+                                <form action={% url 'cart:add_to_cart' product_detail.id %} method='post'>
+                                    {% csrf_token%}
+                                    <div class="cart-plus-minus">
+                                        <input class="cart-plus-minus-box" type="number" name="quantity" value="0">
+                                    </div> 
+                                    {% comment %} {{add_to_cart_form}} {% endcomment %}
+                                    {% comment %} <div class="quickview-button">
+                                        <div class="quickview-cart button">
+                                            <a href="product-details.html" class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</a>
+                                        </div>
+                                        <div class="quickview-wishlist button">
+                                            {% if user not in product_detail.user_wished_product.all %}
+                                                <a title="Add to wishlist" href="{% url 'products:add_to_wishlist' product_detail.slug %}"  onclick="document.getElementById('wishlist_form').submit()">
+                                                    <i class="far fa-heart"></i>
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'products:remove_from_wishlist' product_detail.slug %}" title="remove from wishlist">
+                                                    <i class="fas fa-heart"></i>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </form>
+                            </div> {% endcomment %}
                     </div>
 
                     <div class="product_meta mt-30">
@@ -389,7 +412,7 @@
                                 <p>{{comment.author}} | {{comment.datetime_created}}</p>
                                 <p>{{comment.content}}</p>
                                 {% if comment.rating %}
-                                    <p>your rate to this comment : {{ comment.rating}} / 5 <p>
+                                    <p>your rate to this comment : {{ comment.rating }} / 5 <p>
                                 {% endif %}
 
                                 {% if comment.children %}

@@ -14,7 +14,6 @@ def cart_detail_view(request):
     return render(request, 'cart_detail_view.html', context)
 
 
-@require_POST
 def add_product_to_the_cart(request, product_id):
     cart = Cart(request)
     products = Product.is_active_manager.filter(is_featured=False)

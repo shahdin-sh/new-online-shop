@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .models import Product, Category, Comment
 from .forms import CommentForm
-from cart.forms import AddToCartForm
+# from cart.forms import AddToCartForm
 
 
 def home_page(request):
@@ -68,7 +68,7 @@ def product_detail_view(request, product_slug):
         # showing all of product's comments
         'comments': comments,
         'comment_form': comment_form,
-        'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity)
+        # 'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity)
     }
     return render(request, 'products/product_detail_view.html', context)
 
