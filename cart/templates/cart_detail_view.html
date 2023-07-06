@@ -177,35 +177,34 @@
                                     <div class="your-order-area"> 
                                         <div class="your-order-wrap gray-bg-4"> 
                                             <div class="your-order-info-wrap">
-                                                {% for item in cart %}
-                                                    <div class="your-order-info"> 
-                                                        <ul> 
-                                                            <li>محصول <span>جمع</span>
-                                                            </li>                                                             
-                                                        </ul>                                                         
-                                                    </div>                                                     
+                                                <div class="your-order-info"> 
+                                                    <ul> 
+                                                        <li>محصول <span>جمع</span>
+                                                        </li>                                                             
+                                                    </ul>                                                         
+                                                </div>  
+                                                {% for item in cart %}                                                   
                                                     <div class="your-order-middle"> 
-                                                        <ul>                   
-                                                            <li>{{item.product_obj.name}}<span>{{item.product_obj.price}}</span>
-                                                            </li>                                                             
+                                                        <ul>
+                                                            <li>{{item.product_obj.name}} X {{item.quantity}} <span>{{item.product_obj.price}}</span></li>
                                                         </ul>                                                         
-                                                    </div>                                                     
-                                                    <div class="your-order-info order-subtotal"> 
-                                                        <ul> 
-                                                            <li>
-                                                                <strong>جمع</strong> <span>86.000 تومان </span>
-                                                            </li>                                                             
-                                                        </ul>                                                         
-                                                    </div>                                                     
-                                                    <div class="your-order-info order-total"> 
-                                                        <ul> 
-                                                            <li>
-                                                                <strong>جمع با تخفیف</strong> <span>86.000 تومان </span>
-                                                            </li>                                                             
-                                                        </ul>                                                         
-                                                    </div>                                                     
-                                                {% endfor %}
-                                                <div class="payment-area mt-30"> 
+                                                    </div>       
+                                                {% endfor %} 
+                                                <div class="your-order-info order-subtotal"> 
+                                                    <ul> 
+                                                        <li>
+                                                            <strong>جمع</strong> <span>86.000 تومان </span>
+                                                        </li>                                                             
+                                                    </ul>                                                         
+                                                </div>                                                     
+                                                <div class="your-order-info order-total"> 
+                                                    <ul> 
+                                                        <li>
+                                                            <strong>جمع با تخفیف</strong> <span>86.000 تومان </span>
+                                                        </li>                                                             
+                                                    </ul>                                                         
+                                                </div>                                                     
+                                                {% comment %} <div class="payment-area mt-30"> 
                                                     <div class="single-payment"> 
                                                         <h6 class="mb-10">سوال شماره یک؟</h6> 
                                                         <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p> 
@@ -214,7 +213,7 @@
                                                         <h6 class="mb-10">سوال شماره دو؟</h6> 
                                                         <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p> 
                                                     </div>                                                         
-                                                </div> 
+                                                </div>  {% endcomment %}
                                             </div>                                                 
                                         </div>                                             
                                     </div>                                         

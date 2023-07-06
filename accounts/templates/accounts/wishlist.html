@@ -17,10 +17,10 @@
                         <div class="col-lg-6  col-md-6 col-sm-6">
                             <!-- breadcrumb-list start -->
                                 <ul class="breadcrumb-list text-center text-sm-end">
-                                    <li class="breadcrumb-item"><a href="{% url 'homepage' %}">
+                                    <li class="breadcrumb-item"><a href="{% url 'products:homepage' %}">
                                         Homepage
                                     </a></li>
-                                    <li class="breadcrumb-item active"><a href="{% url 'product_categories' %}">
+                                    <li class="breadcrumb-item active"><a href="{% url 'products:product_categories' %}">
                                         Wishlist
                                     </a></li>
                                 </ul>
@@ -55,9 +55,9 @@
                                         <tbody>
                                                 {% for product in user.wished_product.all %} 
                                                     <tr> 
-                                                        <td class="product-remove">  <a href="{% url 'remove_from_wishlist' product.slug %}"><i class="icon-cross2"></i></a>  </td> 
+                                                        <td class="product-remove">  <a href="{% url 'products:remove_from_wishlist' product.slug %}"><i class="icon-cross2"></i></a>  </td> 
                                                         <td class="product-img">  <a href="#"><img src="{% static 'images/product/small/cart-01.webp' %}" alt=""/></a>  </td> 
-                                                        <td class="product-name"><a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a></td> 
+                                                        <td class="product-name"><a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a></td> 
                                                         <td class="product-price"><span class="amount">{{ product.clean_price }} تومان</span></td>
                                                         {% if product.is_active %} 
                                                             <td class="product-stock-status"><p>موجود در انبار</p></td> 

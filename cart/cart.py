@@ -1,3 +1,4 @@
+from typing import Any
 from products.models import Product
 
 
@@ -17,12 +18,24 @@ class Cart:
             cart = self.session['cart'] = {}
 
         # set cart in the user session.
-        self.cart = self.session['cart']
+        self.cart = cart
     
     def save(self):
         self.session.modified = True
+    
+    def __iter__(self):
+        product_ids = self.cart.keys()
+        products = Product.objects.filter(id__in=product_ids)
 
+        cart = self.cart.copy()
 
+        for product in products:
+            cart[str(product.id)]['product_obj'] = product
+        
+        for item in cart.values():
+            yield item
+
+            
     def add_to_cart(self, product, quantity=1):
         product_id = str(product.id)
 
@@ -43,30 +56,12 @@ class Cart:
             self.cart[product_id]['quantity'] += quantity
         # save changes in the session.
         self.save()
-    
+
     def remove_from_the_cart(self, product):
         product_id = str(product.id)
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
-    
-    def __iter__(self):
-        # getting product_ids as a key from cart.
-        product_ids = self.cart.keys()
-
-        # getting product obj's that have the same id as product_ids in our cart from the DB.
-        products = Product.objects.filter(id__in=product_ids)
-
-        cart = self.cart.copy
-
-        for product in products:
-            # like self.cart[product_id]['quantity'].
-            # quantity. for each product in our cart we determine a product obj as a key and put product from the DB as a value.
-            product_id = str(product_id)
-            cart[product_id]['product_obj'] = product
-        
-        for item in cart:
-            yield item
     
     def __len__(self):
         return len(self.cart.keys())

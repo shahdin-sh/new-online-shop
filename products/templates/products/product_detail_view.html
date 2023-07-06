@@ -125,7 +125,7 @@
 
 
                     <div class="quickview-peragraph mt-10">
-                        <p>{{ product_detail.description }}</p>
+                        <p>{{ product_detail.description|safe }}</p>
                     </div>
 
                     {% comment %}  clean the code below {% endcomment %}
@@ -214,15 +214,19 @@
                     <div class="quickview-action-wrap mt-30">
                         <div class="quickview-cart-box">
                             <div class="quickview-quality">
-                                <div class="cart-plus-minus">
-                                    <input class="cart-plus-minus-box" type="text" name="qtybutton" value="0">
-                                </div>
+                                <form action={% url 'cart:add_to_cart' product_detail.id %} method='post'>
+                                    {% comment %} <div class="cart-plus-minus">
+                                        <input class="cart-plus-minus-box" type="text" name="qtybutton" value="0">
+                                    </div> {% endcomment %}
+                                    {% csrf_token%}
+                                    {{add_to_cart_form}}
+                                    <br>
+                                    <div class="quickview-cart button">
+                                        <button type='submit' >Add to Cart</button>
+                                    </div>
+                                </form>
                             </div>
-
                             <div class="quickview-button">
-                            <div class="quickview-cart button">
-                                <a href="product-details.html" class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</a>
-                            </div>
                                 <div class="quickview-wishlist button">
                                     {% if user not in product_detail.user_wished_product.all %}
                                         <a title="Add to wishlist" href="{% url 'products:add_to_wishlist' product_detail.slug %}"  onclick="document.getElementById('wishlist_form').submit()">
@@ -234,7 +238,6 @@
                                         </a>
                                     {% endif %}
                                 </div>
-                                
                             </div>
                         </div>
 

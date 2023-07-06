@@ -174,8 +174,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # accounts config
 AUTH_USER_MODEL = 'accounts.CustomUserModel'
-LOGIN_REDIRECT_URL = 'homepage'
-LOGOUT_REDIRECT_URL = 'homepage'
+LOGIN_REDIRECT_URL = 'products:homepage'
+LOGOUT_REDIRECT_URL = 'products:homepage'
 
 
 # allauth config, set additional config later.

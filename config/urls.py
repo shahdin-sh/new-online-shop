@@ -18,13 +18,13 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls.static import static
 from django.conf import settings
-
+from django.contrib.auth.views import LoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('products.urls')),
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('accounts.urls')),
+    path('', include('products.urls')),
     path('cart/', include('cart.urls')),
     # third party urls
     path('__debug__/', include('debug_toolbar.urls')),
