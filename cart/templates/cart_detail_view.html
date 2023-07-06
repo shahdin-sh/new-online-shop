@@ -183,14 +183,21 @@
                                                         </li>                                                             
                                                     </ul>                                                         
                                                 </div>  
-                                                {% for item in cart %}                                                   
-                                                    <div class="your-order-middle"> 
-                                                        <ul>
-                                                            <li><input name='item_quantity' value={{item.quantity}} type='number'> {{item.product_obj.name}} X 
-                                                                <span>{{item.product_obj.price}}</span>
-                                                            </li>
-                                                        </ul>                                                         
-                                                    </div>       
+                                                {% for item in cart %}
+                                                    {% if cart  %}                                                   
+                                                        <div class="your-order-middle"> 
+                                                            <ul>
+                                                                <li><input name='item_quantity' value={{item.quantity}} type='number'> {{item.product_obj.name}} X 
+                                                                    <span>{{item.product_obj.price}}</span>
+                                                                </li>
+                                                            </ul>
+                                                            <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}>Remove product</span>                                                          
+                                                        </div>
+                                                    {% else %}
+                                                        <span>
+                                                            Your cart is empty
+                                                        </span>
+                                                    {% endif %}
                                                 {% endfor %} 
                                                 <div class="your-order-info order-subtotal"> 
                                                     <ul> 
