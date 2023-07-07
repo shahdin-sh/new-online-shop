@@ -32,18 +32,19 @@ class TestProductViews(TestCase):
         )
         self.client = Client()
         # handling products Urls
-        self.home_page = reverse('homepage'),
-        self.shop_categories = reverse('product_categories'),
-        self.category_detail_or_products = reverse('category_detail', args=['some_random_slug']),
-        self.product_detail = reverse('product_detail', args=['some_random_slug']),
-        self.add_to_wishlist = reverse('add_to_wishlist', args=['some_random_slug']),
-        self.remove_from_wishlist = reverse('remove_from_wishlist', args=['some_random_slug'])
+        self.home_page = reverse('products:homepage'),
+        self.shop_categories = reverse('products:product_categories'),
+        self.category_detail_or_products = reverse('products:category_detail', args=['some_random_slug']),
+        self.product_detail = reverse('products:product_detail', args=['some_random_slug']),
+        self.add_to_wishlist = reverse('products:add_to_wishlist', args=['some_random_slug']),
+        self.remove_from_wishlist = reverse('products:remove_from_wishlist', args=['some_random_slug'])
     
     # checkout why AssertionError: 404 != 200
 
 
     # def test_home_page_view_GET_request_and_template_used(self):
     #     response = self.client.get(self.home_page)
+    #     print(response)
     #     self.assertEqual(response.status_code, 200)
     #     self.assertTemplateUsed(response, 'home.html')
     

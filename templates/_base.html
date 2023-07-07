@@ -9,7 +9,7 @@
         <meta name="description" content=""/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <!-- Favicon -->
-        <link rel="icon" href="assets/images/favicon.ico"/>
+        <link rel="icon" href= "{% static "images/favicon.ico" %}"/>
         <!-- CSS
         ============================================ -->
         <link rel="stylesheet" href="{% static "css/vendor/vendor.min.css" %}"/>
@@ -35,14 +35,14 @@
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4 col-6">
-                            <div class="logo text-md-center"> <a href="index.html"><img src="assets/images/logo/logo.svg" alt=""/></a>
+                            <div class="logo text-md-center"> <a href="index.html"><img src={% static "images/logo/logo.svg" %} /></a>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4 col-6">
                             <div class="header-right-side text-end">
                                 <div class="header-right-items  d-none d-md-block"> <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="icon-user"></i> </a>
                                 </div>
-                                {% if user.is_authenticated%}
+                                {% if user.is_authenticated %}
                                     <div class="header-right-items d-none d-md-block"> <a href="{% url 'wishlist_view' %}" class="header-cart"> <i class="icon-heart"></i> <span class="item-counter">{{ user.wished_product.count }}</span> </a>
                                     </div>
                                 {% endif %}
@@ -68,7 +68,7 @@
 {#                            <div class="col-lg-12 ps-0 ps-lg-3 pe-0 pe-lg-3">#}
 {#                                <!-- Hero Slider Area Start -->#}
 {#                                <div class="hero-area hero-slider-one">#}
-{#                                    <div class="single-hero-slider-one bg-img" data-bg="assets/images/hero/home-default-1.jpg">#}
+{#                                    <div class="single-hero-slider-one bg-img" data-bg= {% static"images/hero/home-default-1. %}jpg">#}
 {#                                        <div class="container">#}
 {#                                            <div class="row">#}
 {#                                                <div class="col-lg-12">#}
@@ -96,7 +96,7 @@
 {#                    <div class="container">#}
 {#                        <div class="row align-items-center featuted-product-one">#}
 {#                            <div class="col-lg-6 col-md-6 order-md-1 order-1">#}
-{#                                <div class="product-thumbnail"> <a href="#"><img src="assets/images/featured-product/df-1.png" class="img-fluid" alt="Featured Image" height="451" width="397"/></a>#}
+{#                                <div class="product-thumbnail"> <a href="#"><img src= {% static"images/featured-product/df- %}1.png" class="img-fluid" alt="Featured Image" height="451" width="397"/></a>#}
 {#                                </div>#}
 {#                            </div>#}
 {#                            <div class="col-lg-6 col-md-6 order-md-2 order-2">#}
@@ -111,14 +111,14 @@
 {#                        </div>#}
 {#                    </div>#}
 {#                    <div class="images-text-bg text-end">#}
-{#                        <img src="assets/images/text-bg/bg-df-1-300x49.webp" class="img-fluid" width="300" height="49" alt="Wood Coth"/>#}
+{#                        <img src= {% static"images/text-bg/bg-df-1-300x %}49.webp" class="img-fluid" width="300" height="49" alt="Wood Coth"/>#}
 {#                    </div>#}
 {#                </div>#}
 {#                <div class="featuted-product-wrap section-space--pt_120">#}
 {#                    <div class="container">#}
 {#                        <div class="row align-items-center featuted-product-one">#}
 {#                            <div class="col-lg-6 col-md-6 order-md-2 order-1">#}
-{#                                <div class="product-thumbnail"> <a href="#"><img src="assets/images/featured-product/df-2.webp" class="img-fluid" alt="Table Wood Pine" width="561" height="266"/></a>#}
+{#                                <div class="product-thumbnail"> <a href="#"><img src= {% static"images/featured-product/df- %}2.webp" class="img-fluid" alt="Table Wood Pine" width="561" height="266"/></a>#}
 {#                                </div>#}
 {#                            </div>#}
 {#                            <div class="col-lg-6 col-md-6 order-md-1 order-2">#}
@@ -133,14 +133,14 @@
 {#                        </div>#}
 {#                    </div>#}
 {#                    <div class="images-text-bg text-start">#}
-{#                        <img src="assets/images/text-bg/h1-1-300x122.webp" class="img-fluid" width="300" height="122" alt="pine"/>#}
+{#                        <img src= {% static"images/text-bg/h1-1-300x122 %}.webp" class="img-fluid" width="300" height="122" alt="pine"/>#}
 {#                    </div>#}
 {#                </div>#}
 {#                <div class="featuted-product-wrap section-space--pt_120">#}
 {#                    <div class="container">#}
 {#                        <div class="row align-items-center featuted-product-one">#}
 {#                            <div class="col-lg-6 col-md-6 order-md-1 order-1">#}
-{#                                <div class="product-thumbnail"> <a href="#"><img src="assets/images/featured-product/df-3.webp" class="img-fluid" alt="Featured Image" width="300" height="277"/></a>#}
+{#                                <div class="product-thumbnail"> <a href="#"><img src= {% static"images/featured-product/df- %}3.webp" class="img-fluid" alt="Featured Image" width="300" height="277"/></a>#}
 {#                                </div>#}
 {#                            </div>#}
 {#                            <div class="col-lg-6 col-md-6  order-md-2 order-2">#}
@@ -155,7 +155,7 @@
 {#                        </div>#}
 {#                    </div>#}
 {#                    <div class="images-text-bg text-end">#}
-{#                        <img src="assets/images/text-bg/h1-2.webp" class="img-fluid" alt="art decorations" width="673" height="168"/>#}
+{#                        <img src= {% static"images/text-bg/h1-2.webp" c %}lass="img-fluid" alt="art decorations" width="673" height="168"/>#}
 {#                    </div>#}
 {#                </div>#}
                 {% block content %}
@@ -172,7 +172,7 @@
 {#                        <div class="product-slider-active">#}
 {#                            <!-- Single Product Item Start -->#}
 {#                            <div class="single-product-item text-center">#}
-{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src="assets/images/product/1_1-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300" width="300" height="300"/> <span class="ribbon out-of-stock">اتمام موجودی</span> </a>#}
+{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src= {% static"images/product/1_1-300x300. %}webp" class="img-fluid" alt="Product Images" width="300" height="300" width="300" height="300"/> <span class="ribbon out-of-stock">اتمام موجودی</span> </a>#}
 {#                                    <div class="product-actions"> <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a> <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a> <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>#}
 {#                                    </div>#}
 {#                                </div>#}
@@ -185,7 +185,7 @@
 {#                            <!-- Single Product Item End -->#}
 {#                            <!-- Single Product Item Start -->#}
 {#                            <div class="single-product-item text-center">#}
-{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src="assets/images/product/1_2-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
+{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src= {% static"images/product/1_2-300x300. %}webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
 {#                                    <div class="product-actions"> <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a> <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a> <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>#}
 {#                                    </div>#}
 {#                                </div>#}
@@ -198,7 +198,7 @@
 {#                            <!-- Single Product Item End -->#}
 {#                            <!-- Single Product Item Start -->#}
 {#                            <div class="single-product-item text-center">#}
-{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src="assets/images/product/1_3-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
+{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src= {% static "images/product/1_3-300x300. %}webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
 {#                                    <div class="product-actions"> <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a> <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a> <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>#}
 {#                                    </div>#}
 {#                                </div>#}
@@ -211,7 +211,7 @@
 {#                            <!-- Single Product Item End -->#}
 {#                            <!-- Single Product Item Start -->#}
 {#                            <div class="single-product-item text-center">#}
-{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src="assets/images/product/1_4-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300"/> <span class="ribbon onsale">-14%</span> </a>#}
+{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src= {% static"images/product/1_4-300x300. %}webp" class="img-fluid" alt="Product Images" width="300" height="300"/> <span class="ribbon onsale">-14%</span> </a>#}
 {#                                    <div class="product-actions"> <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a> <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a> <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>#}
 {#                                    </div>#}
 {#                                </div>#}
@@ -224,7 +224,7 @@
 {#                            <!-- Single Product Item End -->#}
 {#                            <!-- Single Product Item Start -->#}
 {#                            <div class="single-product-item text-center">#}
-{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src="assets/images/product/1_5-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
+{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src= {% static"images/product/1_5-300x300. %}webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
 {#                                    <div class="product-actions"> <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a> <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a> <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>#}
 {#                                    </div>#}
 {#                                </div>#}
@@ -237,7 +237,7 @@
 {#                            <!-- Single Product Item End -->#}
 {#                            <!-- Single Product Item Start -->#}
 {#                            <div class="single-product-item text-center">#}
-{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src="assets/images/product/1_6-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
+{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src= {% static"images/product/1_6-300x300. %}webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
 {#                                    <div class="product-actions"> <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a> <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a> <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>#}
 {#                                    </div>#}
 {#                                </div>#}
@@ -250,7 +250,7 @@
 {#                            <!-- Single Product Item End -->#}
 {#                            <!-- Single Product Item Start -->#}
 {#                            <div class="single-product-item text-center">#}
-{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src="assets/images/product/1_7-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
+{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src= {% static"images/product/1_7-300x300. %}webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
 {#                                    <div class="product-actions"> <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a> <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a> <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>#}
 {#                                    </div>#}
 {#                                </div>#}
@@ -263,7 +263,7 @@
 {#                            <!-- Single Product Item End -->#}
 {#                            <!-- Single Product Item Start -->#}
 {#                            <div class="single-product-item text-center">#}
-{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src="assets/images/product/1_8-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
+{#                                <div class="products-images"> <a href="product-details.html" class="product-thumbnail"> <img src= {% static"images/product/1_8-300x300. %}webp" class="img-fluid" alt="Product Images" width="300" height="300"/> </a>#}
 {#                                    <div class="product-actions"> <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a> <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a> <a href="wishlist.html"><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>#}
 {#                                    </div>#}
 {#                                </div>#}
@@ -278,7 +278,7 @@
 {#                    </div>#}
 {#                </div>#}
 {#                <div class="offer-colection-area container-fluid">#}
-{#                    <div class="section-space--ptb_120 bg-img" data-bg="assets/images/bg/h1-countdown.jpg">#}
+{#                    <div class="section-space--ptb_120 bg-img" data-bg= {% static"images/bg/h1-countdown.jpg" %}>#}
 {#                        <div class="row">#}
 {#                            <div class="container">#}
 {#                                <div class="row ps-md-1 ps-3 pe-md-1 pe-3">#}
@@ -315,7 +315,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                                 <!-- Single Blog Item Start -->
                                 <div class="single-blog-item mt-30">
-                                    <div class="blog-thumbnail-box"> <a href="#" class="thumbnail"> <img src="assets/images/blog/8-570x370.webp" class="img-fluid" alt="Blog Images" height="238" width="366"/> </a> <a href="#" class="btn-blog"> مطالعه بیشتر </a>
+                                    <div class="blog-thumbnail-box"> <a href="#" class="thumbnail"> <img src= {% static "images/blog/8-570x370.webp" %} class="img-fluid" alt="Blog Images" height="238" width="366"/> </a> <a href="#" class="btn-blog"> مطالعه بیشتر </a>
                                     </div>
                                     <div class="blog-contents">
                                         <h6 class="blog-title"><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</a></h6>
@@ -334,7 +334,7 @@
                             <div class="col-lg-4 col-md-6  col-sm-6 col-12">
                                 <!-- Single Blog Item Start -->
                                 <div class="single-blog-item mt-30">
-                                    <div class="blog-thumbnail-box"> <a href="#" class="thumbnail"> <img src="assets/images/blog/9-570x370.webp" class="img-fluid" alt="Blog Images" height="238" width="366"/> </a> <a href="#" class="btn-blog"> مطالعه بیشتر </a>
+                                    <div class="blog-thumbnail-box"> <a href="#" class="thumbnail"> <img src= {% static "images/blog/9-570x370.webp" %} class="img-fluid" alt="Blog Images" height="238" width="366"/> </a> <a href="#" class="btn-blog"> مطالعه بیشتر </a>
                                     </div>
                                     <div class="blog-contents">
                                         <h6 class="blog-title"><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</a></h6>
@@ -353,7 +353,7 @@
                             <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                                 <!-- Single Blog Item Start -->
                                 <div class="single-blog-item mt-30">
-                                    <div class="blog-thumbnail-box"> <a href="#" class="thumbnail"> <img src="assets/images/blog/10-570x370.webp" class="img-fluid" alt="Blog Images" height="238" width="366"/> </a> <a href="#" class="btn-blog"> مطالعه بیشتر </a>
+                                    <div class="blog-thumbnail-box"> <a href="#" class="thumbnail"> <img src= {% static "images/blog/10-570x370.webp" %} class="img-fluid" alt="Blog Images" height="238" width="366"/> </a> <a href="#" class="btn-blog"> مطالعه بیشتر </a>
                                     </div>
                                     <div class="blog-contents">
                                         <h6 class="blog-title"><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</a></h6>
@@ -473,7 +473,7 @@
                                 </ul>
                             </div>
                             <div class="col-lg-4 col-md-2 text-center">
-                                <div class="footer-logo"> <a href="#"><img src="assets/images/logo/logo.svg" alt="Logo images"/></a>
+                                <div class="footer-logo"> <a href="#"><img src= {% static "images/logo/logo.svg" alt="Logo Images" %}></a>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-5 order-md-3">
@@ -510,7 +510,7 @@
                     <div class="modal-body container">
                         <div class="row align-items-center">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <div class="quickview-product-active mr-lg-5"> <a href="#" class="images"> <img src="assets/images/product/2-570x570.webp" class="img-fluid" alt=""/> </a> <a href="#" class="images"> <img src="assets/images/product/3-600x600.webp" class="img-fluid" alt=""/> </a> <a href="#" class="images"> <img src="assets/images/product/4-768x768.webp" class="img-fluid" alt=""/> </a>
+                                <div class="quickview-product-active mr-lg-5"> <a href="#" class="images"> <img src= {% static "images/product/2-570x570.webp" %} class="img-fluid" alt=""/> </a> <a href="#" class="images"> <img src= {% static "images/product/3-600x600.webp" %} class="img-fluid" alt="" /> </a> <a href="#" class="images"> <img src= {% static "images/product/4-768x768.webp" %} class="img-fluid" alt=""/> </a>
                                 </div>
                                 <!-- Thumbnail Large Image End -->
                             </div>
@@ -874,7 +874,7 @@
                 </div>
                 <div class="minicart-content">
                     <ul class="minicart-list">
-                        <li class="minicart-product"> <a class="product-item_remove" href="javascript:void(0)"><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid" src="assets/images/product/small/cart-01.webp" alt="Product Image"/> </a>
+                        <li class="minicart-product"> <a class="product-item_remove" href="javascript:void(0)"><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid" src= {% static "images/product/small/cart-01.webp" %} alt="Product Image" /> </a>
                             <div class="product-item_content"> <a class="product-item_title" href="product-details.html">عنوان محصول</a>
                                 <label>تعداد : <span>1</span>
                                 </label>
@@ -882,7 +882,7 @@
                                 </label>
                             </div>
                         </li>
-                        <li class="minicart-product"> <a class="product-item_remove" href="javascript:void(0)"><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid" src="assets/images/product/small/cart-02.webp" alt="Product Image"/> </a>
+                        <li class="minicart-product"> <a class="product-item_remove" href="javascript:void(0)"><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid" src= {% static "images/product/small/cart-02.webp" %} alt="Product Image" /> </a>
                             <div class="product-item_content"> <a class="product-item_title" href="product-details.html">عنوان محصول</a>
                                 <label>تعداد : <span>1</span>
                                 </label>
@@ -890,7 +890,7 @@
                                 </label>
                             </div>
                         </li>
-                        <li class="minicart-product"> <a class="product-item_remove" href="javascript:void(0)"><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid" src="assets/images/product/small/cart-03.webp" alt="Product Image"/> </a>
+                        <li class="minicart-product"> <a class="product-item_remove" href="javascript:void(0)"><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid"  src= {% static "images/product/small/cart-03.webp" %} alt="Product Image"/> </a>
                             <div class="product-item_content"> <a class="product-item_title" href="product-details.html">عنوان محصول</a>
                                 <label>تعداد : <span>1</span>
                                 </label>
