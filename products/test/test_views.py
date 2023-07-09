@@ -9,14 +9,14 @@ class TestProductViews(TestCase):
     def setUp(self):
         self.user = CustomUserModel.objects.create(
             username='user_1', 
-            profile_avatar='/media/default_avatar/img_avatar.png'
+            profile_avatar='/media/default_avatar/img_avatar.png',
         )
         self.category = Category.objects.create(
             name = 'some_random_name',
             slug = 'some_random_slug',
             is_featured = False,
             parent = None,
-            description = 'some_random_description'
+            description = 'some_random_description',
         )
         self.product = Product.objects.create(
             name = 'some_random_name',
@@ -37,7 +37,7 @@ class TestProductViews(TestCase):
         self.category_detail_or_products = reverse('products:category_detail', args=['some_random_slug']),
         self.product_detail = reverse('products:product_detail', args=['some_random_slug']),
         self.add_to_wishlist = reverse('products:add_to_wishlist', args=['some_random_slug']),
-        self.remove_from_wishlist = reverse('products:remove_from_wishlist', args=['some_random_slug'])
+        self.remove_from_wishlist = reverse('products:remove_from_wishlist', args=['some_random_slug']),
     
     # checkout why AssertionError: 404 != 200
 

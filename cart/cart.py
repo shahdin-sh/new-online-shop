@@ -36,24 +36,18 @@ class Cart:
             yield item
 
             
-    def add_to_cart(self, product, quantity=1):
+    def add_to_cart(self, product, quantity=1, replace_current_quantity=False):
         product_id = str(product.id)
 
-        # check if this product have been added to user cart or not.
         if product_id not in self.cart:
-            self.cart[product_id] = {
-                'quantity': quantity
-            }
-            # session = {
-            #   'cart' = {
-                    # product_id = {
-                        # quantity: 1,
-                    # }
-        #       }
-            # }
-        # if we already had our product in the cart then user wants to add more quantity of the current product.
-        else:
-            self.cart[product_id]['quantity'] += quantity
+            self.cart[product_id] = {'quantity': quantity}
+
+        if replace_current_quantity:
+            self.cart[product_id]['quantity'] = quantity
+
+        # else:
+        #     print('else')
+        #     self.cart[product_id]['quantity'] += quantity
         # save changes in the session.
         self.save()
 

@@ -7,14 +7,23 @@ from products.models import Product
 
 
 def cart_detail_view(request):
+    cart = Cart(request)
+    for item in cart:
+        item['update_quantity_of_the_current_form'] = AddToCartForm(
+            product_stock = item['product_obj'].quantity,
+            initial = {
+                'quantity' : item['quantity'],
+                'inplace': True,
+            }
+            )
     context = {
-        'cart': Cart(request),
-        'cart_len': Cart.__len__
+        'cart': cart,
     }
     print(request.session['cart'])
     return render(request, 'cart_detail_view.html', context)
 
 
+# we use this view as action of our forms in 'cart_detail_view' and 'product_detail_view'
 def add_product_to_the_cart(request, product_id):
     cart = Cart(request)
     products = Product.is_active_manager.filter(is_featured=False)
@@ -24,7 +33,8 @@ def add_product_to_the_cart(request, product_id):
         # getting quantity from input that fill by the user
         cleaned_data = cart_form.cleaned_data
         quantity = cleaned_data['quantity']
-        cart.add_to_cart(product, quantity)
+        replace_current_quantity = cleaned_data['inplace']
+        cart.add_to_cart(product, quantity, replace_current_quantity)
     return redirect('cart:cart_detail_view')
 
 

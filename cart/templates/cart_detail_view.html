@@ -184,15 +184,23 @@
                                                     </ul>                                                         
                                                 </div>  
                                                 {% for item in cart %}
-                                                    {% if cart  %}                                                   
-                                                        <div class="your-order-middle"> 
-                                                            <ul>
-                                                                <li><input name='item_quantity' value={{item.quantity}} type='number'> {{item.product_obj.name}} X 
-                                                                    <span>{{item.product_obj.price}}</span>
-                                                                </li>
-                                                            </ul>
-                                                            <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}>Remove product</span>                                                          
-                                                        </div>
+                                                    {% if cart  %}  
+                                                        <form method='post' action={% url 'cart:add_to_cart' item.product_obj.id %}>          
+                                                            {% csrf_token %}                                       
+                                                            <div class="your-order-middle"> 
+                                                                <ul>
+                                                                    <li>
+                                                                       <span>{{item.product_obj.name}}</span>
+                                                                        <input name='quantity' value={{item.quantity}} type='number'>
+                                                                        {{item.update_quantity_of_the_current_form.inplace}}
+                                                                        <button type='submit'>Update quantity</button>
+                                                                        <span>{{item.product_obj.price}} تومان </span>
+                                                                    </li>
+                                                                    <span> prdouct_stock : {{item.product_obj.quantity}}</span>                                                                                                                                        
+                                                                </ul>
+                                                                <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}>Remove</a>
+                                                            </div>
+                                                        </form>
                                                     {% else %}
                                                         <span>
                                                             Your cart is empty
