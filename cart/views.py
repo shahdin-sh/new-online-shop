@@ -8,6 +8,7 @@ from products.models import Product
 
 def cart_detail_view(request):
     cart = Cart(request)
+    print(cart.get_total_price)
     for item in cart:
         item['update_quantity_of_the_current_form'] = AddToCartForm(
             product_stock = item['product_obj'].quantity,
@@ -19,7 +20,7 @@ def cart_detail_view(request):
     context = {
         'cart': cart,
     }
-    print(request.session['cart'])
+    # print(request.session['cart'])
     return render(request, 'cart_detail_view.html', context)
 
 
@@ -38,7 +39,7 @@ def add_product_to_the_cart(request, product_id):
     return redirect('cart:cart_detail_view')
 
 
-def remove_prodcut_from_the_cart(request, product_id):
+def remove_product_from_the_cart(request, product_id):
     cart = Cart(request)
     products = Product.is_active_manager.filter(is_featured=False)
     product = get_object_or_404(products, id=product_id)

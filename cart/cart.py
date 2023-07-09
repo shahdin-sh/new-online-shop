@@ -33,6 +33,7 @@ class Cart:
             cart[str(product.id)]['product_obj'] = product
         
         for item in cart.values():
+            item['total_price'] = item['quantity'] * item['product_obj'].price
             yield item
 
             
@@ -63,8 +64,8 @@ class Cart:
     def clear_the_cart(self):
         del self.session['cart']
         self.save()
-    
-    def total_price(self):
-        for i in self.cart.values():
-            # our values in the each product is 'quantity' and 'product_objs', i[product_obj].price is product.price.
-            return sum(i['quantity'] * i['product_obj'].price)
+
+    def get_total_price(self):
+        # for item in self.cart.values():
+        #    return(sum(item['quantity'] * item['product_obj'].price))
+        return sum(item['quantity'] * item['product_obj'].price for item in self.cart.values())

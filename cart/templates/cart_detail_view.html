@@ -198,8 +198,14 @@
                                                                     </li>
                                                                     <span> prdouct_stock : {{item.product_obj.quantity}}</span>                                                                                                                                        
                                                                 </ul>
+                                                                <ul>
+                                                                    <li>
+                                                                        <span>Total Price : {{item.total_price}} </span>
+                                                                    </li>
+                                                                </ul>
                                                                 <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}>Remove</a>
                                                             </div>
+                                                           
                                                         </form>
                                                     {% else %}
                                                         <span>
@@ -210,14 +216,14 @@
                                                 <div class="your-order-info order-subtotal"> 
                                                     <ul> 
                                                         <li>
-                                                            <strong>جمع</strong> <span>86.000 تومان </span>
+                                                            <strong>جمع</strong> <span>{{cart.get_total_price}} تومان</span>
                                                         </li>                                                             
                                                     </ul>                                                         
                                                 </div>                                                     
                                                 <div class="your-order-info order-total"> 
                                                     <ul> 
                                                         <li>
-                                                            <strong>جمع با تخفیف</strong> <span>86.000 تومان </span>
+                                                            <strong>جمع با تخفیف</strong> <span>{{cart.get_total_price}} تومان </span>
                                                         </li>                                                             
                                                     </ul>                                                         
                                                 </div>                                                     
