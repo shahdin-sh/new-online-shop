@@ -32,8 +32,10 @@ class Cart:
         for product in products:
             cart[str(product.id)]['product_obj'] = product
         
+        # defining total price and current product stock for each item in cart.
         for item in cart.values():
             item['total_price'] = item['quantity'] * item['product_obj'].price
+            item['current_product_stock'] = item['product_obj'].quantity - item['quantity']
             yield item
 
             
