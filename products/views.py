@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.urls import reverse
 from django.http import HttpResponse
 from .models import Product, Category, Comment
 from .forms import CommentForm
+from cart.forms import AddToCartForm
+from django.http import JsonResponse
 # from cart.forms import AddToCartForm
 
 
 def home_page(request):
-    print(request)
     return render(request, 'home.html')
 
 
@@ -30,9 +33,21 @@ def products_or_category_detail(request, category_slug):
 def product_detail_view(request, product_slug):
     products = Product.is_active_manager.filter(is_featured=False)
     product_detail = get_object_or_404(products, slug=product_slug)
-    current_user = request.user
-    # comment section 
     comments = product_detail.comments.filter(parent=None).order_by('-datetime_created')
+    comment_form = CommentForm(request.POST)
+    context = {
+        'product_detail': product_detail,
+        'comments': comments,
+        'comment_form': comment_form,
+        'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity)
+    }
+    return render(request, 'products/product_detail_view.html', context)
+
+
+@require_POST
+def user_comment_section(request, product_slug):
+    products = Product.is_active_manager.filter(is_featured=False)
+    product_detail = get_object_or_404(products, slug=product_slug)
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid:
@@ -55,22 +70,14 @@ def product_detail_view(request, product_slug):
             # normal comment section
             new_comment = comment_form.save(commit=False)
             new_comment.product = product_detail
-            new_comment.author = current_user
+            new_comment.author = request.user
             # getting rating from stars label
             rating = request.POST.get('rating')
             new_comment.rating = rating
             new_comment.save()
-        return redirect(product_detail_view, product_slug=product_slug)
+        return redirect(reverse('products:product_detail', args=[product_slug]))
     else:
         comment_form = CommentForm()
-    context = {
-        'product_detail': product_detail,
-        # showing all of product's comments
-        'comments': comments,
-        'comment_form': comment_form,
-        # 'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity)
-    }
-    return render(request, 'products/product_detail_view.html', context)
 
 
 @login_required
@@ -80,7 +87,7 @@ def add_to_wishlist(request, product_slug):
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user not in product_detail.user_wished_product.all():
         product_detail.user_wished_product.add(request.user)
-        return redirect('wishlist_view')
+        return redirect('account:wishlist_view')
     return HttpResponse('this product has already added to your wishlist.')
 
 
@@ -91,7 +98,7 @@ def remove_from_wishlist(request, product_slug):
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user in product_detail.user_wished_product.all():
         product_detail.user_wished_product.remove(request.user)
-        return redirect('wishlist_view')
+        return redirect('account:wishlist_view')
     return HttpResponse('this product has already removed from your wishlist.')
 
 # Every function based views should be impelemented as class based views too: 

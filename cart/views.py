@@ -8,7 +8,7 @@ from products.models import Product
 
 def cart_detail_view(request):
     cart = Cart(request)
-    print(cart.get_total_price)
+    print(request.session['cart'])
     for item in cart:
         item['update_quantity_of_the_current_form'] = AddToCartForm(
             product_stock = item['product_obj'].quantity,
