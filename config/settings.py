@@ -66,7 +66,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'products.apps.ProductConfig',
     'cart.apps.CartConfig',
-    'order.apps.OrderConfig',
+    'orders.apps.OrdersConfig',
 ]
 SITE_ID = 1
 
