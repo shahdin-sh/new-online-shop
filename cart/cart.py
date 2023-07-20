@@ -47,6 +47,8 @@ class Cart:
 
         if replace_current_quantity:
             self.cart[product_id]['quantity'] = quantity
+        else:
+            self.cart[product_id]['quantity'] += quantity
 
         # else:
         #     print('else')
