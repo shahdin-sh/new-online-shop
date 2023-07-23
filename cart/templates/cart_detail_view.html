@@ -1,5 +1,6 @@
 {% extends '_base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
     <!-- breadcrumb-area start -->
@@ -51,19 +52,21 @@
                                         <td></td> 
                                         <td class="product-img"> <a href="#"><img src={% static "images/product/small/cart-01.webp" %} alt=""/></a> </td> 
                                         <td class="product-name"><a href={% url 'products:product_detail' item.product_obj.slug %}>{{item.product_obj.name}}</a></td> 
-                                        <td class="product-price"><span class="amount">{{item.product_obj.clean_price}} تومان</span></td> 
+                                    <td class="product-price"><span class="amount">{{item.product_obj.price|intcomma}} تومان</span></td> 
                                         <td class="cart-quality">
                                             <form action={% url 'cart:add_to_cart' item.product_obj.id %} method='post'>
                                                 {% csrf_token %} 
                                                 <div class="quickview-quality quality-height-dec2"> 
                                                     <div class="cart-plus-minus"> 
-                                                        <input class="cart-plus-minus-box" type="submit" name="quantity" value={{item.quantity}}>    
+                                                        <input class="cart-plus-minus-box" type="number" name="quantity" value={{item.quantity}}>    
                                                     </div>
+                                                    {{item.update_quantity_of_the_current_form.inplace}}
+                                                    <button type='submit'  class="btn btn--sm btn--border_1">به روز رسانی سبد خرید</button>   
                                                 </div>
 
                                             </form>                                                         
                                         </td>                                                     
-                                        <td class="price-total"> <span class="amount">{{item.total_price}} تومان</span> </td> 
+                                        <td class="price-total"> <span class="amount">{{item.total_price|intcomma}} تومان</span> </td> 
                                         <td class="product-remove"> <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}><i class="icon-cross2"></i></a> </td> 
                                     </tr>
                                 {% endfor %}                                                                                                                          
@@ -73,8 +76,8 @@
                     <div class="shoping-update-area row"> 
                         <div class="continue-shopping-butotn col-6 mt-30"> <a href={% url 'products:product_categories' %} class="btn btn--lg btn--black"><i class="icon-arrow-left"></i>&nbsp; ادامه خرید</a> 
                         </div>                                     
-                        <div class="update-cart-button col-6 text-end mt-30"> <a href="#" class="btn btn--lg btn--border_1">به روز رسانی سبد خرید</a> 
-                        </div>                                     
+                        {% comment %} <div class="update-cart-button col-6 text-end mt-30"> <a href="#" class="btn btn--lg btn--border_1">به روز رسانی سبد خرید</a> 
+                        </div>                                      {% endcomment %}
                     </div>                                 
                     <div class="cart-buttom-area"> 
                         <div class="row"> 
@@ -91,9 +94,9 @@
                                     <div class="grand-total-wrap"> 
                                         <div class="grand-total-content"> 
                                             <ul> 
-                                                <li>مجموع قیمت<span> {{cart.get_total_price}} تومان</span>
+                                                <li>مجموع قیمت<span> {{cart.get_total_price|intcomma}} تومان</span>
                                                 </li>                                                             
-                                                <li>مجموع قیمت (با احتساب تخفیف)<span>{{cart.get_total_price}} تومان</span>
+                                                <li>مجموع قیمت (با احتساب تخفیف)<span>{{cart.get_total_price|intcomma}} تومان</span>
                                                 </li>                                                             
                                             </ul>                                                         
                                         </div>                                                     

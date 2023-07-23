@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from .models import Product, Category, Comment
 from .forms import CommentForm
 from cart.forms import AddToCartForm
-from django.http import JsonResponse
+from cart.cart import Cart
 # from cart.forms import AddToCartForm
 
 
@@ -39,7 +39,8 @@ def product_detail_view(request, product_slug):
         'product_detail': product_detail,
         'comments': comments,
         'comment_form': comment_form,
-        'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity)
+        'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity),
+        'cart': Cart(request)
     }
     return render(request, 'products/product_detail_view.html', context)
 

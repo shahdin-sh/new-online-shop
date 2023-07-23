@@ -216,9 +216,11 @@
                                 {% csrf_token %}
                                 <div class="quickview-cart-box">
                                     <div class="quickview-quality">
-                                        <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" name='quantity' type='number' value=0 max={{product_detail.quantity}} min=0 oninput="updateMinMaxValues()"  onclick="this.disabled=true;this.form.submit();">  
-                                        </div>
+                                        {% if cart %}
+                                            <div class="cart-plus-minus">
+                                                <input class="cart-plus-minus-box" name='quantity' type='number' value=0 max={{product_detail.quantity}} min=0 oninput="updateMinMaxValues()"  onclick="this.disabled=true;this.form.submit();">  
+                                            </div>
+                                        {% endif %}
                                     </div>
 
                                     <div class="quickview-button">

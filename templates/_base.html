@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="zxx" class="no-js">
     {% load static %}
+    {% load humanize %}
   <head>
     <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -876,10 +877,10 @@
                     <ul class="minicart-list">
                         {% for item in cart %}
                             <li class="minicart-product"> <a class="product-item_remove" href="javascript:void(0)"><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid" src= {% static "images/product/small/cart-01.webp" %} alt="Product Image" /> </a>
-                                <div class="product-item_content"> <a class="product-item_title" href="product-details.html">عنوان محصول</a>
+                                <div class="product-item_content"> <a class="product-item_title" href={% url 'products:product_detail' item.product_obj.slug  %}>{{item.product_obj.name}}</a>
                                     <label>تعداد : <span>{{item.quantity}}</span>
                                     </label>
-                                    <label class="product-item_quantity">قیمت: <span> {{item.total_price}} تومان</span>
+                                    <label class="product-item_quantity">قیمت: <span> {{item.total_price|intcomma}} تومان</span>
                                     </label>
                                 </div>
                             </li>
@@ -902,7 +903,7 @@
                         </li> {% endcomment %}
                     </ul>
                 </div>
-                <div class="minicart-item_total"> <span class="font-weight--reguler">مجموع قیمت:</span> <span class="ammount font-weight--reguler">{{ cart.get_total_price }} تومان</span>
+            <div class="minicart-item_total"> <span class="font-weight--reguler">مجموع قیمت:</span> <span class="ammount font-weight--reguler">{{ cart.get_total_price|intcomma }} تومان</span>
                 </div>
                 <div class="minicart-btn_area"> <a href="{% url "cart:cart_detail_view" %}" class="btn btn--full btn--border_1">مشاهده سبد خرید</a>
                 </div>

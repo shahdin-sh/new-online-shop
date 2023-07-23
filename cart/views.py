@@ -48,4 +48,7 @@ def remove_product_from_the_cart(request, product_id):
 
 
 def clear_the_cart(request):
-    pass
+    cart = Cart(request)
+    cart.clean_the_cart
+    previous_page = request.META.get('HTTP_REFERER')
+    return redirect(previous_page)
