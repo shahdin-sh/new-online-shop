@@ -74,10 +74,12 @@
                         </table>                                         
                     </div> 
                     <div class="shoping-update-area row"> 
-                        <div class="continue-shopping-butotn col-6 mt-30"> <a href={% url 'products:product_categories' %} class="btn btn--lg btn--black"><i class="icon-arrow-left"></i>&nbsp; ادامه خرید</a> 
+                        <div class="continue-shopping-butotn col-6 mt-30"> 
+                            <a href={% url 'cart:clear_the_cart' %}  class="btn btn--lg btn--border_1"><i class="icon-cross2"></i>&nbsp; حذف سبد خرید</a>
                         </div>                                     
-                        {% comment %} <div class="update-cart-button col-6 text-end mt-30"> <a href="#" class="btn btn--lg btn--border_1">به روز رسانی سبد خرید</a> 
-                        </div>                                      {% endcomment %}
+                        <div class="update-cart-button col-6 text-end mt-30"> 
+                            <a href={% url 'products:product_categories' %}  class="btn btn--lg btn--black">ادامه خرید <i class="icon-arrow-right"></i>&nbsp;</a>           
+                        </div>                               
                     </div>                                 
                     <div class="cart-buttom-area"> 
                         <div class="row"> 

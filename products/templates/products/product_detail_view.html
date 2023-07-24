@@ -212,7 +212,7 @@
 
 
                         <div class="quickview-action-wrap mt-30">
-                            <form action={% url 'cart:add_to_cart' product_detail.id%} method='post'>
+                            <form action={% url 'cart:add_to_cart' product_detail.id %} method='post'>
                                 {% csrf_token %}
                                 <div class="quickview-cart-box">
                                     {% if product_detail.id|stringformat:"s" not in request.session.cart.keys %}
