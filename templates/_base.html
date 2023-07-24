@@ -47,14 +47,23 @@
                                     <div class="header-right-items d-none d-md-block"> <a href="{% url 'account:wishlist_view' %}" class="header-cart"> <i class="icon-heart"></i> <span class="item-counter">{{ user.wished_product.count }}</span> </a>
                                     </div>
                                 {% endif %}
-                                <div class="header-right-items"> <a href="#miniCart" class=" header-cart minicart-btn toolbar-btn header-icon"> <i class="icon-bag2"></i> <span class="item-counter">{{cart.lenght}}</span> </a>
-                                </div>
+                                {% if cart.is_item %}
+                                    <div class="header-right-items"> <a href="#miniCart" class=" header-cart minicart-btn toolbar-btn header-icon"> <i class="icon-bag2"></i> <span class="item-counter">{{cart.lenght}}</span> </a>
+                                    </div>
+                                {% endif %}
                                 <div class="header-right-items d-block d-md-none"> <a href="javascript:void(0)" class="search-icon" id="search-overlay-trigger"> <i class="icon-magnifier"></i> </a>
                                 </div>
                                 <div class="header-right-items"> <a href="#" class="mobile-navigation-icon" id="mobile-menu-trigger"> <i class="icon-menu"></i> </a>
                                 </div>
                             </div>
                         </div>
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     </div>
                 </div>
             </header>
@@ -160,7 +169,7 @@
 {#                    </div>#}
 {#                </div>#}
                 {% block content %}
-                {% endblock %}
+                {% endblock content %}
 {#                <div class="product-wrapper section-space--ptb_120">#}
 {#                    <div class="container">#}
 {#                        <div class="row">#}
@@ -876,7 +885,7 @@
                 <div class="minicart-content">
                     <ul class="minicart-list">
                         {% for item in cart %}
-                            <li class="minicart-product"> <a class="product-item_remove" href="javascript:void(0)"><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid" src= {% static "images/product/small/cart-01.webp" %} alt="Product Image" /> </a>
+                            <li class="minicart-product"> <a class="product-item_remove" href={% url 'cart:remove_from_the_cart' item.product_obj.id %}><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid" src= {% static "images/product/small/cart-01.webp" %} alt="Product Image" /> </a>
                                 <div class="product-item_content"> <a class="product-item_title" href={% url 'products:product_detail' item.product_obj.slug  %}>{{item.product_obj.name}}</a>
                                     <label>تعداد : <span>{{item.quantity}}</span>
                                     </label>
@@ -907,7 +916,7 @@
                 </div>
                 <div class="minicart-btn_area"> <a href="{% url "cart:cart_detail_view" %}" class="btn btn--full btn--border_1">مشاهده سبد خرید</a>
                 </div>
-                <div class="minicart-btn_area"> <a href="checkout.html" class="btn btn--full btn--black">ثبت نهایی</a>
+                <div class="minicart-btn_area"> <a href={% url 'orders:checkout' %} class="btn btn--full btn--black">ثبت نهایی</a>
                 </div>
             </div>
             <div class="global-overlay"></div>

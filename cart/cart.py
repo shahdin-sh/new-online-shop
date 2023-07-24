@@ -68,6 +68,9 @@ class Cart:
     def clear_the_cart(self):
         del self.session['cart']
         self.save()
+    
+    def is_item(self):
+        return False if self.cart == {} else True                                                                                      
 
     def get_total_price(self):
         return sum(item['quantity'] * item['product_obj'].price for item in self.cart.values())

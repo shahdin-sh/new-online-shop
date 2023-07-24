@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+# from django.contrib.auth.decorators import login_required
+# from django.views.decorators.http import require_POST
 from .cart import Cart
+from .decorators import item_in_cart_required
 from .forms import AddToCartForm
 from products.models import Product
 
 
+@item_in_cart_required
 def cart_detail_view(request):
     cart = Cart(request)
-    print(request.session['cart'])
     for item in cart:
         item['update_quantity_of_the_current_form'] = AddToCartForm(
             product_stock = item['product_obj'].quantity,
@@ -36,6 +37,7 @@ def add_product_to_the_cart(request, product_id):
         quantity = cleaned_data['quantity']
         replace_current_quantity = cleaned_data['inplace']
         cart.add_to_cart(product, quantity, replace_current_quantity)
+        print(request.session['cart'])
     return redirect('cart:cart_detail_view')
 
 
@@ -50,5 +52,5 @@ def remove_product_from_the_cart(request, product_id):
 def clear_the_cart(request):
     cart = Cart(request)
     cart.clean_the_cart
-    previous_page = request.META.get('HTTP_REFERER')
-    return redirect(previous_page)
+    # redirect the user to the previous page.
+    return redirect(request.META.get('HTTP_REFERER'))
