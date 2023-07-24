@@ -40,7 +40,6 @@ def product_detail_view(request, product_slug):
         'comments': comments,
         'comment_form': comment_form,
         'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity),
-        'cart': Cart(request)
     }
     return render(request, 'products/product_detail_view.html', context)
 

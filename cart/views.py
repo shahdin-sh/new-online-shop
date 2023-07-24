@@ -46,6 +46,8 @@ def remove_product_from_the_cart(request, product_id):
     products = Product.is_active_manager.filter(is_featured=False)
     product = get_object_or_404(products, id=product_id)
     cart.remove_from_the_cart(product)
+    # if len(cart()) == 1:
+    #     return redirect(request.META.get('HTTP_REFERER'))
     return redirect('cart:cart_detail_view')
 
 

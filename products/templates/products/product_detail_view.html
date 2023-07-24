@@ -215,18 +215,24 @@
                             <form action={% url 'cart:add_to_cart' product_detail.id%} method='post'>
                                 {% csrf_token %}
                                 <div class="quickview-cart-box">
-                                    <div class="quickview-quality">
-                                        {% if cart %}
+                                    {% if product_detail.id|stringformat:"s" not in request.session.cart.keys %}
+                                        <div class="quickview-quality">
                                             <div class="cart-plus-minus">
                                                 <input class="cart-plus-minus-box" name='quantity' type='number' value=0 max={{product_detail.quantity}} min=0 oninput="updateMinMaxValues()"  onclick="this.disabled=true;this.form.submit();">  
                                             </div>
-                                        {% endif %}
-                                    </div>
-
-                                    <div class="quickview-button">
-                                        <div class="quickview-cart button">
-                                            <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</button>
                                         </div>
+                                    {% endif %}
+                                    <div class="quickview-button">
+                                        {% if product_detail.id|stringformat:"s"  not in request.session.cart %}
+                                            <div class="quickview-cart button">
+                                                <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</button>
+                                            </div>
+                                        {% else %}
+                                            <div class="quickview-cart button">
+                                                <button type='button'class="btn--lg btn--black font-weight--reguler text-white">این محصول به<a href={% url 'cart:cart_detail_view' %}>سبد خرید</a> شما اضافه شده است</button>
+                                            </div>
+
+                                        {% endif%}
                                         <div class="quickview-wishlist button">
                                             {% if user not in product_detail.user_wished_product.all %}
                                                 <a title="Add to wishlist" href="{% url 'products:add_to_wishlist' product_detail.slug %}"  onclick="document.getElementById('wishlist_form').submit()">
