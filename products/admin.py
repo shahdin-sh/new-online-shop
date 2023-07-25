@@ -20,7 +20,7 @@ class CommentsInline(admin.TabularInline):
 
 class ProductsInline(admin.TabularInline):
     model = Product
-    readonly_fields =  ['name', 'quantity', 'is_active', 'is_featured']
+    readonly_fields =  ['name', 'quantity', 'product_price', 'is_active', 'is_featured']
     extra = 1
     classes = ('collapse', )
     can_delete = False

@@ -3,13 +3,14 @@ from accounts.models import CustomUserModel
 
 
 class Order(models.Model):
-    customer = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
-    name = models.CharField(max_length=10)
+    customer = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=10)
     last_name = models.CharField(max_length=10)
     company = models.CharField(max_length=50, blank=True)
     country = models.CharField(max_length=20)
     address = models.CharField(max_length=200)
     town = models.CharField(max_length=20)
+    area = models.CharField(max_length=20, blank=True)
     zip_code = models.PositiveIntegerField()
     phone_number = models.CharField(max_length=15)
     email = models.EmailField(max_length=200)
@@ -33,3 +34,6 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f'{self.order} items'
+    
+    def product_price(self, obj):
+        return f"{obj.price:,} T"

@@ -47,10 +47,8 @@
                                     <div class="header-right-items d-none d-md-block"> <a href="{% url 'account:wishlist_view' %}" class="header-cart"> <i class="icon-heart"></i> <span class="item-counter">{{ user.wished_product.count }}</span> </a>
                                     </div>
                                 {% endif %}
-                                {% if cart.is_item %}
                                     <div class="header-right-items"> <a href="#miniCart" class=" header-cart minicart-btn toolbar-btn header-icon"> <i class="icon-bag2"></i> <span class="item-counter">{{cart.lenght}}</span> </a>
                                     </div>
-                                {% endif %}
                                 <div class="header-right-items d-block d-md-none"> <a href="javascript:void(0)" class="search-icon" id="search-overlay-trigger"> <i class="icon-magnifier"></i> </a>
                                 </div>
                                 <div class="header-right-items"> <a href="#" class="mobile-navigation-icon" id="mobile-menu-trigger"> <i class="icon-menu"></i> </a>
@@ -894,30 +892,17 @@
                                 </div>
                             </li>
                         {% endfor %}
-                        {% comment %} <li class="minicart-product"> <a class="product-item_remove" href="javascript:void(0)"><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid" src= {% static "images/product/small/cart-02.webp" %} alt="Product Image" /> </a>
-                            <div class="product-item_content"> <a class="product-item_title" href="product-details.html">عنوان محصول</a>
-                                <label>تعداد : <span>1</span>
-                                </label>
-                                <label class="product-item_quantity">قیمت: <span> 19.000 تومان</span>
-                                </label>
-                            </div>
-                        </li>
-                        <li class="minicart-product"> <a class="product-item_remove" href="javascript:void(0)"><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid"  src= {% static "images/product/small/cart-03.webp" %} alt="Product Image"/> </a>
-                            <div class="product-item_content"> <a class="product-item_title" href="product-details.html">عنوان محصول</a>
-                                <label>تعداد : <span>1</span>
-                                </label>
-                                <label class="product-item_quantity">قیمت: <span> 19.000 تومان</span>
-                                </label>
-                            </div>
-                        </li> {% endcomment %}
                     </ul>
                 </div>
-            <div class="minicart-item_total"> <span class="font-weight--reguler">مجموع قیمت:</span> <span class="ammount font-weight--reguler">{{ cart.get_total_price|intcomma }} تومان</span>
-                </div>
-                <div class="minicart-btn_area"> <a href="{% url "cart:cart_detail_view" %}" class="btn btn--full btn--border_1">مشاهده سبد خرید</a>
-                </div>
-                <div class="minicart-btn_area"> <a href={% url 'orders:checkout' %} class="btn btn--full btn--black">ثبت نهایی</a>
-                </div>
+                {% if cart.is_item %}
+                <div class="minicart-item_total"> <span class="font-weight--reguler">سبد خرید:</span> <span class="ammount font-weight--reguler">{{ cart.lenght }} محصول </span></div>
+                    <div class="minicart-item_total"> <span class="font-weight--reguler">مجموع قیمت:</span> <span class="ammount font-weight--reguler">{{ cart.get_total_price|intcomma }} تومان</span></div>
+                    <div class="minicart-btn_area"> <a href="{% url "cart:cart_detail_view" %}" class="btn btn--full btn--border_1">مشاهده سبد خرید</a></div>
+                    <div class="minicart-btn_area"> <a href={% url 'orders:checkout' %} class="btn btn--full btn--black">ثبت نهایی</a></div>
+                {% else %}
+                <div class="minicart-item_total"> <span class="font-weight--reguler">سبد خرید:</span> <span class="ammount font-weight--reguler">{{ cart.lenght }} محصول </span></div>
+                <div class="minicart-btn_area"> <a href="{% url "products:product_categories" %}" class="btn btn--full btn--border_1">اضافه کردن محصول به سبد خرید</a></div>
+                {% endif %}
             </div>
             <div class="global-overlay"></div>
         </div>
