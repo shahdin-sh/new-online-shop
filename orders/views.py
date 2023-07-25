@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, HttpResponse
 from .forms import OrderForm
 from .models import OrderItem
-from accounts.models import CustomUserModel
+from cart.decorators import item_in_cart_required
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 from django.contrib import messages
 from django.db import IntegrityError
 
 
+@item_in_cart_required
 def checkout(request):
     context = {
         'order_form': OrderForm()
