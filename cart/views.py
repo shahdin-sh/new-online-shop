@@ -10,6 +10,7 @@ from products.models import Product
 @item_in_cart_required
 def cart_detail_view(request):
     cart = Cart(request)
+
     for item in cart:
         item['update_quantity_of_the_current_form'] = AddToCartForm(
             product_stock = item['product_obj'].quantity,
@@ -52,5 +53,5 @@ def remove_product_from_the_cart(request, product_id):
 def clear_the_cart(request):
     cart = Cart(request)
     cart.clear_the_cart()
-    # redirect the user to the previous page.
+    #redirect the user to the previous page.
     return redirect(request.META.get('HTTP_REFERER'))

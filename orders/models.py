@@ -3,7 +3,7 @@ from accounts.models import CustomUserModel
 
 
 class Order(models.Model):
-    customer = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE)
+    customer = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='order')
     first_name = models.CharField(max_length=10)
     last_name = models.CharField(max_length=10)
     company = models.CharField(max_length=50, blank=True)

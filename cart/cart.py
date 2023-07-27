@@ -49,7 +49,6 @@ class Cart:
             self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] = quantity
-
         # else:
         #     print('else')
         #     self.cart[product_id]['quantity'] += quantity

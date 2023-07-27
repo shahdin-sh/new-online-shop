@@ -19,6 +19,6 @@ def item_in_cart_required(view_func, redirect_url='products:product_categories')
         # Call the is_item method to check if the cart has any items
         if cart.is_item():
             return view_func(request, *args, **kwargs)
-        messages.info(request, "There is no item in the cart")
+        # messages.info(request, "There is no item in the cart")
         return redirect(redirect_url)  
     return wrapper
