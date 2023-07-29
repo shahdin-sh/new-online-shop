@@ -41,6 +41,7 @@ def order_update(request):
                 order_obj = order_form.save(commit=False)
                 order_obj.customer = request.user
                 order_obj.save()
+                messages.success(request, 'your informations updated successfully')
                 return redirect(request.META.get('HTTP_REFERER'))
         else:
             order_form - OrderForm()
@@ -59,10 +60,10 @@ def order_item_create(request):
                 price = product.price,
             )
             cart.clear_the_cart()
-            messages.success(request, 'your order submited successfully')
+            messages.success(request, 'your order items submited successfully')
             return redirect(request.META.get('HTTP_REFERER'))
     else:
-        return HttpResponse('please fill out your order information form first.')
+        return HttpResponse('please fill out your order information form first')
     
         
         

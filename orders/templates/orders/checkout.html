@@ -171,34 +171,23 @@
                                                             </li>                                                             
                                                         </ul>                                                         
                                                     </div>  
-                                                    {% for item in cart %}
-                                                        {% if cart  %}  
-                                                            <form method='post' action={% url 'cart:add_to_cart' item.product_obj.id %}>          
-                                                                {% csrf_token %}                                       
-                                                                <div class="your-order-middle"> 
-                                                                    <ul>
-                                                                        <li>
-                                                                        <span>{{item.product_obj.name}}</span>
-                                                                            <input name='quantity' value={{item.quantity}} type='number'>
-                                                                            {{item.update_quantity_of_the_current_form.inplace}}
-                                                                            <button type='submit'>Update quantity</button>
-                                                                            <span>{{item.product_obj.price|intcomma}} تومان </span>
-                                                                        </li>
-                                                                        <span> prdouct_stock : {{item.current_product_stock}}</span>                                                                                                                                        
-                                                                    </ul>
-                                                                    <ul>
-                                                                        <li>
-                                                                            <span>Total Price : {{item.total_price|intcomma}} </span>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}>Remove</a>
-                                                                </div>
-                                                            </form>
-                                                        {% else %}
-                                                            <span>
-                                                                Your cart is empty
-                                                            </span>
-                                                        {% endif %}
+                                                    {% for item in cart %}                                     
+                                                        <div class="your-order-middle"> 
+                                                            <ul>
+                                                                <li>
+                                                                <span>{{item.product_obj.name}}</span>
+                                                                    <input name='quantity' value={{item.quantity}} type='text'>
+                                                                    <span>{{item.product_obj.price|intcomma}} تومان </span>
+                                                                </li>
+                                                                <span> prdouct_stock : {{item.current_product_stock}}</span>                                                                                                                                        
+                                                            </ul>
+                                                            <ul>
+                                                                <li>
+                                                                    <span>Total Price : {{item.total_price|intcomma}} </span>
+                                                                </li>
+                                                            </ul>
+                                                            <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}>Remove</a>
+                                                        </div>
                                                     {% endfor %} 
                                                     <div class="your-order-info order-subtotal"> 
                                                         <ul> 

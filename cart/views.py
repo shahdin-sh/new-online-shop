@@ -1,6 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
-# from django.contrib.auth.decorators import login_required
-# from django.views.decorators.http import require_POST
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from .cart import Cart
 from .decorators import item_in_cart_required
 from .forms import AddToCartForm
