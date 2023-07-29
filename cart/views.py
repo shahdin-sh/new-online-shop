@@ -33,7 +33,7 @@ def add_product_to_the_cart(request, product_id):
     if cart_form.is_valid():
         # getting quantity from input that fill by the user
         cleaned_data = cart_form.cleaned_data
-        quantity = cleaned_data['quantity']
+        quantity = cleaned_data.get('quantity', 1)
         replace_current_quantity = cleaned_data['inplace']
         cart.add_to_cart(product, quantity, replace_current_quantity)
         print(request.session['cart'])

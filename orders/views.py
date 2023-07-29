@@ -60,7 +60,7 @@ def order_item_create(request):
                 price = product.price,
             )
             cart.clear_the_cart()
-            messages.success(request, 'your order items submited successfully')
+            messages.success(request, 'developing purchase section has not been completed yet')
             return redirect(request.META.get('HTTP_REFERER'))
     else:
         return HttpResponse('please fill out your order information form first')
