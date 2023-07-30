@@ -9,6 +9,7 @@ from django.db import IntegrityError
 
 
 @item_in_cart_required
+@login_required
 def checkout(request):
     context = {
         'order_form': OrderForm(),
@@ -18,33 +19,27 @@ def checkout(request):
 # we create order an order item with this view.
 @login_required
 def order_create(request):
+    user_order = request.user.order
     if request.method == 'POST':
         order_form = OrderForm(request.POST)
         if order_form.is_valid():
+            # if user already had order delete the previous order and create another
+            if user_order:
+                Order.objects.filter(customer=request.user).delete()
             order_obj = order_form.save(commit=False)
             order_obj.customer = request.user
             order_obj.save()
+            request.user.first_name = order_obj.first_name
+            request.user.last_name = order_obj.last_name
+            request.user.save()
+        if not user_order:
+            messages.success(request, 'your informations added successfully')
+        messages.success(request, 'your informations updated successfully')
     else:
         order_form = OrderForm()
     # redirect user to the current page
     return redirect(request.META.get('HTTP_REFERER'))
    
-
-# this function only update the values of order form and order item will be created from upper view.
-@login_required
-def order_update(request):
-    if request.user.order:
-        if request.method == 'POST':
-            order_form = OrderForm(request.POST)
-            if order_form.is_valid():
-                Order.objects.filter(customer=request.user).delete()
-                order_obj = order_form.save(commit=False)
-                order_obj.customer = request.user
-                order_obj.save()
-                messages.success(request, 'your informations updated successfully')
-                return redirect(request.META.get('HTTP_REFERER'))
-        else:
-            order_form - OrderForm()
 
 @login_required
 def order_item_create(request):

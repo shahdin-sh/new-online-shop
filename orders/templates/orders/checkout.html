@@ -52,7 +52,7 @@
                         <div class="checkout-wrap"> 
                             <div class="row"> 
                                 <div class="col-lg-7">
-                                        <form action="{% if user.order %}{% url 'orders:order_update' %}{% else %}{% url 'orders:order_create' %}{% endif %}" method='post'> 
+                                        <form action={% url 'orders:order_create'%} method='post'> 
                                             {% csrf_token %}
                                             <div class="billing-info-wrap mr-100"> 
                                                 <h6 class="mb-20">مشخصات شما</h6> 
@@ -61,42 +61,42 @@
                                                         <div class="billing-info mb-25"> 
                                                             <label>نام&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='first_name' value={{user.order.first_name|safe}}> 
+                                                            <input type="text" name='first_name' value={{user.order.first_name|safe}} required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-6 col-md-6"> 
                                                         <div class="billing-info mb-25"> 
                                                             <label>نام خانوادگی&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='last_name' value={{user.order.last_name|safe}}> 
+                                                            <input type="text" name='last_name' value={{user.order.last_name|safe}} required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-12"> 
                                                         <div class="billing-info mb-25"> 
                                                             <label>نام شرکت (اختیاری)&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='company' value={{user.order.company|safe}}  > 
+                                                            <input type="text" name='company' value={{user.order.company|safe}}> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-12"> 
                                                         <div class="billing-select mb-25"> 
                                                             <label>
-                                                                <span class="required" title="required"><font color="#000000">کشور&nbsp;</font>*</span>
+                                                                <span class="required" title="required" required><font color="#000000">کشور&nbsp;</font>*</span>
                                                             </label>                                                     
-                                                            <select class="select-active" name='country' value={{user.order.country|safe}}>  
-                                                                <option>ایران</option>                                                         
-                                                                <option>عراق</option>                                                         
-                                                                <option>بحرین</option>                                                         
-                                                                <option>امارات</option>                                                         
-                                                                <option>ترکیه</option>                                                         
-                                                            </select>                                                     
-                                                        </div>                                             
+                                                            <select class="select-active" name='country'>
+                                                                <option value="iran" {% if user.order.country == 'iran' %}selected{% endif %}>ایران</option>
+                                                                <option value="iraq" {% if user.order.country == 'iraq' %}selected{% endif %}>عراق</option>
+                                                                <option value="bahrain" {% if user.order.country == 'bahrain' %}selected{% endif %}>بحرین</option>
+                                                                <option value="uae" {% if user.order.country == 'uae' %}selected{% endif %}>امارات</option>
+                                                                <option value="turkey" {% if user.order.country == 'turkey' %}selected{% endif %}>ترکیه</option>
+                                                            </select>                                                   
+                                                        </div>                                            
                                                     </div>                                             
                                                     <div class="col-lg-12"> 
                                                         <div class="billing-info mb-25"> 
                                                             <label>آدرس&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input class="billing-address" placeholder="الهیه،خیابان فرشته، پلاک 124 واحد 1" type="text" name='address' value="{{user.order.address|safe}}"> 
+                                                            <input class="billing-address" placeholder="الهیه،خیابان فرشته، پلاک 124 واحد 1" type="text" name='address' value="{{user.order.address|safe}}" required> 
                                                             {% comment %} <input placeholder="پلاک و شماره واحد" type="text" name='address'/>  {% endcomment %}
                                                         </div>                                                 
                                                     </div>                                             
@@ -104,19 +104,19 @@
                                                         <div class="billing-info mb-25"> 
                                                             <label>شهر&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='town' value={{user.order.town|safe}}> 
+                                                            <input type="text" name='town' value={{user.order.town|safe}} required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-12"> 
                                                         <div class="billing-select mb-25"> 
                                                             <label>منطقه&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <select class="select-active" name='area' value={{user.order.area|safe}}> 
-                                                                <option>منطقه یک</option>                                                         
-                                                                <option>منطقه دو</option>                                                         
-                                                                <option>منطقه سه</option>                                                         
-                                                                <option>منطقه چهار</option>                                                         
-                                                                <option>منطقه پنج</option>                                                         
+                                                            <select class="select-active" name='area' required> 
+                                                                <option value="area 1" {% if user.order.area == "area 1" %}selected{% endif %}>منطقه یک</option>                                                         
+                                                                <option value="area_2" {% if user.order.area == "area_2" %}selected{% endif %}>منطقه دو</option>                                                         
+                                                                <option value="area_3" {% if user.order.area == "area_3" %}selected{% endif %}>منطقه سه</option>                                                         
+                                                                <option value="area_4" {% if user.order.area == "area_4" %}selected{% endif %}>منطقه چهار</option>                                                         
+                                                                <option value="area_5" {% if user.order.area == "area_5" %}selected{% endif %}>منطقه پنج</option>                                                         
                                                             </select>                                                     
                                                         </div>                                                 
                                                     </div>                                             
@@ -124,21 +124,21 @@
                                                         <div class="billing-info mb-25"> 
                                                             <label>کد پستی&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='zip_code' value={{user.order.zip_code|safe}}> 
+                                                            <input type="text" name='zip_code' value={{user.order.zip_code|safe}} required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-12 col-md-12"> 
                                                         <div class="billing-info mb-25"> 
                                                             <label>تلفن&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='phone_number' value={{user.order.phone_number|safe}}> 
+                                                            <input type="text" name='phone_number' value={{user.order.phone_number|safe}} required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-12 col-md-12"> 
                                                         <div class="billing-info mb-25"> 
                                                             <label>ایمیل&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='email' value={{user.order.email|safe}}> 
+                                                            <input type="text" name='email' value={{user.order.email|safe}} required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                 </div>                                         
