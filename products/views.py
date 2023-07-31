@@ -33,24 +33,11 @@ def products_or_category_detail(request, category_slug):
 def product_detail_view(request, product_slug):
     products = Product.is_active_manager.filter(is_featured=False)
     product_detail = get_object_or_404(products, slug=product_slug)
-    comments = product_detail.comments.filter(parent=None).order_by('-datetime_created')
     comment_form = CommentForm(request.POST)
-    context = {
-        'product_detail': product_detail,
-        'comments': comments,
-        'comment_form': comment_form,
-        'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity),
-    }
-    return render(request, 'products/product_detail_view.html', context)
-
-
-@require_POST
-def user_comment_section(request, product_slug):
-    products = Product.is_active_manager.filter(is_featured=False)
-    product_detail = get_object_or_404(products, slug=product_slug)
+    # comment section
     if request.method == 'POST':
-        comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid:
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
             # reply section
             parent_obj = None
             # get parent comment id from hidden input
@@ -67,17 +54,30 @@ def user_comment_section(request, product_slug):
                     reply_comment = comment_form.save(commit=False)
                     #assign parent obj to reply comment
                     reply_comment.parent = parent_obj
-            # normal comment section
+            # comment section
             new_comment = comment_form.save(commit=False)
             new_comment.product = product_detail
-            new_comment.author = request.user
+            # check if user is authenticated, give author to DB and if it is not just give name and email
+            if request.user.is_authenticated:
+                new_comment.author = request.user
+            else:
+                new_comment.session_token = request.session.session_key
             # getting rating from stars label
-            rating = request.POST.get('rating')
-            new_comment.rating = rating
+            # rating = request.POST.get('rating')
+            # new_comment.rating = rating
+            # The clean_email method will be called during the form validation, and the validation error will be raised if needed.
             new_comment.save()
-        return redirect(reverse('products:product_detail', args=[product_slug]))
+            return redirect(reverse('products:product_detail', args=[product_slug]))
     else:
         comment_form = CommentForm()
+    comments = product_detail.comments.filter(parent=None).order_by('-datetime_created')
+    context = {
+        'product_detail': product_detail,
+        'comments': comments,
+        'comment_form': comment_form,
+        'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity),
+    }
+    return render(request, 'products/product_detail_view.html', context)
 
 
 @login_required

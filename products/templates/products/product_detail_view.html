@@ -373,136 +373,85 @@
                             </div>
                         </div>
                         <!-- End Single Content -->
-                        <!-- Start Single Content -->
+                         <!-- Start Single Content -->
                         <div class="product_tab_content tab-pane" id="reviews" role="tabpanel">
-                            {% comment %} <div class="rating_wrap mb-30">
-                                <h4 class="rating-title-2">اولین نفری باشید که برای "عنوان محصول" دیدگاهی ارسال می کنید</h4>
-                                <p>امتیاز شما</p>
-                                <div class="rating_list">
-                                    <div class="product-rating d-flex">
-                                        <i class="yellow icon_star"></i>
-                                        <i class="yellow icon_star"></i>
-                                        <i class="yellow icon_star"></i>
-                                        <i class="yellow icon_star"></i>
-                                        <i class="yellow icon_star"></i>
-                                    </div>
-                                </div>
-                            </div> {% endcomment %}
-                            {% for comment in comments|only_active_comments %}
-                                <div>
-                                    <p>{{comment.author}} | {{comment.datetime_created}}</p>
-                                    <p>{{comment.content}}</p>
-                                    {% if comment.rating %}
-                                        <p>your rate to this comment : {{ comment.rating }} / 5 <p>
-                                    {% endif %}
-
-                                    {% if comment.children %}
-                                        <h4>Replies</h4>
-                                        {% for reply in comment.replies.all%}
-                                            <p>{{reply.author}} | {{reply.datetime_created}}</p>
-                                            <p>{{reply.content}}</p>
-                                        {% endfor %}
-                                    {% endif %}
-                                    {% if user.is_authenticated%}
-                                        <h5>Add Reply</h5>
-                                        <form action={% url 'products:user_comment_section' product_detail.slug %} method="post">
-                                            {% csrf_token %}
-                                            {{comment_form}}
-                                            <!-- Hidden input for parent comment.id -->
-                                            <input type='hidden' name="parent_id" value="{{ comment.id }}">
-                                            <input class="btn btn-primary" type="submit" value="Replay">
-                                        </form>
-                                    {% else %}
-                                        <h4>developing reply system for guest</h4>
-                                    {% endif %}
-                                </div>
-                                <br>
-                            {% empty %}
-                                <p>be the first person who gives us his opinion on this product.</p>
-                            {% endfor %}
-                            {% comment %} <br>
-                                <p>{{guest_comment_data.content }}</p>
-                                <p>By: {{guest_comment_data.name }}</p>
-                                <p>Email: {{guest_comment_data.email }}</p>
-                            <br> {% endcomment %}
-                            {% if user.is_authenticated %}
-                                <div class="row">
-                                    <div class="col-10">
-                                        <div class="comment-box ml-2">
-                                            <h4>Add a comment</h4>
-                                            <div class="comment-area">
-                                                <form action={% url 'products:user_comment_section' product_detail.slug %}  method='post'>
-                                                    {% csrf_token %}
-                                                    {{comment_form}}
-                                                    <div class="container">
-                                                        <div class="starrating risingstar d-flex justify-content-center flex-row-reverse">
-                                                            <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 star">5</label>
-                                                            <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 star">4</label>
-                                                            <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 star">3</label>
-                                                            <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 star">2</label>
-                                                            <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star">1</label>
-                                                        </div>
-                                                    </div>	
-                                                    <br>
-                                                    <button type='submit' "btn btn-primary">Send</button>
-                                                </form>
-                                            </div>
+                            <div class="rating_wrap mb-30">
+                                {% if comments %}
+                                    <h4>نظرات</h4>
+                                    <br>
+                                    {% for comment in comments %}
+                                        <p>------------------------------------------------------------------------------------------------------------------------</p>
+                                        <div class='comment_section'>
+                                            <h6>نظر شماره  {{comment.id}}</h6>
+                                            <br>
+                                            <p>نام: {% if comment.name %}{{comment.name}}{% else %}{{comment.author}}{% endif %}</p>
+                                            <p>متن نظر: {{comment.content}}</p>
+                                            <p>تاریخ انتشار نظر: {{comment.datetime_created}}</p>
                                         </div>
-                                    </div>
-                                </div>
-                            {% else %}
-                                {% comment %} <div class="row">
-                                    <div class="col-10">
-                                        <div class="comment-box ml-2">
-                                            <h4>Add a comment</h4>
-                                            <div class="comment-area">
-                                                <form action={% url 'products:guest_comment_system' product_detail.slug %}  method='post'>
-                                                    {% csrf_token %}
-                                                    {{guest_comment_form}}
-                                                    <div class="container">
-                                                        <div class="starrating risingstar d-flex justify-content-center flex-row-reverse">
-                                                            <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 star">5</label>
-                                                            <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 star">4</label>
-                                                            <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 star">3</label>
-                                                            <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 star">2</label>
-                                                            <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star">1</label>
-                                                        </div>
-                                                    </div>	
-                                                    <br>
-                                                    <button type='submit' "btn btn-primary">Send</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> {% endcomment %}
-                                <p>has not developed yet</p>
-                            {% endif %}
-                            {% comment %} <div class="comments-area comments-reply-area">
+                                        {% if comment.replies.all %}
+                                            <br>
+                                            <h6>بازخورد ها </h6>
+                                            {% for reply in comment.replies.all %}
+                                                <br>
+                                                <div class='reply_section'>
+                                                    <p>نام: {% if reply.name %}{{reply.name}}{% else %}{{reply.author}}{% endif %}</p>
+                                                    <p>متن بازخورد: {{reply.content}}</p>
+                                                    <p>تاریخ انتشار بازخورد: {{reply.datetime_created}}</p>
+                                                </div>
+                                                <br>
+                                            {% endfor %}
+                                        {% endif %}
+                                         <!-- only authenticated useres are allow to fill reply section. -->
+                                        {% if user.is_authenticated %}
+                                            <br>
+                                            <form action={% url 'products:product_detail' product_detail.slug  %} method='post'>
+                                                {% csrf_token %}
+                                                <!-- Hidden input for parent comment.id -->
+                                                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                                <p class="comment-form-comment">
+                                                    <label>بازخورد شما</label>
+                                                    <textarea class="comment-notes" name='content'></textarea>
+                                                    <input class="btn btn-primary" type="submit" value="ارسال">
+                                                </p>
+                                            </form>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <br>
+                                {% else %}
+                                    <h4 class="rating-title-2">اولین نفری باشید که برای "{{product_detail.name}}" دیدگاهی ارسال می کنید</h4>
+                                {% endif %}
+                            </div>
+                            <br>
+                            <div class="comments-area comments-reply-area">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <form action="#" class="comment-form-area">
+                                        <form action={% url 'products:product_detail' product_detail.slug %} class="comment-form-area", method='post'>
+                                            {% csrf_token %}
                                             <p class="comment-form-comment">
-                                                <label>نظر شما *</label>
-                                                <textarea class="comment-notes" required="required"></textarea>
-                                            </p>
-                                            <div class="comment-input">
-                                                <p class="comment-form-author">
-                                                    <label>نام <span class="required">*</span></label>
-                                                    <input type="text" required="required" name="Name">
-                                                </p>
-                                                <p class="comment-form-email">
-                                                    <label>ایمیل <span class="required">*</span></label>
-                                                    <input type="text" required="required" name="email">
-                                                </p>
-                                            </div>
-
+                                                <label>نظر شما برای محصول {{product_detail.name}}</label>
+                                                <textarea class="comment-notes" required="required" name='content'></textarea>
+                                            </p> 
+                                            <!-- only none_authenticated useres must fill name and email field. -->
+                                            {% if not user.is_authenticated %}
+                                                <div class="comment-input">
+                                                    <p class="comment-form-author">
+                                                        <label>نام <span class="required">*</span></label>
+                                                        <input type="text" name="name">
+                                                    </p>
+                                                    <p class="comment-form-email">
+                                                        <label>ایمیل <span class="required">*</span></label>
+                                                        <input type="text" name="email">
+                                                        {{comment_form.email.errors}}
+                                                    </p>
+                                                </div
+                                            {% endif %}
                                             <div class="comment-form-submit">
                                                 <input type="submit" value="ارسال" class="comment-submit">
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-                            </div> {% endcomment %}
+                            </div>
                         </div>
                         <!-- End Single Content -->
                     </div>

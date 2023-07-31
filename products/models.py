@@ -2,10 +2,11 @@ from django.db import models
 from django.shortcuts import reverse
 from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
-from django.core.validators import MaxValueValidator, MinValueValidator 
+from django.core.exceptions import ValidationError
+from accounts.models import CustomUserModel
 
 
-
+# managers
 class IsFeatureManager(models.Manager):
     
     def get_queryset(self):
@@ -16,6 +17,11 @@ class IsActiveManager(models.Manager):
     
     def get_queryset(self):
         return super(IsActiveManager, self).get_queryset().filter(is_active=True)
+
+
+class IsOrderManager(models.Manager):
+    def get_queryset(self):
+        return super(IsOrderManager, self).get_queryset().order_by('-datetime_created')
     
 
 class Category(models.Model):
@@ -97,8 +103,11 @@ class Comment(models.Model):
     is_active = models.BooleanField(default=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="comments")
     # author here is just users who signed in before! (authenticated users)
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comments', blank=True, null=True)
+    name = models.CharField(max_length=100, null=True, blank=True)
+    email = models.CharField(max_length=200, blank=True, null=True)
     parent = models.ForeignKey('self' , null=True , blank=True , on_delete=models.CASCADE , related_name='replies')
+    session_token = models.CharField(max_length=32, null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
     rating = models.PositiveIntegerField(null=True, blank=True)
@@ -107,6 +116,7 @@ class Comment(models.Model):
     # Custom Managers
     objects = models.Manager() # our default django manager
     is_active_manager = IsActiveManager()
+    is_order_manager = IsOrderManager
 
     def __str__(self):
         return self.content
@@ -120,4 +130,3 @@ class Comment(models.Model):
         if self.parent is None:
             return True
         return False
-    

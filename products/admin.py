@@ -5,7 +5,7 @@ from .forms import SizeAndColorForm
 # Start Inlines
 class CommentsInline(admin.TabularInline):
     model = Comment
-    readonly_fields = ['content','author', 'parent', 'rating']
+    readonly_fields = ['content','author', 'email', 'name', 'parent', 'rating']
     extra = 1
     classes = ('collapse',)
     can_delete = False
@@ -30,7 +30,30 @@ class ProductsInline(admin.TabularInline):
         return f"{obj.price:,} T"
 
 
+class RepliesInline(admin.TabularInline):
+    model = Comment
+    verbose_name = 'Replies'
+    readonly_fields =  ['content','author', 'email', 'name', 'rating']
+    extra = 1
+    classes = ('collapse', )
+    can_delete = False
+    show_change_link = True
+
 # End Inlines
+
+
+# start registering models
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['category_or_subcategory', 'parent', 'slug']
+    ordering = ['is_featured']
+    prepopulated_fields = {'slug': ('name',)}
+    inlines = [
+        ProductsInline,
+    ]
+
+    def category_or_subcategory(self, obj):
+        # by returning the object, it displays __str__ method of our obj.
+        return obj
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -46,27 +69,27 @@ class ProductAdmin(admin.ModelAdmin):
         return f"{obj.price:,} T"
 
 
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['category_or_subcategory', 'parent', 'slug']
-    ordering = ['is_featured']
-    prepopulated_fields = {'slug': ('name',)}
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['content','author', 'name', 'email', 'product', 'datetime_created', 'is_comment', 'rating', 'session_token']
+    ordering = ['-datetime_created']
     inlines = [
-        ProductsInline,
+        RepliesInline
     ]
 
-    def category_or_subcategory(self, obj):
-        # by returning the object, it displays __str__ method of our obj.
-        return obj
+    def get_queryset(self, request):
+        # Get the original queryset from the parent class
+        queryset = super().get_queryset(request)
 
+        # Filter the comments to show only comments  (comments without parents)
+        queryset = queryset.filter(parent__isnull=True)
 
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ['content','author', 'product', 'parent', 'datetime_created', 'is_comment', 'rating']
+        return queryset
 
     def is_comment(self, obj):
         if obj.parent:
             return f'replay of {obj.parent}'
         return 'comment'
- 
+# end registering models 
 
 # registering admin sites
 admin.site.register(Product, ProductAdmin)

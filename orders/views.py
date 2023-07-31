@@ -9,7 +9,6 @@ from django.db import IntegrityError
 
 
 @item_in_cart_required
-@login_required
 def checkout(request):
     context = {
         'order_form': OrderForm(),
