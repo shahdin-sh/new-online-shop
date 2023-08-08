@@ -47,15 +47,15 @@ def order_item_create(request):
         cart = Cart(request)
         for item in cart:
             product = item['product_obj']
-            OrderItem.objects.create(
-                order = get_object_or_404(user_order),
-                product = product,
-                quantity = item['quantity'],
-                price = product.price,
-            )
+            order_obj = OrderItem.objects.create(
+                        order = get_object_or_404(user_order),
+                        product = product,
+                        quantity = item['quantity'],
+                        price = product.price,
+                        )
             cart.clear_the_cart()
-            messages.success(request, 'developing purchase section has not been completed yet')
-            return redirect(request.META.get('HTTP_REFERER'))
+            request.session['order_id'] = order_obj.id
+            return redirect('paymant:paymant_process')
     else:
         return HttpResponse('please fill out your order information form first')
     

@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'products.apps.ProductConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'paymant.apps.OrdersConfig',
 ]
 SITE_ID = 1
 
