@@ -57,15 +57,18 @@ def product_detail_view(request, product_slug):
             # comment section
             new_comment = comment_form.save(commit=False)
             new_comment.product = product_detail
-            # check if user is authenticated, give author to DB and if it is not just give name and email
+            # check if user is authenticated, give author to DB and if it is not just give name and email as a guest
             if request.user.is_authenticated:
                 new_comment.author = request.user
             else:
                 new_comment.session_token = request.session.session_key
+                new_comment.name = comment_form.cleaned_data['name']
+                new_comment.email = comment_form.cleaned_data['email']
             # getting rating from stars label
             # rating = request.POST.get('rating')
             # new_comment.rating = rating
             # The clean_email method will be called during the form validation, and the validation error will be raised if needed.
+            comment_form.clean()
             new_comment.save()
             return redirect(reverse('products:product_detail', args=[product_slug]))
     else:
@@ -76,6 +79,7 @@ def product_detail_view(request, product_slug):
         'comments': comments,
         'comment_form': comment_form,
         'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity),
+        'comments_with_session_token': product_detail.comments.filter(session_token=request.session.session_key)
     }
     return render(request, 'products/product_detail_view.html', context)
 

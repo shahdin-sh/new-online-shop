@@ -431,20 +431,19 @@
                                                 <label>نظر شما برای محصول {{product_detail.name}}</label>
                                                 <textarea class="comment-notes" required="required" name='content'></textarea>
                                             </p> 
-                                            <!-- only none_authenticated useres must fill name and email field. -->
+                                            <!-- only none_authenticated useres will see name and email field. -->
                                             {% if not user.is_authenticated %}
                                                 <div class="comment-input">
                                                     <p class="comment-form-author">
                                                         <label>نام <span class="required">*</span></label>
-                                                        <input type="text" name="name">
+                                                        <input type="text" name="name" value={% if comments_with_session_token.exists %}{% for comment in comments_with_session_token %}{{comment.name}}{% endfor %}{% endif %}>
                                                     </p>
                                                     <p class="comment-form-email">
                                                         <label>ایمیل <span class="required">*</span></label>
-                                                        <input type="text" name="email">
-                                                        {{comment_form.email.errors}}
+                                                        <input type="text" name="email" value={% if comments_with_session_token.exists %}{% for comment in comments_with_session_token %}{{comment.email}}{% endfor %}{% endif %}>
                                                     </p>
-                                                </div
-                                            {% endif %}
+                                                </div>
+                                            {% endif%}
                                             <div class="comment-form-submit">
                                                 <input type="submit" value="ارسال" class="comment-submit">
                                             </div>
