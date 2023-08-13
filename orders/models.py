@@ -10,7 +10,7 @@ class Order(models.Model):
     country = models.CharField(max_length=20)
     address = models.CharField(max_length=200)
     town = models.CharField(max_length=20)
-    area = models.CharField(max_length=20, blank=True)
+    area = models.CharField(max_length=20)
     zip_code = models.PositiveIntegerField()
     phone_number = models.CharField(max_length=15)
     email = models.EmailField(max_length=200)
@@ -25,6 +25,9 @@ class Order(models.Model):
     
     def get_total_price(self):
         return sum(item.price * item.quantity for item in self.items.all()) 
+    
+    def get_order_items(self):
+        return self.items.all()
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')

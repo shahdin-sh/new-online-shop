@@ -61,21 +61,21 @@
                                                         <div class="billing-info mb-25"> 
                                                             <label>نام&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='first_name' value={{user.order.first_name|safe}} required> 
+                                                            <input type="text" name='first_name' value="{{user.order.first_name|safe}}" required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-6 col-md-6"> 
                                                         <div class="billing-info mb-25"> 
                                                             <label>نام خانوادگی&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='last_name' value={{user.order.last_name|safe}} required> 
+                                                            <input type="text" name='last_name' value="{{user.order.last_name|safe}}" required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-12"> 
                                                         <div class="billing-info mb-25"> 
-                                                            <label>نام شرکت (اختیاری)&nbsp;<span class="required" title="required">*</span>
+                                                            <label>نام شرکت (اختیاری)&nbsp;
                                                             </label>                                                     
-                                                            <input type="text" name='company' value={{user.order.company|safe}}> 
+                                                            <input type="text" name='company' value="{{user.order.company|safe}}"> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-12"> 
@@ -104,7 +104,7 @@
                                                         <div class="billing-info mb-25"> 
                                                             <label>شهر&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='town' value={{user.order.town|safe}} required> 
+                                                            <input type="text" name='town' value="{{user.order.town|safe}}" required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-12"> 
@@ -124,28 +124,28 @@
                                                         <div class="billing-info mb-25"> 
                                                             <label>کد پستی&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='zip_code' value={{user.order.zip_code|safe}} required> 
+                                                            <input type="text" name='zip_code' value="{{user.order.zip_code|safe}}" required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-12 col-md-12"> 
                                                         <div class="billing-info mb-25"> 
                                                             <label>تلفن&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='phone_number' value={{user.order.phone_number|safe}} required> 
+                                                            <input type="text" name='phone_number' value="{{user.order.phone_number|safe}}" required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                     <div class="col-lg-12 col-md-12"> 
                                                         <div class="billing-info mb-25"> 
                                                             <label>ایمیل&nbsp;<span class="required" title="required">*</span>
                                                             </label>                                                     
-                                                            <input type="text" name='email' value={{user.order.email|safe}} required> 
+                                                            <input type="text" name='email' value="{{user.order.email|safe}}" required> 
                                                         </div>                                                 
                                                     </div>                                             
                                                 </div>                                         
                                                 <div class="additional-info-wrap"> 
                                                     <h6 class="mb-10">اطلاعات تکمیلی</h6> 
                                                     <label>یادداشت ها (اختیاری)</label>                                             
-                                                    <textarea placeholder="اگر نکته ای دارید، در این قسمت وارد نمایید. " name="note" value={{user.order.note|safe}}></textarea> 
+                                                    <textarea placeholder="اگر نکته ای دارید، در این قسمت وارد نمایید. " name="note" value="{{user.order.note|safe}}"></textarea> 
                                                 </div>                                     
                                             </div>
                                             {% if not user.order %}

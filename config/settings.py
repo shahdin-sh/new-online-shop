@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     'products.apps.ProductConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
-    'paymant.apps.OrdersConfig',
+    'paymant.apps.PaymantConfig',
 ]
 SITE_ID = 1
 
@@ -107,6 +107,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # Custom Context Processors
                 'cart.context_processors.shopping_cart',
+                'orders.context_processors.order_items',
             ],
         },
     },

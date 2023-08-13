@@ -73,10 +73,9 @@ def product_detail_view(request, product_slug):
             return redirect(reverse('products:product_detail', args=[product_slug]))
     else:
         comment_form = CommentForm()
-    comments = product_detail.comments.filter(parent=None).order_by('-datetime_created')
     context = {
         'product_detail': product_detail,
-        'comments': comments,
+        'comments': product_detail.comments.filter(parent=None).order_by('-datetime_created'),
         'comment_form': comment_form,
         'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity),
         'comments_with_session_token': product_detail.comments.filter(session_token=request.session.session_key)
