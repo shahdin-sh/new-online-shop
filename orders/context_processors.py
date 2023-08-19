@@ -1,7 +1,11 @@
 from orders.models import Order
 
+
 def order_items(request):
-    data = {
-        'order_items': Order.objects.get(customer=request.user).get_order_items(),
-    }
+    data = {}
+    user = request.user
+    if user.is_authenticated and user.order:
+        data = {
+            'order_items': user.order.get_order_items()
+        }
     return data

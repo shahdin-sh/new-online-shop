@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUserModel
-from allauth.account.forms import SignupForm, BaseSignupForm
+from allauth.account.forms import SignupForm, ChangePasswordForm
 from django import forms
 from config import settings
 
@@ -8,13 +8,13 @@ from config import settings
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUserModel
-        fields = ['username', 'email', 'profile_avatar', 'first_name', 'last_name']
+        fields = ['username', 'email', 'profile_avatar', 'first_name', 'last_name', 'date_joined']
 
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUserModel
-        fields = ['username', 'email', 'profile_avatar', 'first_name', 'last_name']
+        fields = ['username', 'email', 'profile_avatar', 'first_name', 'last_name', 'date_joined']
 
 
 class CustomSignupForm(SignupForm, forms.Form):

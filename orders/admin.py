@@ -12,7 +12,6 @@ class OrderItemInline(admin.TabularInline):
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['customer', 'first_name', 'last_name', 'is_paid', 'datetime_created']
-    # ordering = ['datatime_created']
     inlines = [
         OrderItemInline,
     ]
@@ -20,11 +19,14 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['order', 'product', 'quantity', 'product_price', 'datetime_created']
+    list_display = ['order', 'product', 'quantity', 'product_price', 'total_price', 'datetime_created']
     # ordering = ['datetime_created']
 
     def product_price(self, obj):
         return f"{obj.price:,} T"
+    
+    def total_price(self, obj):
+        return f"{obj.product.price * obj.quantity:,} T"
 
 
 # Register your models here.

@@ -3,7 +3,7 @@ from accounts.models import CustomUserModel
 
 
 class Order(models.Model):
-    customer = models.OneToOneField(CustomUserModel, on_delete=models.CASCADE, related_name='order')
+    customer = models.OneToOneField(CustomUserModel, on_delete=models.SET_NULL, related_name='order', null=True)
     first_name = models.CharField(max_length=10)
     last_name = models.CharField(max_length=10)
     company = models.CharField(max_length=50, blank=True)
@@ -28,6 +28,7 @@ class Order(models.Model):
     
     def get_order_items(self):
         return self.items.all()
+    
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
@@ -43,3 +44,6 @@ class OrderItem(models.Model):
     
     def product_price(self, obj):
         return f"{obj.price:,} T"
+    
+    def total_price(self):
+        return f"{self.price * self.quantity:,}"

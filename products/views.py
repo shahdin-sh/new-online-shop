@@ -7,6 +7,7 @@ from .models import Product, Category, Comment
 from .forms import CommentForm
 from cart.forms import AddToCartForm
 from cart.cart import Cart
+from allauth.account.urls import *
 # from cart.forms import AddToCartForm
 
 

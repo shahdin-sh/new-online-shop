@@ -161,66 +161,66 @@
                                 </div>                                 
                                 <div class="col-lg-5"> 
                                     <div class="your-order-wrappwer tablet-mt__60 small-mt__60"> 
-                                        <h6 class="mb-20">سفارش شما</h6> 
-                                        <div class="your-order-area"> 
-                                            <div class="your-order-wrap gray-bg-4"> 
-                                                <div class="your-order-info-wrap">
-                                                    <div class="your-order-info"> 
-                                                        <ul> 
-                                                            <li>محصول <span>جمع</span>
-                                                            </li>                                                             
-                                                        </ul>                                                         
-                                                    </div>  
-                                                    {% for item in cart %}                                     
-                                                        <div class="your-order-middle"> 
-                                                            <ul>
+                                        <h6 class="mb-20">سفارش شما</h6>
+                                        <form action={% url 'orders:order_item_create'%} method='post'>
+                                            {% csrf_token %}
+                                            <div class="your-order-area"> 
+                                                <div class="your-order-wrap gray-bg-4"> 
+                                                    <div class="your-order-info-wrap">
+                                                        <div class="your-order-info"> 
+                                                            <ul> 
+                                                                <li>محصول <span>جمع</span>
+                                                                </li>                                                             
+                                                            </ul>                                                         
+                                                        </div>  
+                                                        {% for item in cart %}                                     
+                                                            <div class="your-order-middle"> 
+                                                                <ul>
+                                                                    <li>
+                                                                    <span>{{item.product_obj.name}}</span>
+                                                                        <input name='quantity' value={{item.quantity}} type='text'>
+                                                                        <span>{{item.product_obj.price|intcomma}} تومان </span>
+                                                                    </li>
+                                                                    <span> prdouct_stock : {{item.current_product_stock}}</span>                                                                                                                                        
+                                                                </ul>
+                                                                <ul>
+                                                                    <li>
+                                                                        <span>Total Price : {{item.total_price|intcomma}} </span>
+                                                                    </li>
+                                                                </ul>
+                                                                <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}>Remove</a>
+                                                            </div>
+                                                        {% endfor %} 
+                                                        <div class="your-order-info order-subtotal"> 
+                                                            <ul> 
                                                                 <li>
-                                                                <span>{{item.product_obj.name}}</span>
-                                                                    <input name='quantity' value={{item.quantity}} type='text'>
-                                                                    <span>{{item.product_obj.price|intcomma}} تومان </span>
-                                                                </li>
-                                                                <span> prdouct_stock : {{item.current_product_stock}}</span>                                                                                                                                        
-                                                            </ul>
-                                                            <ul>
+                                                                    <strong>جمع</strong> <span>{{cart.get_total_price|intcomma}} تومان</span>
+                                                                </li>                                                             
+                                                            </ul>                                                         
+                                                        </div>                                                     
+                                                        <div class="your-order-info order-total"> 
+                                                            <ul> 
                                                                 <li>
-                                                                    <span>Total Price : {{item.total_price|intcomma}} </span>
-                                                                </li>
-                                                            </ul>
-                                                            <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}>Remove</a>
-                                                        </div>
-                                                    {% endfor %} 
-                                                    <div class="your-order-info order-subtotal"> 
-                                                        <ul> 
-                                                            <li>
-                                                                <strong>جمع</strong> <span>{{cart.get_total_price|intcomma}} تومان</span>
-                                                            </li>                                                             
-                                                        </ul>                                                         
-                                                    </div>                                                     
-                                                    <div class="your-order-info order-total"> 
-                                                        <ul> 
-                                                            <li>
-                                                                <strong>جمع با تخفیف</strong> <span>{{cart.get_total_price|intcomma}} تومان </span>
-                                                            </li>                                                             
-                                                        </ul>                                                         
-                                                    </div>                                                     
-                                                    {% comment %} <div class="payment-area mt-30"> 
-                                                        <div class="single-payment"> 
-                                                            <h6 class="mb-10">سوال شماره یک؟</h6> 
-                                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p> 
-                                                        </div>                                                         
-                                                        <div class="single-payment mt-20"> 
-                                                            <h6 class="mb-10">سوال شماره دو؟</h6> 
-                                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p> 
-                                                        </div>                                                         
-                                                    </div>  {% endcomment %}
-                                                </div>                                                 
-                                            </div>                                             
-                                        </div>                                         
-                                        <div class="payment-method"> 
-                                            <p class="mt-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است. اگر سوالی دارید، می توانید بخش <a href="#">سوالات متداول</a> را برسی نمایید.</p> 
-                                        </div>   
-                                        <form action={% url 'orders:order_item_create'%} method='post'>  
-                                            {% csrf_token %}                                    
+                                                                    <strong>جمع با تخفیف</strong> <span>{{cart.get_total_price|intcomma}} تومان </span>
+                                                                </li>                                                             
+                                                            </ul>                                                         
+                                                        </div>                                                     
+                                                        {% comment %} <div class="payment-area mt-30"> 
+                                                            <div class="single-payment"> 
+                                                                <h6 class="mb-10">سوال شماره یک؟</h6> 
+                                                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p> 
+                                                            </div>                                                         
+                                                            <div class="single-payment mt-20"> 
+                                                                <h6 class="mb-10">سوال شماره دو؟</h6> 
+                                                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p> 
+                                                            </div>                                                         
+                                                        </div>  {% endcomment %}
+                                                    </div>                                                 
+                                                </div>                                             
+                                            </div>
+                                            <div class="payment-method"> 
+                                                <p class="mt-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است. اگر سوالی دارید، می توانید بخش <a href="#">سوالات متداول</a> را برسی نمایید.</p> 
+                                            </div>                    
                                             <div class="place-order mt-30"> 
                                                 <button class="btn--full btn--black btn--lg text-center" type='submit'>ثبت و پرداخت سفارش</button> 
                                             </div>
