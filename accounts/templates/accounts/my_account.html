@@ -251,43 +251,38 @@
                                                                 <label for="email" class="required mb-1">آدرس ایمیل</label>
                                                                 <input type="email" id="email" name="email" placeholder="آدرس ایمیل" value='{{request.user.email}}' />
                                                             </div>
-                                                            {% comment %} <fieldset>
+                                                            <div class="single-input-item single-item-button">
+                                                                <button type='submit' class="btn btn btn-dark btn-hover-primary rounded-0">ذخیره تغییرات</button>
+                                                            </div>
+                                                        </form>
+                                                        <br>
+                                                        <form action={% url 'account:change_password' %} method='post'>
+                                                            {% csrf_token %}
+                                                            <fieldset>
                                                                 <legend>تغییر گذرواژه</legend>
                                                                 <div class="single-input-item mb-3">
                                                                     <label for="current-pwd" class="required mb-1">گذرواژه فعلی</label>
-                                                                    <input name='oldpassword' type="password" id="current-pwd" placeholder="گذرواژه فعلی" />
+                                                                    <input name='old_password' type="password" id="current-pwd" placeholder="گذرواژه فعلی" />
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col-lg-6">
                                                                         <div class="single-input-item mb-3">
                                                                             <label for="new-pwd" class="required mb-1">گذرواژه جدید</label>
-                                                                            <input name='password1' type="password" id="new-pwd" placeholder="گذرواژه جدید" />
+                                                                            <input name='new_password1' type="password" id="new-pwd" placeholder="گذرواژه جدید" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-lg-6">
                                                                         <div class="single-input-item mb-3">
                                                                             <label for="confirm-pwd" class="required mb-1">تکرار گذرواژه جدید</label>
-                                                                            <input name='password2' type="password" id="confirm-pwd" placeholder="تکرار گذرواژه جدید" />
+                                                                            <input name='new_password2' type="password" id="confirm-pwd" placeholder="تکرار گذرواژه جدید" />
                                                                         </div>
                                                                     </div>
+                                                                </div>
+                                                                <div class="single-input-item single-item-button">
+                                                                    <button type='submit' class="btn btn btn-dark btn-hover-primary rounded-0">تغییر رمز عبور</button>
                                                                 </div> 
-                                                            </fieldset> {% endcomment %}
-                                                            <div class="single-input-item single-item-button">
-                                                                <button type='submit' class="btn btn btn-dark btn-hover-primary rounded-0">ذخیره تغییرات</button>
-                                                            </div>
+                                                            </fieldset>
                                                         </form>
-                                                        {% if user_change_form.errors %}
-                                                            <div class="errors">
-                                                                <p>Please correct the following errors:</p>
-                                                                <ul>
-                                                                    {% for field_errors in user_change_form.errors %}
-                                                                        {% for error in field_errors %}
-                                                                            <li>{{ error }}</li>
-                                                                        {% endfor %}
-                                                                    {% endfor %}
-                                                                </ul>
-                                                            </div>
-                                                        {% endif %}
                                                     </div>
                                                 </div>
                                             </div> <!-- Single Tab Content End -->

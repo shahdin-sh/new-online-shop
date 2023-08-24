@@ -1,8 +1,9 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from .models import CustomUserModel
-from allauth.account.forms import SignupForm, ChangePasswordForm
+from allauth.account.forms import SignupForm
 from django import forms
 from config import settings
+from django.contrib.auth import password_validation
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -17,6 +18,7 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ['username', 'email', 'profile_avatar', 'first_name', 'last_name', 'date_joined']
 
 
+# using allauth sign up form
 class CustomSignupForm(SignupForm, forms.Form):
 
     first_name = forms.CharField(
@@ -47,3 +49,26 @@ class CustomSignupForm(SignupForm, forms.Form):
     def custom_signup(self, request, user):
         user.profile_avatar = 'default_avatar/img_avatar.png'
         user.save()
+
+
+# this form process when the users want to change their passwords in their account not during reset password process, that process related to allauth django package
+class CustomChangePasswordForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={'autocomplete': 'current-password', 'autofocus': True, 'class': 'form-control',
+                   'placeholder': 'Old Password'}),
+    )
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'autocomplete': 'new-password', 'class': 'form-control', 'placeholder': 'New Password'}),
+        strip=False,
+        help_text=password_validation.password_validators_help_text_html(),
+    )
+    new_password2 = forms.CharField(
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={'autocomplete': 'new-password', 'class': 'form-control', 'placeholder': 'Confirm password'}),
+    )
+
+        

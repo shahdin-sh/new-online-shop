@@ -3,12 +3,12 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from orders.forms import OrderForm
-from .forms import CustomUserChangeForm
-from allauth.account.forms import ChangePasswordForm
-from django.http import HttpResponseServerError
+from .forms import CustomUserChangeForm, CustomChangePasswordForm
+from django.http import HttpResponseBadRequest
 import logging
 from django.utils import timezone
 from .utils import persian_to_western_digits
+from django.contrib import messages
 
 
 
@@ -22,7 +22,7 @@ def my_account(request):
     context = {
         'order_form': OrderForm(),
         'user_change_form': CustomUserChangeForm(),
-        'password_change_form': ChangePasswordForm(),
+        'password_change_form': CustomChangePasswordForm(user=request.user),
         'current_time': persian_to_western_digits(timezone.now().strftime('%Y-%m-%d')),
     }
     print(persian_to_western_digits(timezone.now().strftime('%Y-%m-%d')))
@@ -31,23 +31,42 @@ def my_account(request):
 
 @login_required
 @require_POST
-def edit_user_profile(request):
+def edit_user_information(request):
     user = request.user
     if request.method == 'POST':
-        print(request.POST)
-        user_change_form = CustomUserChangeForm(request.POST, instance=user)
-        if user_change_form.is_valid():
-            user_change_form.save()
+        user_change_information_form = CustomUserChangeForm(request.POST, instance=user)
+        if user_change_information_form.is_valid():
+            user_change_information_form.save()
+            messages.success(request, 'your information updated successfully')
             return redirect('account:my_account')
         else:
             # Log form errors
             logger = logging.getLogger(__name__)
-            logger.error("Form validation failed: %s", user_change_form.errors)
+            logger.error("Form validation failed: %s", user_change_information_form.errors)
             # creating an error response
-            error_message = f"Form validation failed: {user_change_form.errors}"
-            response = HttpResponseServerError(error_message)
+            error_message = f"Form validation failed: {user_change_information_form.errors}"
+            response = HttpResponseBadRequest(error_message)
             return response
     else:
-        user_change_form = CustomUserChangeForm()
+        user_change_information_form = CustomUserChangeForm()
 
-        
+
+@login_required
+def change_user_password(request):
+    user = request.user
+    if request.method == 'POST':
+        change_password_form = CustomChangePasswordForm(user, request.POST)
+        if change_password_form.is_valid():
+            change_password_form.save()
+            messages.success(request, 'your password has been changed successfully')
+            return redirect('account:my_account')
+        else:
+            # Log form errors
+            logger = logging.getLogger(__name__)
+            logger.error("Form validation failed: %s", change_password_form.errors)
+            # creating an error response
+            error_message = f"Form validation failed: {change_password_form.errors}"
+            response = HttpResponseBadRequest(error_message)
+            return response
+    else:
+        change_password_form = CustomChangePasswordForm()

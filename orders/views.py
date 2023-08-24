@@ -47,7 +47,7 @@ def order_create(request):
     else:
         order_form = OrderForm()
     # redirect user to the current page
-    return redirect(reverse('orders:checkout'))
+    return redirect(request.META.get('HTTP_REFERER'))
    
 
 @login_required
