@@ -20,14 +20,34 @@
                         </div>
                         <div class="tab-content content-modal-box">
                             <div class="tab-pane fade show active" id="tab_list_06" role="tabpanel">
-                                <form action="#" class="account-form-box" method='post'>
-                                    {% csrf_token %}
-                                    {{form|crispy}}
-                                    <div class="button-box mt-25">
-                                        <input type='submit' class="btn btn--full btn--black" value='Sign up'>
+                                {% if form.errors %}
+                                    <div class="error-message">
+                                        <ul>
+                                            {{form.errors}}
+                                        </ul>
                                     </div>
-                                    <p>Already have an acccount? <a href="{% url 'account_login' %}">login</a></p>
-                                    <a href="{% url 'account_reset_password' %}">Forget password?</a>
+                                {% endif %}
+                                <form action="{% url 'account_signup' %}" class="account-form-box" method='post'>
+                                    {% csrf_token %}
+                                    <h6>یک حساب کاربری ایجاد نمایید.</h6>
+                                    <div class="single-input">
+                                        <input type="text" placeholder="نام کاربری" name='username'>
+                                    </div>
+                                    <div class="single-input">
+                                        <input type="text" placeholder="نام" name='first_name'>
+                                    </div>
+                                    <div class="single-input">
+                                        <input type="text" placeholder="نام خانوادگی" name='last_name'> 
+                                    </div>
+                                    <div class="single-input">
+                                        <input type="text" placeholder="ایمیل" name='email'>
+                                    </div>
+                                    <div class="single-input">
+                                        <input type="password" placeholder="گذرواژه" name='password1'>
+                                    </div>
+                                    <div class="button-box mt-25">
+                                        <button type='submit' class="btn btn--full btn--black">ثبت نام</button>
+                                    </div> 
                                 </form>
                             </div>
                         </div>

@@ -601,20 +601,21 @@
                         </div>
                         <div class="tab-content content-modal-box">
                             <div class="tab-pane fade" id="tab_list_06" role="tabpanel">
-                                <form action="#" class="account-form-box">
+                                <form action="" method='post' class="account-form-box">
+                                    {% csrf_token %}
                                     <h6>وارد حساب خود شوید.</h6>
                                     <div class="single-input">
-                                        <input type="text" placeholder="نام کاربری"/>
+                                        <input type="text" placeholder="ایمیل"/ name="login"  required>
                                     </div>
                                     <div class="single-input">
-                                        <input type="password" placeholder="گذرواژه"/>
+                                        <input type="password" placeholder="گذرواژه"/ name="password" required>
                                     </div>
                                     <div class="checkbox-wrap mt-10">
                                         <label class="label-for-checkbox inline mt-15">
-                                            <input class="input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever"/> <span>من را به خاطر بسپار</span>
+                                            <input class="input-checkbox" name="remember" type="checkbox" id="rememberme" value="forever"/ required> <span>من را به خاطر بسپار</span>
                                         </label>                                         <a href="#" class="mt-10">گذرواژه خود را فراموش کرده اید؟</a>
                                     </div>
-                                    <div class="button-box mt-25"> <a href="#" class="btn btn--full btn--black">ورود</a>
+                                    <div class="button-box mt-25"> <button class="btn btn--full btn--black" type=su>ورود</button>
                                     </div>
                                 </form>
                             </div>
@@ -640,7 +641,7 @@
                 </div>
             </div>
         </div>
-        <!-- Modal -->
+        {% comment %} <!-- Modal -->
         <div class="header-login-register-wrapper modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -655,20 +656,21 @@
                         </div>
                         <div class="tab-content content-modal-box">
                             <div class="tab-pane fade" id="tab_list_06" role="tabpanel">
-                                <form action="#" class="account-form-box">
+                                <form action="accounts/login" class="account-form-box">
+                                    <p>something</p>
                                     <h6>وارد حساب خود شوید.</h6>
                                     <div class="single-input">
-                                        <input type="text" placeholder="نام کاربری"/>
+                                        <input type="text" placeholder= "ایمیل"/ name="email">
                                     </div>
                                     <div class="single-input">
-                                        <input type="password" placeholder="گذرواژه"/>
+                                        <input type="password" placeholder="گذرواژه"/ name="password">
                                     </div>
                                     <div class="checkbox-wrap mt-10">
                                         <label class="label-for-checkbox inline mt-15">
-                                            <input class="input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever"/> <span>من را به خاطر بسپار</span>
+                                            <input class="input-checkbox" name="remember" type="checkbox" id="rememberme" value="forever"/> <span>من را به خاطر بسپار</span>
                                         </label>                                         <a href="#" class="mt-10">گذرواژه خود را فراموش کرده اید؟</a>
                                     </div>
-                                    <div class="button-box mt-25"> <a href="#" class="btn btn--full btn--black">ورود</a>
+                                    <div class="button-box mt-25"> <button class="btn btn--full btn--black">ورود</button>
                                     </div>
                                 </form>
                             </div>
@@ -693,7 +695,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
         <!--====================  mobile menu overlay ====================-->
         <div class="mobile-menu-overlay" id="mobile-menu-overlay">
             <div class="mobile-menu-overlay__inner">
