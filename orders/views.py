@@ -64,12 +64,12 @@ def order_item_create(request):
         for item in cart:
             product = item['product_obj']
             quantity = item['quantity']
-            order_obj = OrderItem.objects.create(
-                        order = get_object_or_404(Order.objects.filter(customer=user)),
-                        product = product,
-                        quantity = quantity,
-                        price = product.price,
-                        )
+            OrderItem.objects.create(
+                order = get_object_or_404(Order.objects.filter(customer=user)),
+                product = product,
+                quantity = quantity,
+                price = product.price,
+                )
         cart.clear_the_cart()
         # saving order_obj id in session for paymant process
         return redirect('paymant:paymant_process')

@@ -15,7 +15,6 @@ class Order(models.Model):
     phone_number = models.CharField(max_length=15)
     email = models.EmailField(max_length=200)
     note = models.TextField(blank=True)
-    is_paid = models.BooleanField(default=False)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
 
