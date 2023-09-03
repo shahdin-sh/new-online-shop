@@ -222,3 +222,6 @@ STATICFILES_DIRS = (
 
 # crispy forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# Zarinpal configuration
+ZARINPAL_MERCHANT_ID = env('DJANG0_ZARINPAL_MERCHANT_ID')

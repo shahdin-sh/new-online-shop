@@ -10,6 +10,7 @@ import logging
 
 
 @item_in_cart_required
+@login_required
 def checkout(request):
     context = {
         'order_form': OrderForm(),
@@ -53,6 +54,7 @@ def order_create(request):
 @login_required
 def order_item_create(request):
     user = request.user
+    # check if user fiil out order form or not.
     try:
         order = Order.objects.get(customer=user)
     except Order.DoesNotExist:
@@ -70,8 +72,7 @@ def order_item_create(request):
                         )
         cart.clear_the_cart()
         # saving order_obj id in session for paymant process
-        request.session['order_id'] = order_obj.id
-        return redirect('account:my_account')
+        return redirect('paymant:paymant_process')
     else:
         return HttpResponse('please fill out your order information form first')
     

@@ -28,7 +28,7 @@
                             <div class="tab-pane fade show active" id="tab_list_06" role="tabpanel">
                                 <form action="{% url 'account_login' %}" class="account-form-box" method='post' name='login_form'>
                                     {% csrf_token %}
-                                    <h6>وارد حساب خود شوید.</h6>
+                                    <h6>وارد حساب خود شوید یا <a href="{% url 'account_signup'%}">ثبت نام</a> کنید.</h6>
                                     <div class="single-input">
                                         <input type="text" placeholder="ایمیل" name='login' required>
                                     </div>

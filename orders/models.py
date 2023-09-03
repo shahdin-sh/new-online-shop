@@ -24,7 +24,7 @@ class Order(models.Model):
         return f'{self.customer} order| id:{self.id}'
     
     def get_total_price(self):
-        return sum(item.price * item.quantity for item in self.items.all()) 
+        return sum(item.price * item.quantity for item in self.items.all())
     
     def get_order_items(self):
         return self.items.all()
