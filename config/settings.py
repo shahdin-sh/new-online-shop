@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
     'paymant.apps.PaymantConfig',
+    'blog',
 ]
 SITE_ID = 1
 
