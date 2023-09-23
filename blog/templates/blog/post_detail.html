@@ -1,0 +1,178 @@
+{% extends '_base.html' %}
+{% load humanize %}
+{% load static %}
+
+
+{% block content %}
+    <div id="main-wrapper"> 
+        <div class="site-wrapper-reveal border-bottom"> 
+            <!-- Blog Page Area Start -->                 
+            <div class="blog-page-wrapper section-space--pt_120 section-space--pb_120"> 
+                <div class="container"> 
+                    <div class="row"> 
+                        <div class="col-lg-9 col-md-8"> 
+                            <div class="row"> 
+                                <div class="col-lg-12"> 
+                                    <!-- Single Blog Item Start -->                                         
+                                    <div class="single-blog-item"> 
+                                        <div class="blog-thumbnail-box"> <a href="{{post_detail.get_absolute.url}}" class="thumbnail"> <img src="{{post_detail.detail_view_image.url}}" class="img-fluid" alt="Blog Images"/> </a> 
+                                        </div>                                             
+                                        <div class="blog-contents"> 
+                                            <h3 class="blog-title-lg"><a href="{{post_detail.get_absolute.url}}"></a>{{post_detail.title}}</h3> 
+                                            <div class="meta-tag-box"> 
+                                                <div class="meta date"><span>{{post_detail.published_date}}</span>
+                                                </div>                                                     
+                                                <div class="meta author"><span><a href="#">طراحی</a></span>
+                                                </div>                                                     
+                                                <div class="meta cat"><span>دسته <a href="#">{{post_detail.category.name}}</a></span></div>                                                     
+                                            </div>                                                 
+                                            <p class="mt-20 d_text">
+                                                {% with post_detail.content|safe|slice:":350" as part1 %}
+                                                    {{ part1 }}
+                                                {% endwith %}
+                                            </p> 
+                                            <blockquote> 
+                                                <p> {% with post_detail.content|safe|slice:":350" as part2 %}
+                                                        {{ part2 }}
+                                                    {% endwith %}
+                                                </p> 
+                                            </blockquote>                                                 
+                                            <div class="row"> 
+                                                <div class="col-lg-6"> 
+                                                    <div class="images mb-30"> 
+                                                        <img src="{{post_detail.small_detail_view_image.url}}" class="img-fluid" alt=""/> 
+                                                    </div>                                                         
+                                                </div>                                                     
+                                                <div class="col-lg-6"> 
+                                                    <div class="images mb-30"> 
+                                                        <img src="{{post_detail.small_detail_view_image_2.url}}" class="img-fluid" alt=""/> 
+                                                    </div>                                                         
+                                                </div>                                                     
+                                            </div>                                                 
+                                            <p class="mt-20 d_text">
+                                                {% with post_detail.content|safe|slice:":350" as part3 %}
+                                                    {{ part3 }}
+                                                {% endwith %}
+                                            </p> 
+                                            <div class="row align-items-center"> 
+                                                <div class="col-lg-6"> 
+                                                    <div class="blog-post-social-networks mt-20">
+                                                        <h6 class="title">اشتراک گذاری :</h6> 
+                                                        <ul class="list"> 
+                                                            <li class="item"> <a href="https://twitter.com/" target="_blank" aria-label="Twitter"> <i class="social social_facebook"></i> </a> 
+                                                            </li>                                                                 
+                                                            <li class="item"> <a href="https://facebook.com/" target="_blank" aria-label="Facebook"> <i class="social social_twitter"></i> </a> 
+                                                            </li>                                                                 
+                                                            <li class="item"> <a href="https://instagram.com/" target="_blank" aria-label="Instagram"> <i class="social social_tumblr"></i> </a> 
+                                                            </li>                                                                 
+                                                        </ul>
+                                                    </div>                                                         
+                                                </div>                                                     
+                                                <div class="col-lg-6"> 
+                                                    <div class="tag-blog d-flex justify-content-lg-end justify-content-start mt-20"> 
+                                                        <h6 class="mr-2">برچسب ها :</h6> 
+                                                        <div class="tagcloud">
+                                                            {% for tag in post_detail.tags.all %}
+                                                                <a href="#" class="selected">{{tag.name}}</a>
+                                                            {% endfor %}
+                                                        </div>                                                             
+                                                    </div>                                                         
+                                                </div>                                                     
+                                            </div>                                                 
+                                            <div class="post-author-box clearfix section-space--mt_60"> 
+                                                <div class="post-author-avatar"> 
+                                                    <img src="{% static 'images/blog/author.webp' %}]" alt="" class="photo"/> 
+                                                </div>                                                     
+                                                <div class="post-author-info"> 
+                                                    <h6 class="author-name">علی رضایی</h6> 
+                                                    <p class="mt-1">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.</p> 
+                                                    <ul class="author-socials"> 
+                                                        <li><a href="http://facebook.com/meditex" target="_blank">فیسبوک</a>
+                                                        </li>                                                             
+                                                        <li><a href="http://twitter.com/meditex" target="_blank">توییتر</a>
+                                                        </li>                                                             
+                                                        <li><a href="#" target="_blank">تلگرام</a>
+                                                        </li>                                                             
+                                                    </ul>                                                         
+                                                </div>                                                     
+                                            </div>                                                 
+                                            <div class="blog-relatel-post section-space--mt_60"> 
+                                                <div class="navigation post-navigation"> <a href="#" class="nav-links"> <i class="icon-chevron-left"></i><span class="blog-nav nav-previous"><span class="d-text">10 محصول برتر 2021</span> <br/><span class="title-nav">قبل</span></span> </a> <a href="#" class="nav-links post-next"> <span class="blog-nav nav-next"><span class="d-text">10 محصول برتر 2022</span> <br/><span class="title-nav">بعد</span></span> <i class="icon-chevron-right"></i> </a> 
+                                                </div>                                                     
+                                            </div>                                                 
+                                            <div class="comments-area comments-reply-area section-space--mt_60"> 
+                                                <div class="row"> 
+                                                    <div class="col-lg-12"> 
+                                                        <h4 class="mb-30">نظر خود را بنویسید</h4> 
+                                                        <form action="#" class="comment-form-area"> 
+                                                            <div class="comment-input-12"> 
+                                                                <textarea class="comment-notes" required="required"></textarea> 
+                                                            </div>                                                                 
+                                                            <div class="comment-input-12"> 
+                                                                <input type="text" required="required" name="Name" placeholder="نام"/> 
+                                                            </div>                                                                 
+                                                            <div class="comment-input-12"> 
+                                                                <input type="text" placeholder="ایمیل" required="required" name="email"/> 
+                                                            </div>                                                                 
+                                                            <div class="comment-input-12"> 
+                                                                <input type="text" placeholder="وبسایت" name="Website"/> 
+                                                            </div>                                                                 
+                                                            <div class="comment-form-submit"> 
+                                                                <input type="submit" value="ارسال نظر" class="comment-submit btn--md"/> 
+                                                            </div>                                                                 
+                                                        </form>                                                             
+                                                    </div>                                                         
+                                                </div>                                                     
+                                            </div>                                                 
+                                        </div>                                             
+                                    </div>
+                                    <!-- Single Blog Item End -->                                         
+                                </div>                                     
+                            </div>                                 
+                        </div>                             
+                        <div class="col-lg-3 col-md-4"> 
+                            <div class="blog-widget widget-blog-categories tablet-mt__60 small-mb__60"> 
+                                <div class="blog-search"> 
+                                    <input type="text" placeholder="جستجو"/> 
+                                    <button class="submit-button"><i class="icon-magnifier"></i> 
+                                    </button>                                         
+                                </div>                                     
+                            </div>                                 
+                            <div class="blog-widget widget-blog-recent-post mt-40"> 
+                                <h6 class="mb-20">مطالب اخیر</h6> 
+                                <ul class="widget-nav-list"> 
+                                    <li><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم است. <span class="post-date">14 آذر 1401</span></a> 
+                                    </li>                                         
+                                    <li><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم است. <span class="post-date">14 آذر 1401</span></a> 
+                                    </li>                                         
+                                    <li><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم است. <span class="post-date">14 آذر 1401</span></a> 
+                                    </li>                                         
+                                </ul>                                     
+                            </div>                                 
+                            <div class="blog-widget widget-blog-categories mt-40"> 
+                                <h6 class="mb-20">دسته بندی ها</h6> 
+                                <ul class="widget-nav-list"> 
+                                    {% for category in post_detail.category.all %}
+                                        <li><a href="#">{{category.name}}<span>({{category.posts_category.all|length}})</span></a> 
+                                        </li>
+                                    {% endfor %}
+                                </ul>                                     
+                            </div>                                 
+                            <div class="blog-widget widget-blog-banner mt-40"> <a href={% url 'products:product_categories' %}><img src={% static 'images/blog/blog-widget.webp'%} class="img-fluid" alt="blog widget"/></a> 
+                            </div>                                 
+                            <div class="blog-widget widget-blog-tag mt-40"> 
+                                <h6 class="mb-20">برچسب ها</h6> 
+                                <div class="blog-tagcloud"> 
+                                    {% for tag in tags %}
+                                        <a href="#" class="selected">{{tag.name}}</a>
+                                    {% endfor %}
+                                </div>                                     
+                            </div>                                 
+                        </div>                             
+                    </div>                         
+                </div>                     
+            </div>                 
+            <!-- Blog Page Area End -->                 
+        </div>                       
+    </div>         
+{% endblock content %}

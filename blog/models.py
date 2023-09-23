@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from ckeditor.fields import RichTextField
 from accounts.models import CustomUserModel
 from django.utils import timezone
@@ -22,9 +23,12 @@ class Blog(models.Model):
     published_date = models.DateTimeField(blank=True, null=True)
     is_published = models.BooleanField(default=False)
     modified_data = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='blog_images/', blank=True, null=True, default='media\blog_images\1-570x370.webp')  
+    list_view_image = models.ImageField(upload_to='blog_images/', blank=True, null=True, default='media\blog_images\1-570x370.webp')
+    detail_view_image = models.ImageField(upload_to='blog_images/', blank=True, null=True, default='media\blog_images\1-870x500.webp')
+    small_detail_view_image = models.ImageField(upload_to='blog_images/', blank=True, null=True, default='media\blog_images\1-420x241.webp') 
+    small_detail_view_image_2 = models.ImageField(upload_to='blog_images/', blank=True, null=True, default='media\blog_images\1-420x241.webp')           
     tags = models.ManyToManyField('Tag', related_name='posts', blank=True)
-    category = models.ManyToManyField('Category', related_name='posts_category', blank=True)
+    category = models.ForeignKey('Category', related_name='posts_category', blank=True, null=True, on_delete=models.CASCADE)
 
     # Custom Managers
     objects = models.Manager()
@@ -35,8 +39,8 @@ class Blog(models.Model):
         self.published_date = timezone.now()
         self.save()
 
-    # def get_absolute_url(self):
-    #     return reverse('blog:post_detail', args=[str(self.id)])
+    def get_absolute_url(self):
+        return reverse('blog:post_detail', args=[str(self.slug)])
 
     def __str__(self):
         return f'{self.author}: {self.title}'
@@ -44,7 +48,7 @@ class Blog(models.Model):
 
     def get_content_summary(self):
         content = strip_tags(self.content)
-        return content
+        return content[:70] 
 
 
 class Tag(models.Model):
