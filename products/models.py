@@ -10,8 +10,7 @@ from accounts.models import CustomUserModel
 class IsFeatureManager(models.Manager):
     
     def get_queryset(self):
-        return super(IsFeatureManager, self).get_queryset().filter(is_featured=False)
-
+        return super(IsFeatureManager, self).get_queryset().filter(is_featured=False)           
 
 class IsActiveManager(models.Manager):
     

@@ -1,9 +1,15 @@
+from typing import Any
 from django.contrib import admin
 from .models import Blog, Tag, Category
 
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'content', 'author']
+    list_display = ['title', 'slug', 'published_date',  'get_content_summary', 'author', 'is_published']
     prepopulated_fields = {'slug': ('title',)}
+
+    def save_model(self, request , obj: Blog, form, change):
+        if obj.published_date:
+            obj.is_published = True
+        obj.save()
 
 
 class TagsAdmin(admin.ModelAdmin):

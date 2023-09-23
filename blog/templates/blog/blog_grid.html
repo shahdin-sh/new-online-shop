@@ -1,0 +1,60 @@
+{% extends '_base.html' %}
+ 
+{% block content %}
+    <div id="main-wrapper"> 
+        <div class="site-wrapper-reveal border-bottom"> 
+            <!-- Blog Page Area Start -->                 
+            <div class="blog-page-wrapper section-space--pt_90 section-space--pb_120"> 
+                <div class="container"> 
+                    <div class="row">
+                        {% for post in page_obj %}                      
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-12"> 
+                                <!-- Single Blog Item Start -->                                 
+                                <div class="single-blog-item mt-40"> 
+                                    <div class="blog-thumbnail-box"> <a href="#" class="thumbnail"> <img src="{{post.image.url}}" class="img-fluid" alt="Blog Images"/> </a> <a href="#" class="btn-blog"> مطالعه بیشتر </a> 
+                                    </div>                                     
+                                    <div class="blog-contents"> 
+                                        <h6 class="blog-title"><a href="#">{{post.description}}</a></h6> 
+                                        <div class="meta-tag-box"> 
+                                            <div class="meta date"><span>{{post.published_date}}</span>
+                                            </div>                                             
+                                            <div class="meta author"><span><a href="#">طراحی</a></span>
+                                            </div>                                             
+                                            <div class="meta cat"><span>دسته <a href="#">{{post.category.name}}</a></span>
+                                            </div>                                             
+                                        </div>                                         
+                                    </div>                                     
+                                </div>
+                                <!-- Single Blog Item End -->                                 
+                            </div>
+                        {% endfor %}                                                                                         
+                    </div>     
+                    <div class="row"> 
+                        <div class="col-12"> 
+                            <ul class="page-pagination text-start mt-40"> 
+                                {% if page_obj.has_previous %}                                     
+                                <li>
+                                    <a class="page-numbers" href="?page={{page_obj.previous_page_number}}">صفحه قبل<i class="icon-chevron-left"></i></a>
+                                </li>
+                                {% endif %}
+                                <li>
+                                    <span class="page-numbers current">{{page_obj.number}}</span>
+                                </li>
+                                {% if page_obj.has_next %}                                     
+                                    <li>
+                                        <a class="next page-numbers" href="?page={{page_obj.next_page_number}}">صفحه بعد<i class="icon-chevron-right"></i></a> 
+                                    </li>
+                                {% endif %}
+                            </ul>                                 
+                        </div>                             
+                    </div>    
+                </div>                         
+            </div>                 
+            <!-- Blog Page Area End -->                 
+        </div>                      
+    </div>    
+{% endblock content %}
+    
+    
+
+      
