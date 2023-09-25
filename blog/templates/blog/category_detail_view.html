@@ -17,7 +17,10 @@
                             <li class="breadcrumb-item"><a href="{% url 'products:homepage' %}">
                                 Homepage
                             </a></li>
-                            <li class="breadcrumb-item active">Blog</li>
+                            <li class="breadcrumb-item"><a href="#">
+                                categories
+                            </a></li>
+                            <li class="breadcrumb-item active">{{category.name}}</li>
                         </ul>     
                         <!-- breadcrumb-list end -->                                 
                         </div>                             
@@ -30,7 +33,7 @@
     <div id="main-wrapper"> 
         <div class="site-wrapper-reveal border-bottom"> 
             <!-- Blog Page Area Start -->                 
-            {% include "blog/blog_page_area.html" %}          
+            {% include "blog/blog_page_area.html" %}                     
             <!-- Blog Page Area End -->                 
         </div>                      
     </div>    

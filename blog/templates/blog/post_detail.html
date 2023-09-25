@@ -24,7 +24,7 @@
                                                 </div>                                                     
                                                 {% comment %} <div class="meta author"><span><a href="#">طراحی</a></span>
                                                 </div>                                                      {% endcomment %}
-                                                <div class="meta cat"><span>دسته <a href="#">{{post_detail.category.name}}</a></span></div>                                                     
+                                                <div class="meta cat"><span>دسته <a href={% url 'blog:category_detail_view' post_detail.category.slug %}>{{post_detail.category.name}}</a></span></div>                                                     
                                             </div>                                                 
                                             <p class="mt-20 d_text">
                                                 {% with post_detail.content|safe|slice:":350" as part1 %}
@@ -133,21 +133,20 @@
                             </div>                                 
                             <div class="blog-widget widget-blog-recent-post mt-40"> 
                                 <h6 class="mb-20">مطالب اخیر</h6> 
-                                <ul class="widget-nav-list"> 
-                                    <li><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم است. <span class="post-date">14 آذر 1401</span></a> 
-                                    </li>                                         
-                                    <li><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم است. <span class="post-date">14 آذر 1401</span></a> 
-                                    </li>                                         
-                                    <li><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم است. <span class="post-date">14 آذر 1401</span></a> 
-                                    </li>                                         
+                                <ul class="widget-nav-list">
+                                    {% for latest_post in third_latest_post %} 
+                                        <li><a href={{latest_post.get_absolute_url}}>{{latest_post.title}}<span class="post-date">{{latest_post.published_date}}</span></a> </li>
+                                    {% endfor %}
                                 </ul>                                     
                             </div>                                 
                             <div class="blog-widget widget-blog-categories mt-40"> 
                                 <h6 class="mb-20">دسته بندی ها</h6> 
-                                <ul class="widget-nav-list"> 
+                                <ul class="widget-nav-list">
                                     {% for category in categories %}
-                                        <li><a href="#">{{category.name}}<span>({{category.posts.all|length}})</span></a> 
-                                        </li>
+                                        {% if category.posts.all|length > 0 %} 
+                                            <li><a href={% url 'blog:category_detail_view' category.slug %}>{{category.name}}<span>({{category.posts.all|length}})</span></a> 
+                                            </li>
+                                        {% endif %}
                                     {% endfor %}
                                 </ul>                                     
                             </div>                                 
