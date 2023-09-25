@@ -22,8 +22,8 @@
                                             <div class="meta-tag-box"> 
                                                 <div class="meta date"><span>{{post_detail.published_date}}</span>
                                                 </div>                                                     
-                                                <div class="meta author"><span><a href="#">طراحی</a></span>
-                                                </div>                                                     
+                                                {% comment %} <div class="meta author"><span><a href="#">طراحی</a></span>
+                                                </div>                                                      {% endcomment %}
                                                 <div class="meta cat"><span>دسته <a href="#">{{post_detail.category.name}}</a></span></div>                                                     
                                             </div>                                                 
                                             <p class="mt-20 d_text">
@@ -73,7 +73,7 @@
                                                         <h6 class="mr-2">برچسب ها :</h6> 
                                                         <div class="tagcloud">
                                                             {% for tag in post_detail.tags.all %}
-                                                                <a href="#" class="selected">{{tag.name}}</a>
+                                                                <a href={% url 'blog:tag_detail_view' tag.slug %} class="selected">{{tag.name}}</a>
                                                             {% endfor %}
                                                         </div>                                                             
                                                     </div>                                                         
@@ -95,11 +95,7 @@
                                                         </li>                                                             
                                                     </ul>                                                         
                                                 </div>                                                     
-                                            </div>                                                 
-                                            <div class="blog-relatel-post section-space--mt_60"> 
-                                                <div class="navigation post-navigation"> <a href="#" class="nav-links"> <i class="icon-chevron-left"></i><span class="blog-nav nav-previous"><span class="d-text">10 محصول برتر 2021</span> <br/><span class="title-nav">قبل</span></span> </a> <a href="#" class="nav-links post-next"> <span class="blog-nav nav-next"><span class="d-text">10 محصول برتر 2022</span> <br/><span class="title-nav">بعد</span></span> <i class="icon-chevron-right"></i> </a> 
-                                                </div>                                                     
-                                            </div>                                                 
+                                            </div>                                                                                                
                                             <div class="comments-area comments-reply-area section-space--mt_60"> 
                                                 <div class="row"> 
                                                     <div class="col-lg-12"> 
@@ -113,10 +109,7 @@
                                                             </div>                                                                 
                                                             <div class="comment-input-12"> 
                                                                 <input type="text" placeholder="ایمیل" required="required" name="email"/> 
-                                                            </div>                                                                 
-                                                            <div class="comment-input-12"> 
-                                                                <input type="text" placeholder="وبسایت" name="Website"/> 
-                                                            </div>                                                                 
+                                                            </div>                                                                                                                              
                                                             <div class="comment-form-submit"> 
                                                                 <input type="submit" value="ارسال نظر" class="comment-submit btn--md"/> 
                                                             </div>                                                                 
@@ -152,8 +145,8 @@
                             <div class="blog-widget widget-blog-categories mt-40"> 
                                 <h6 class="mb-20">دسته بندی ها</h6> 
                                 <ul class="widget-nav-list"> 
-                                    {% for category in post_detail.category.all %}
-                                        <li><a href="#">{{category.name}}<span>({{category.posts_category.all|length}})</span></a> 
+                                    {% for category in categories %}
+                                        <li><a href="#">{{category.name}}<span>({{category.posts.all|length}})</span></a> 
                                         </li>
                                     {% endfor %}
                                 </ul>                                     
@@ -164,7 +157,7 @@
                                 <h6 class="mb-20">برچسب ها</h6> 
                                 <div class="blog-tagcloud"> 
                                     {% for tag in tags %}
-                                        <a href="#" class="selected">{{tag.name}}</a>
+                                        <a href={% url 'blog:tag_detail_view' tag.slug %} class="selected">{{tag.name}}</a>
                                     {% endfor %}
                                 </div>                                     
                             </div>                                 

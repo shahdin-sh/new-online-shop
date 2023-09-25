@@ -28,7 +28,7 @@ class Blog(models.Model):
     small_detail_view_image = models.ImageField(upload_to='blog_images/', blank=True, null=True, default='media\blog_images\1-420x241.webp') 
     small_detail_view_image_2 = models.ImageField(upload_to='blog_images/', blank=True, null=True, default='media\blog_images\1-420x241.webp')           
     tags = models.ManyToManyField('Tag', related_name='posts', blank=True)
-    category = models.ForeignKey('Category', related_name='posts_category', blank=True, null=True, on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', related_name='posts', blank=True, null=True, on_delete=models.CASCADE)
 
     # Custom Managers
     objects = models.Manager()
