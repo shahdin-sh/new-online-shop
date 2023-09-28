@@ -10,7 +10,7 @@ from django.utils import timezone
 
 class CustomUserModel(AbstractUser):
     # applying Custom change to the AbstractUser field.
-    profile_avatar = models.ImageField(upload_to='profile_avatar/', blank=True)
+    profile_avatar = models.ImageField(upload_to='profile_avatar/', blank=True, default='media/default_avatar/author.webp')
     date_joined = models.DateTimeField(default=timezone.now)
 
     

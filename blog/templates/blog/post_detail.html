@@ -78,38 +78,43 @@
                                                         </div>                                                             
                                                     </div>                                                         
                                                 </div>                                                     
-                                            </div>                                                 
-                                            <div class="post-author-box clearfix section-space--mt_60"> 
-                                                <div class="post-author-avatar"> 
-                                                    <img src="{% static 'images/blog/author.webp' %}]" alt="" class="photo"/> 
-                                                </div>                                                     
-                                                <div class="post-author-info"> 
-                                                    <h6 class="author-name">علی رضایی</h6> 
-                                                    <p class="mt-1">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است.</p> 
-                                                    <ul class="author-socials"> 
-                                                        <li><a href="http://facebook.com/meditex" target="_blank">فیسبوک</a>
-                                                        </li>                                                             
-                                                        <li><a href="http://twitter.com/meditex" target="_blank">توییتر</a>
-                                                        </li>                                                             
-                                                        <li><a href="#" target="_blank">تلگرام</a>
-                                                        </li>                                                             
-                                                    </ul>                                                         
-                                                </div>                                                     
-                                            </div>                                                                                                
+                                            </div>
+                                            {% if comments %}          
+                                                {% for comment in comments %}                                        
+                                                    <div class="post-author-box clearfix section-space--mt_30">
+                                                        <div class="post-author-avatar"> 
+                                                            <img src="{% static 'images/blog/author.webp' %}" alt="" class="photo"/> 
+                                                        </div>                                              
+                                                        <div class="post-author-info"> 
+                                                            <h6 class="author-name">{{comment.author}} | {{comment.timestamp}}</h6> 
+                                                            <p class="mt-1">{{comment.content|safe}}</p> 
+                                                            <ul class="author-socials"> 
+                                                                <li><a href="http://facebook.com/meditex" target="_blank">فیسبوک</a>
+                                                                </li>                                                             
+                                                                <li><a href="http://twitter.com/meditex" target="_blank">توییتر</a>
+                                                                </li>                                                             
+                                                                <li><a href="#" target="_blank">تلگرام</a>
+                                                                </li>                                                             
+                                                            </ul>
+                                                        </div>
+                                                    </div>                                                                                                
+                                                {% endfor %}
+                                            {% endif %}
                                             <div class="comments-area comments-reply-area section-space--mt_60"> 
                                                 <div class="row"> 
                                                     <div class="col-lg-12"> 
                                                         <h4 class="mb-30">نظر خود را بنویسید</h4> 
-                                                        <form action="#" class="comment-form-area"> 
+                                                        <form action="{{post_detail.get_absolute.url}}" class="comment-form-area" method='post'>
+                                                            {% csrf_token %} 
                                                             <div class="comment-input-12"> 
-                                                                <textarea class="comment-notes" required="required"></textarea> 
+                                                                <textarea class="comment-notes" required="required" name='content'></textarea> 
                                                             </div>                                                                 
-                                                            <div class="comment-input-12"> 
+                                                            {% comment %} <div class="comment-input-12"> 
                                                                 <input type="text" required="required" name="Name" placeholder="نام"/> 
                                                             </div>                                                                 
                                                             <div class="comment-input-12"> 
                                                                 <input type="text" placeholder="ایمیل" required="required" name="email"/> 
-                                                            </div>                                                                                                                              
+                                                            </div>                                                                                                                               {% endcomment %}
                                                             <div class="comment-form-submit"> 
                                                                 <input type="submit" value="ارسال نظر" class="comment-submit btn--md"/> 
                                                             </div>                                                                 

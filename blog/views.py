@@ -1,6 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Blog, Tag,  Category
 from django.core.paginator import Paginator
+from .forms import CommentForm
+
 
 def blog_grid(request):
     posts = Blog.is_published_manager.all()
@@ -20,11 +22,24 @@ def blog_grid(request):
 def post_detail(request, slug):
     posts = Blog.is_published_manager.all()
     post = get_object_or_404(posts, slug=slug)
+    # comment section
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.post = post
+            new_comment.author = request.user
+            new_comment.save()
+            return redirect(post.get_absolute_url())
+    else:
+        comment_form = CommentForm()
     context = {
         'post_detail': post,
         'tags': Tag.objects.all(),
         'categories': Category.objects.all(),
-        'third_latest_post': Blog.is_published_manager.order_by('-published_date')[:3]
+        'third_latest_post': Blog.is_published_manager.order_by('-published_date')[:3],
+        'comment_form': CommentForm(),
+        'comments': post.comments.all().order_by('-timestamp')
     }
     return render(request, 'blog/post_detail.html', context)
 

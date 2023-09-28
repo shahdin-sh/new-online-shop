@@ -4,6 +4,8 @@ from ckeditor.fields import RichTextField
 from accounts.models import CustomUserModel
 from django.utils import timezone
 from django.utils.html import strip_tags
+from accounts.models import CustomUserModel
+from django.contrib.auth import get_user_model
 
 
 # managers
@@ -65,3 +67,22 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Comment(models.Model):
+    content = RichTextField()
+    post = models.ForeignKey('Blog', on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='post_comments')
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.author}'s comment, id:{self.id}"
+    
+
+    def get_absolute_url(self):
+        return reverse('blog:comment_detail', args=[str(self.slug)])
+    
+    
+    def get_content_summary(self):
+        content = strip_tags(self.content)
+        return content[:30] 

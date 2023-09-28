@@ -102,7 +102,7 @@ class Comment(models.Model):
     is_active = models.BooleanField(default=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="comments")
     # author here is just users who signed in before! (authenticated users)
-    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='comments', blank=True, null=True)
+    author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='product_comments', blank=True, null=True)
     name = models.CharField(max_length=100, null=True, blank=True)
     email = models.CharField(max_length=200, blank=True, null=True)
     parent = models.ForeignKey('self' , null=True , blank=True , on_delete=models.CASCADE , related_name='replies')
