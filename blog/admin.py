@@ -26,7 +26,7 @@ class BlogAdmin(admin.ModelAdmin):
     ]
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['get_content_summary', 'author', 'timestamp']
+    list_display = ['get_content_summary', 'author', 'timestamp', 'is_spam']
 
 
 class TagsAdmin(admin.ModelAdmin):

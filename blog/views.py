@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Blog, Tag,  Category
+from .models import Blog, Tag,  Category, Comment
 from django.core.paginator import Paginator
 from .forms import CommentForm
 
@@ -27,6 +27,9 @@ def post_detail(request, slug):
         comment_form = CommentForm(request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
+            # Check the Honeypot Field
+            if comment_form.cleaned_data.get('website') != "Leave this field blank" :
+                new_comment.is_spam = True
             new_comment.post = post
             new_comment.author = request.user
             new_comment.save()
@@ -39,7 +42,7 @@ def post_detail(request, slug):
         'categories': Category.objects.all(),
         'third_latest_post': Blog.is_published_manager.order_by('-published_date')[:3],
         'comment_form': CommentForm(),
-        'comments': post.comments.all().order_by('-timestamp')
+        'comments': Comment.is_not_spam_manager.filter(post=post).order_by('-timestamp')
     }
     return render(request, 'blog/post_detail.html', context)
 

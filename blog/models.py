@@ -12,7 +12,13 @@ from django.contrib.auth import get_user_model
 class IsPublishedManager(models.Manager):
     
     def get_queryset(self):
-        return super(IsPublishedManager, self).get_queryset().filter(is_published=True)           
+        return super(IsPublishedManager, self).get_queryset().filter(is_published=True)        
+
+
+class IsNotSpamManager(models.Manager):
+    
+    def get_queryset(self):
+        return super(IsNotSpamManager, self).get_queryset().filter(is_spam=False)
 
 
 class Blog(models.Model):
@@ -74,6 +80,12 @@ class Comment(models.Model):
     post = models.ForeignKey('Blog', on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='post_comments')
     timestamp = models.DateTimeField(auto_now_add=True)
+    is_spam = models.BooleanField(default=False)
+
+    # Custom Managers
+    objects = models.Manager()
+    is_not_spam_manager = IsNotSpamManager()
+
 
     def __str__(self):
         return f"{self.author}'s comment, id:{self.id}"

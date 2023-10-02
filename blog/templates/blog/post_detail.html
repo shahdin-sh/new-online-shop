@@ -108,6 +108,9 @@
                                                             {% csrf_token %} 
                                                             <div class="comment-input-12"> 
                                                                 <textarea class="comment-notes" required="required" name='content'></textarea> 
+                                                            </div>
+                                                            <div class="honeypot">
+                                                                <input type='hidden' value="Leave this field blank" name='website'/>
                                                             </div>                                                                 
                                                             {% comment %} <div class="comment-input-12"> 
                                                                 <input type="text" required="required" name="Name" placeholder="نام"/> 
