@@ -1,4 +1,4 @@
-from typing import Any
+
 from products.models import Product
 
 
@@ -39,19 +39,19 @@ class Cart:
             yield item
 
             
-    def add_to_cart(self, product, quantity=1, replace_current_quantity=False):
+    def add_to_cart(self, product, size='LARGE', color='BLACK', quantity=1, replace_current_quantity=False):
         product_id = str(product.id)
 
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': quantity}
-
-        if replace_current_quantity:
+            self.cart[product_id] = {
+                'quantity': quantity,
+                'size': size,
+                'color': color,
+            }
+        if replace_current_quantity and product_id in self.cart:
             self.cart[product_id]['quantity'] = quantity
         else:
-            self.cart[product_id]['quantity'] = quantity
-        # else:
-        #     print('else')
-        #     self.cart[product_id]['quantity'] += quantity
+            self.cart[product_id]['quantity'] += quantity
         # save changes in the session.
         self.save()
 

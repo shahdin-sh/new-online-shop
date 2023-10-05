@@ -27,8 +27,6 @@ class Category(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField()
     is_featured = models.BooleanField(null=True, default=False)
-    # it determines the subcategory (children) of the category (parent)
-    parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     description = models.TextField(blank=True)
 
 
@@ -36,25 +34,10 @@ class Category(models.Model):
     objects = models.Manager() # our default django manager
     is_featured_manager = IsFeatureManager()
 
-    class Meta:
-        # enforcing that there can not be two categories under a parent with same slug
-        # __str__ method elaborated later in post.  use __unicode__ in place of
-        # __str__ if you are using python 2
-
-        unique_together = ('slug', 'parent',)
-        verbose_name_plural = "categories"
-
     def __str__(self):
-        full_path = [self.name]
-        k = self.parent
-        # it means the main category have subcategory and that subcategory could have sub subcategory
-        while k is not None:
-            # k.name = self.parent.name
-            full_path.append(k.name)
-            k = k.parent
-        return ' -> '.join(full_path[::-1])
-
-
+        return self.name
+    
+    
 class Product(models.Model):
 
     PRODUCT_QUALITY_CHOICES = (
@@ -65,6 +48,18 @@ class Product(models.Model):
         ('VERY BAD', 'very bad')
     )
 
+    COLOR_CHOICES = (
+        ('BLACK', 'black'),
+        ('WHITE', 'white'),
+        ('PINK', 'pink'),
+    )
+
+    SIZE_CHOICES = (
+        ('LARGE', 'large'),
+        ('MEDIUM', 'medium'),
+        ('SMALL', 'small'),
+    )
+
     name = models.CharField(max_length=200)
     description = RichTextField()
     quantity = models.IntegerField()
@@ -72,10 +67,9 @@ class Product(models.Model):
     is_featured = models.BooleanField(default=False)
     price = models.PositiveIntegerField()
     slug = models.SlugField(unique=True)
-    size = models.CharField(max_length=200, null=True, blank=True)
-    color = models.CharField(max_length=200, null=True, blank=True)
+    size = models.CharField(choices=COLOR_CHOICES, max_length=200, null=True, blank=True)
+    color = models.CharField(choices=SIZE_CHOICES, max_length=200, null=True, blank=True)
     quality = models.CharField(choices=PRODUCT_QUALITY_CHOICES, max_length=200)
-    # problem with this default property
     image = models.ImageField(upload_to='product/', default='product_default/shopping_kart.jpg')
     datetime_created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='products')
@@ -99,7 +93,7 @@ class Product(models.Model):
 
 class Comment(models.Model):
     content = models.TextField()
-    is_active = models.BooleanField(default=True)
+    is_spam = models.BooleanField(default=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="comments")
     # author here is just users who signed in before! (authenticated users)
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='product_comments', blank=True, null=True)

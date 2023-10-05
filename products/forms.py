@@ -10,6 +10,13 @@ class CommentForm(forms.ModelForm):
         # we fill author and product manually in the product_detail_views
         fields = ['content', 'name', 'email']
 
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['website'] = forms.CharField(
+        required=False,
+        help_text="Please leave this field blank",
+    ) 
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         # Add custom validation logic for the email field
@@ -22,18 +29,18 @@ class CommentForm(forms.ModelForm):
        
 
        
-class SizeAndColorForm(forms.ModelForm):
-    COLOR_CHOICES = (
-        ('BLACK', 'black'),
-        ('WHITE', 'white'),
-        ('PINK', 'pink'),
-    )
+# class SizeAndColorForm(forms.ModelForm):
+#     COLOR_CHOICES = (
+#         ('BLACK', 'black'),
+#         ('WHITE', 'white'),
+#         ('PINK', 'pink'),
+#     )
 
-    SIZE_CHOICES = (
-        ('LARGE', 'large'),
-        ('MEDIUM', 'medium'),
-        ('SMALL', 'small'),
+#     SIZE_CHOICES = (
+#         ('LARGE', 'large'),
+#         ('MEDIUM', 'medium'),
+#         ('SMALL', 'small'),
 
-    )
-    color = forms.MultipleChoiceField(choices=COLOR_CHOICES, required=False)
-    size = forms.MultipleChoiceField(choices=SIZE_CHOICES, required=False)
+#     )
+#     color = forms.MultipleChoiceField(choices=COLOR_CHOICES, required=False)
+#     size = forms.MultipleChoiceField(choices=SIZE_CHOICES, required=False)

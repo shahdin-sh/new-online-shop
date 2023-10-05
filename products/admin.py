@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import Category,Product, Comment
-from .forms import SizeAndColorForm
 
 # Start Inlines
 class CommentsInline(admin.TabularInline):
@@ -44,12 +43,9 @@ class RepliesInline(admin.TabularInline):
 
 # start registering models
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['category_or_subcategory', 'parent', 'slug']
+    list_display = ['name', 'slug']
     ordering = ['is_featured']
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [
-        ProductsInline,
-    ]
 
     def category_or_subcategory(self, obj):
         # by returning the object, it displays __str__ method of our obj.
@@ -57,10 +53,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'quantity', 'category', 'is_active', 'is_featured', 'product_price', 'datetime_created']
+    list_display = ['name', 'quantity', 'category', 'is_active', 'is_featured', 'product_price', 'datetime_created', 'size', 'color']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['-datetime_created']
-    form = SizeAndColorForm
     inlines = [
         CommentsInline,
     ]

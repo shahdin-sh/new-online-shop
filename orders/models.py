@@ -34,6 +34,8 @@ class OrderItem(models.Model):
     product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     price = models.PositiveIntegerField()
+    color = models.CharField(max_length=200, default='black')
+    size = models.CharField(max_length=200, default='large')
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
 

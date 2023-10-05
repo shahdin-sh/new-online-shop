@@ -8,7 +8,6 @@ from .forms import CommentForm
 from cart.forms import AddToCartForm
 from cart.cart import Cart
 from allauth.account.urls import *
-# from cart.forms import AddToCartForm
 
 
 def home_page(request):
@@ -16,7 +15,7 @@ def home_page(request):
 
 
 def shop_categories(request):
-    products = Product.is_active_manager.filter(category__isnull=False, is_featured=False)
+    products = Product.objects.filter(category__isnull=False, is_featured=False)
     context = {
         'products': products,
     }
@@ -32,7 +31,7 @@ def products_or_category_detail(request, category_slug):
     return render(request, 'categories/category_detail.html', context)
 
 def product_detail_view(request, product_slug):
-    products = Product.is_active_manager.filter(is_featured=False)
+    products = Product.objects.filter(is_featured=False)
     product_detail = get_object_or_404(products, slug=product_slug)
     comment_form = CommentForm(request.POST)
     # comment section
@@ -79,7 +78,6 @@ def product_detail_view(request, product_slug):
         'comments': product_detail.comments.filter(parent=None).order_by('-datetime_created'),
         'comment_form': comment_form,
         'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity),
-        'comments_with_session_token': product_detail.comments.filter(session_token=request.session.session_key)
     }
     return render(request, 'products/product_detail_view.html', context)
 
@@ -87,7 +85,7 @@ def product_detail_view(request, product_slug):
 @login_required
 def add_to_wishlist(request, product_slug):
     # this view is using in product_detail
-    products = Product.is_active_manager.filter(is_featured=False)
+    products = Product.objects.filter(is_featured=False)
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user not in product_detail.user_wished_product.all():
         product_detail.user_wished_product.add(request.user)
@@ -98,7 +96,7 @@ def add_to_wishlist(request, product_slug):
 @login_required
 def remove_from_wishlist(request, product_slug):
     # this view is using in product_detail
-    products = Product.is_active_manager.filter(is_featured=False)
+    products = Product.objects.filter(is_featured=False)
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user in product_detail.user_wished_product.all():
         product_detail.user_wished_product.remove(request.user)

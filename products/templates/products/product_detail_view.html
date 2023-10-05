@@ -24,6 +24,9 @@
                                     <li class="breadcrumb-item"><a href="{% url 'products:homepage' %}">
                                         Homepage
                                     </a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'products:category_detail' product_detail.category.slug %}">
+                                        {{product_detail.category.name}}
+                                    </a></li>
                                     <li class="breadcrumb-item active">{{ product_detail.name }}</li>
                                 </ul>
                             <!-- breadcrumb-list end -->
@@ -127,96 +130,28 @@
                         <div class="quickview-peragraph mt-10">
                             <p>{{ product_detail.description|safe }}</p>
                         </div>
-
-                        {% comment %}  clean the code below {% endcomment %}
-                        <div class="product-size-wrapper mt-20">
-                            <div class="tab-content d-flex">
-                                <label class="mr-2">اندازه :</label>
-                                {% if 'LARGE' in product_detail.size %}
-                                    <div class="tab-pane fade" id="tab_list_l">
-                                        بزرگ
-                                    </div>
-                                {% endif %}
-                                {% if 'MEDIUM' in product_detail.size %} 
-                                    <div class="tab-pane fade" id="tab_list_m">
-                                        متوسط
-                                    </div>
-                                {% endif %}
-                                {% if 'SMALL' in product_detail.size %}
-                                <div class="tab-pane fade" id="tab_list_s">
-                                    کوچک
-                                </div>
-                                {% endif %}
+                        <form action={% url 'cart:add_to_cart' product_detail.id %} method='post'>
+                            {% csrf_token %}
+                            <div class="product-size-wrapper mt-20">
+                                <select class="select-active" name='size' required> 
+                                    <option value="LARGE">بزرگ</option>                                                         
+                                    <option value="MEDIUM">متوسط</option>                                                         
+                                    <option value="SMALL">کوچک</option>                                                         
+                                </select> 
                             </div>
-                            <ul class="nav product-size-menu" role="tablist">
-                                {% if 'LARGE' in product_detail.size %}
-                                    <li class="tab__item nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_list_l" role="tab">L</a>
-                                    </li>
-                                {% endif %}
-                                {% if 'MEDIUM' in product_detail.size %}  
-                                    <li class="tab__item nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_list_m" role="tab">M</a>
-                                    </li>
-                                {% endif %}
-                                {% if 'SMALL' in product_detail.size %}
-                                    <li class="tab__item nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_list_s" role="tab">S</a>
-                                    </li>
-                                {% endif %}
-
-                            </ul>
-                        </div>
-
-
-                        {% comment %}  clean the code below {% endcomment %}
-                        <div class="product-color-wrapper mt-20">
-                            <div class="tab-content d-flex">
-                                <label class="mr-2">رنگ :</label>
-                                {% if 'BLACK' in product_detail.color %}
-                                    <div class="tab-pane fade" id="tab_list_black">
-                                        مشکی
-                                    </div>
-                                {% endif %}
-                                {% if 'WHITE' in product_detail.color %}
-                                    <div class="tab-pane fade" id="tab_list_white">
-                                        سفید
-                                    </div>
-                                {% endif %}
-                                {% if 'PINK' in product_detail.color %}
-                                    <div class="tab-pane fade" id="tab_list_pink">
-                                        صورتی
-                                    </div>
-                                {% endif %}
+                            <div class="product-color-wrapper mt-20">
+                                <select class="select-active" name='color' required> 
+                                    <option value="BLACK">سیاه</option>                                                         
+                                    <option value="WHITE">سفید</option>                                                         
+                                    <option value="PINK">صورتی</option>                                                         
+                                </select> 
                             </div>
-
-                            <ul class="nav product-color-menu" role="tablist">
-                                {% if 'BLACK' in product_detail.color %}
-                                    <li class="tab__item nav-item active">
-                                        <a class="nav-link active" data-bs-toggle="tab" href="#tab_list_black" role="tab"></a>
-                                    </li>
-                                {% endif %}
-                                {% if 'WHITE' in product_detail.color %}
-                                    <li class="tab__item nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_list_white" role="tab"></a>
-                                    </li>
-                                {% endif %}
-                                {% if 'PINK' in product_detail.color %}
-                                    <li class="tab__item nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_list_pink" role="tab"></a>
-                                    </li>
-                                {% endif %}
-                            </ul>
-
-                        </div>
-                        <div class="quickview-action-wrap mt-30">
-                            <form action={% url 'cart:add_to_cart' product_detail.id %} method='post'>
-                                {% csrf_token %}
+                            <div class="quickview-action-wrap mt-30">
                                 <div class="quickview-cart-box">
                                     {% if product_detail.id|stringformat:"s" not in request.session.cart.keys %}
                                         <div class="quickview-quality">
                                             <div class="cart-plus-minus">
-                                                <input class="cart-plus-minus-box" name='quantity' type='number' value=0 max={{product_detail.quantity}} min=0 oninput="updateMinMaxValues()"  onclick="this.disabled=true;this.form.submit();">  
+                                                <input class="cart-plus-minus-box" name='quantity' type='number' value=1 max={{product_detail.quantity}} min=1 oninput="updateMinMaxValues()"  onclick="this.disabled=true;this.form.submit();">  
                                             </div>
                                         </div>
                                     {% endif %}
@@ -244,9 +179,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-
+                            </div>
+                        </form>
                         <div class="product_meta mt-30">
                             <div class="sku_wrapper item_meta">
                                 <span class="label"> موجودی: </span>

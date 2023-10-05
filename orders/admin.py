@@ -4,7 +4,7 @@ from .models import Order, OrderItem
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     fields = ['order', 'product', 'quantity', 'price']
-    readonly_fields = ['order', 'product', 'quantity', 'price'] 
+    readonly_fields = fields
     classes = ('collapse', )
     can_delete = False
     show_change_link = True
@@ -19,8 +19,8 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['order', 'product', 'quantity', 'product_price', 'total_price', 'datetime_created']
-    # ordering = ['datetime_created']
+    list_display = ['order', 'product', 'quantity', 'product_price', 'total_price', 'color', 'size', 'datetime_created']
+    readonly_fields = list_display
 
     def product_price(self, obj):
         return f"{obj.price:,} T"

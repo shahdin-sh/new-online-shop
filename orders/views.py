@@ -17,6 +17,7 @@ def checkout(request):
     }
     return render(request, 'orders/checkout.html', context)
 
+
 # we create order an order item with this view.
 @login_required
 def order_create(request):
@@ -61,12 +62,17 @@ def order_item_create(request):
         order = None
     if order:
         cart = Cart(request)
+        # getting product variant from the cart.
         for item in cart:
             product = item['product_obj']
+            size = item['size']
+            color = item['color']
             quantity = item['quantity']
             OrderItem.objects.create(
                 order = get_object_or_404(Order.objects.filter(customer=user)),
                 product = product,
+                size = size,
+                color = color,
                 quantity = quantity,
                 price = product.price,
                 )
