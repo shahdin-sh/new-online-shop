@@ -324,63 +324,24 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                                <!-- Single Blog Item Start -->
-                                <div class="single-blog-item mt-30">
-                                    <div class="blog-thumbnail-box"> <a href="#" class="thumbnail"> <img src= {% static "images/blog/8-570x370.webp" %} class="img-fluid" alt="Blog Images" height="238" width="366"/> </a> <a href="#" class="btn-blog"> مطالعه بیشتر </a>
+                            {% for post in posts %}
+                                <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                                    <!-- Single Blog Item Start -->
+                                    <div class="single-blog-item mt-30">
+                                            <div class="blog-thumbnail-box"> <a href={{post.get_absolute_url}} class="thumbnail"> <img src={{post.list_view_image.url}} class="img-fluid" alt="Blog Images" height="238" width="366"/> </a> <a href="{{post.get_absolute_url}}" class="btn-blog"> مطالعه بیشتر </a></div>
+                                            <div class="blog-contents">
+                                                <h6 class="blog-title"><a href="{{post.get_absolute_url}}">{{post.title}}</a></h6>
+                                                <div class="meta-tag-box">
+                                                    <div class="meta date"><span>{{post.published_date}}</span>
+                                                    </div>
+                                                    <div class="meta cat"><span>دسته <a href="{% url 'blog:category_detail_view' post.category.slug %}">{{post.category}}</a></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                     </div>
-                                    <div class="blog-contents">
-                                        <h6 class="blog-title"><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</a></h6>
-                                        <div class="meta-tag-box">
-                                            <div class="meta date"><span>14 آذر 1401</span>
-                                            </div>
-                                            <div class="meta author"><span><a href="#">طراحی</a></span>
-                                            </div>
-                                            <div class="meta cat"><span>دسته <a href="#">میز و صندلی</a></span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <!-- Single Blog Item End -->
                                 </div>
-                                <!-- Single Blog Item End -->
-                            </div>
-                            <div class="col-lg-4 col-md-6  col-sm-6 col-12">
-                                <!-- Single Blog Item Start -->
-                                <div class="single-blog-item mt-30">
-                                    <div class="blog-thumbnail-box"> <a href="#" class="thumbnail"> <img src= {% static "images/blog/9-570x370.webp" %} class="img-fluid" alt="Blog Images" height="238" width="366"/> </a> <a href="#" class="btn-blog"> مطالعه بیشتر </a>
-                                    </div>
-                                    <div class="blog-contents">
-                                        <h6 class="blog-title"><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</a></h6>
-                                        <div class="meta-tag-box">
-                                            <div class="meta date"><span>14 آذر 1401</span>
-                                            </div>
-                                            <div class="meta author"><span><a href="#">طراحی</a></span>
-                                            </div>
-                                            <div class="meta cat"><span>دسته <a href="#">میز و صندلی</a></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Single Blog Item End -->
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                                <!-- Single Blog Item Start -->
-                                <div class="single-blog-item mt-30">
-                                    <div class="blog-thumbnail-box"> <a href="#" class="thumbnail"> <img src= {% static "images/blog/10-570x370.webp" %} class="img-fluid" alt="Blog Images" height="238" width="366"/> </a> <a href="#" class="btn-blog"> مطالعه بیشتر </a>
-                                    </div>
-                                    <div class="blog-contents">
-                                        <h6 class="blog-title"><a href="#">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</a></h6>
-                                        <div class="meta-tag-box">
-                                            <div class="meta date"><span>14 آذر 1401</span>
-                                            </div>
-                                            <div class="meta author"><span><a href="#">طراحی</a></span>
-                                            </div>
-                                            <div class="meta cat"><span>دسته <a href="#">میز و صندلی</a></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Single Blog Item End -->
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

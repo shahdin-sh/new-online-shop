@@ -110,6 +110,7 @@ TEMPLATES = [
                 # Custom Context Processors
                 'cart.context_processors.shopping_cart',
                 'orders.context_processors.order_items',
+                'blog.context_processors.blog_posts',
             ],
         },
     },
