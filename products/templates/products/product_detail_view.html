@@ -1,6 +1,7 @@
 {% extends '_base.html' %}
 {% load  static %}
 {% load comment_tags %}
+{% load humanize %}
 
 {% block styles%}
     <link rel="stylesheet" href="{% static "css/comment.css" %}"/>
@@ -9,7 +10,7 @@
 {% block page_title %}Products detail{% endblock page_title %}
 
 {% block content %}
-     <!-- breadcrumb-area start -->
+    <!-- breadcrumb-area start -->
     <div class="breadcrumb-area">
         <div class="container">
             <div class="row">
@@ -98,13 +99,13 @@
 
                         </div>
                         <div class="product-details-thumbs-horizontal">
-                            <div class="sm-image"><img src="assets/images/product/small/1-100x100.webp" alt="product image thumb"></div>
-                            <div class="sm-image"><img src="assets/images/product/small/2-100x100.webp" alt="product image thumb"></div>
-                            <div class="sm-image"><img src="assets/images/product/small/3-100x100.webp" alt="product image thumb"></div>
-                            <div class="sm-image"><img src="assets/images/product/small/4-100x100.webp" alt="product image thumb"></div>
-                            <div class="sm-image"><img src="assets/images/product/small/1-100x100.webp" alt="product image thumb"></div>
-                            <div class="sm-image"><img src="assets/images/product/small/4-100x100.webp" alt="product image thumb"></div>
-                            <div class="sm-image"><img src="assets/images/product/small/1-100x100.webp" alt="product image thumb"></div>
+                            <div class="sm-image"><img src="{% static "images/product/smal0l/1-100x100.webp" %}" alt="product image thumb"></div>
+                            <div class="sm-image"><img src="{% static "images/product/smal0l/2-100x100.webp" %}" alt="product image thumb"></div>
+                            <div class="sm-image"><img src="{% static "images/product/smal0l/3-100x100.webp" %}" alt="product image thumb"></div>
+                            <div class="sm-image"><img src="{% static "images/product/smal0l/4-100x100.webp" %}" alt="product image thumb"></div>
+                            <div class="sm-image"><img src="{% static "images/product/smal0l/1-100x100.webp" %}" alt="product image thumb"></div>
+                            <div class="sm-image"><img src="{% static "images/product/smal0l/4-100x100.webp" %}" alt="product image thumb"></div>
+                            <div class="sm-image"><img src="{% static "images/product/smal0l/1-100x100.webp" %}" alt="product image thumb"></div>
                         </div>
                     </div>
                     <!--// Product Details Left -->
@@ -128,73 +129,68 @@
 
 
                         <div class="quickview-peragraph mt-10">
-                            <p>{{ product_detail.description|safe }}</p>
+                            <p>{{product_detail.description|safe}}</p>
                         </div>
-                        <form action={% url 'cart:add_to_cart' product_detail.id %} method='post'>
-                            {% csrf_token %}
-                            <div class="product-size-wrapper mt-20">
-                                <select class="select-active" name='size' required> 
-                                    <option value="LARGE">بزرگ</option>                                                         
-                                    <option value="MEDIUM">متوسط</option>                                                         
-                                    <option value="SMALL">کوچک</option>                                                         
-                                </select> 
-                            </div>
-                            <div class="product-color-wrapper mt-20">
-                                <select class="select-active" name='color' required> 
-                                    <option value="BLACK">سیاه</option>                                                         
-                                    <option value="WHITE">سفید</option>                                                         
-                                    <option value="PINK">صورتی</option>                                                         
-                                </select> 
-                            </div>
-                            <div class="quickview-action-wrap mt-30">
-                                <div class="quickview-cart-box">
-                                    {% if product_detail.id|stringformat:"s" not in request.session.cart.keys %}
-                                        <div class="quickview-quality">
-                                            <div class="cart-plus-minus">
-                                                <input class="cart-plus-minus-box" name='quantity' type='number' value=1 max={{product_detail.quantity}} min=1 oninput="updateMinMaxValues()"  onclick="this.disabled=true;this.form.submit();">  
+                        {% if product_detail.is_active %}
+                            <form action={% url 'cart:add_to_cart' product_detail.id %} method='post'>
+                                {% csrf_token %}
+                                <div class="product-size-wrapper mt-20">
+                                    <select class="select-active" name='size' required> 
+                                        <option value="LARGE">بزرگ</option>                                                         
+                                        <option value="MEDIUM">متوسط</option>                                                         
+                                        <option value="SMALL">کوچک</option>                                                         
+                                    </select> 
+                                </div>
+                                <div class="product-color-wrapper mt-20">
+                                    <select class="select-active" name='color' required> 
+                                        <option value="BLACK">سیاه</option>                                                         
+                                        <option value="WHITE">سفید</option>                                                         
+                                        <option value="PINK">صورتی</option>                                                         
+                                    </select> 
+                                </div>
+                                <div class="quickview-action-wrap mt-30">
+                                    <div class="quickview-cart-box">
+                                        {% if product_detail.id|stringformat:"s" not in request.session.cart.keys %}
+                                            <div class="quickview-quality">
+                                                <div class="cart-plus-minus">
+                                                    <input class="cart-plus-minus-box" name="quantity" type="number" value="1" max="{{product_detail.quantity}}" min="1">  
+                                                </div>
                                             </div>
-                                        </div>
-                                    {% endif %}
-                                    <div class="quickview-button">
-                                        {% if product_detail.id|stringformat:"s"  not in request.session.cart %}
-                                            <div class="quickview-cart button">
-                                                <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</button>
-                                            </div>
-                                        {% else %}
-                                            <div class="quickview-cart button">
-                                                <button type='button'class="btn--lg btn--black font-weight--reguler text-white" >این محصول به <a href={% url 'cart:cart_detail_view' %}>سبد خرید</a> شما اضافه شده است</button>
-                                            </div>
-
-                                        {% endif%}
-                                        <div class="quickview-wishlist button">
-                                            {% if user not in product_detail.user_wished_product.all %}
-                                                <a title="Add to wishlist" href="{% url 'products:add_to_wishlist' product_detail.slug %}"  onclick="document.getElementById('wishlist_form').submit()">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
+                                        {% endif %}
+                                        <div class="quickview-button">
+                                            {% if product_detail.id|stringformat:"s"  not in request.session.cart %}
+                                                <div class="quickview-cart button">
+                                                    <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</button>
+                                                </div>
                                             {% else %}
-                                                <a href="{% url 'products:remove_from_wishlist' product_detail.slug %}" title="remove from wishlist">
-                                                    <i class="fas fa-heart"></i>
-                                                </a>
-                                            {% endif %}
+                                                <div class="quickview-cart button">
+                                                    <button type='button'class="btn--lg btn--black font-weight--reguler text-white" >این محصول به <a href={% url 'cart:cart_detail_view' %}>سبد خرید</a> شما اضافه شده است</button>
+                                                </div>
+
+                                            {% endif%}
+                                            <div class="quickview-wishlist button">
+                                                {% if user not in product_detail.user_wished_product.all %}
+                                                    <a title="Add to wishlist" href="{% url 'products:add_to_wishlist' product_detail.slug %}"  onclick="document.getElementById('wishlist_form').submit()">
+                                                        <i class="far fa-heart"></i>
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{% url 'products:remove_from_wishlist' product_detail.slug %}" title="remove from wishlist">
+                                                        <i class="fas fa-heart"></i>
+                                                    </a>
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        {% endif %}
                         <div class="product_meta mt-30">
                             <div class="sku_wrapper item_meta">
                                 <span class="label"> موجودی: </span>
                                 <span class="sku">{{ product_detail.quantity }}</span>
                             </div>
                             <div class="posted_in item_meta">
-                                {% if product_detail.category.parent %}
-        {#                            Here category.parent is actually the main category #}
-                                    <span class="label">دسته بندی: </span><a href="#">Main Category:{{ product_detail.category.parent }}</a>,
-        {#                                Here category means actually subcategory of the main category#}
-                                    <a href="#">Sub Category: {{ product_detail.category }}</a>
-                                {% else %}
-                                    <p>this product has no category</p>
-                                {% endif %}
+                                    <span class="label">دسته بندی: </span><a href={% url 'products:category_detail' product_detail.category.slug %}>{{ product_detail.category }}</a>
                             </div>
                             <div class="tagged_as item_meta">
                                 <span class="label">برچسب ها: </span><a href="#">مبلمان</a>
@@ -225,8 +221,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="row">
                 <div class="col-12">
                     <div class="product-details-tab section-space--pt_90">
@@ -390,7 +384,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="related-products section-space--ptb_90">
                 <div class="row">
                     <div class="col-lg-12">
@@ -594,25 +587,4 @@
             </div>
         </div>
     </div>
-    <script>
-        function updateMinMaxValues() {
-          var inputElement = document.getElementById('minMaxInput');
-          var minValueElement = document.getElementById('minValue');
-          var maxValueElement = document.getElementById('maxValue');
-    
-          var value = parseInt(inputElement.value);
-    
-          if (!isNaN(value)) {
-            if (value < parseInt(inputElement.min)) {
-              inputElement.min = value;
-              minValueElement.textContent = value;
-            }
-    
-            if (value > parseInt(inputElement.max)) {
-              inputElement.max = value;
-              maxValueElement.textContent = value;
-            }
-          }
-        }
-      </script>    
 {% endblock content %}

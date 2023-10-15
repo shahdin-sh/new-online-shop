@@ -10,17 +10,6 @@ import logging
 def cart_detail_view(request):
     cart = Cart(request)
     print(request.session['cart'])
-
-    for item in cart:
-        item['update_quantity_of_the_current_form'] = AddToCartForm(
-            product_stock=item['product_obj'].quantity, 
-            initial = {
-                'quantity': item['quantity'],
-                'inplace': True,
-                'size': item['size'],
-                'color': item['color'],
-            }
-            )
     context = {
         'cart': cart,
     }
@@ -39,8 +28,7 @@ def add_product_to_the_cart(request, product_id):
         quantity = cleaned_data.get('quantity', 1)
         size = cleaned_data.get('size')
         color = cleaned_data.get('color')
-        replace_current_quantity = cleaned_data['inplace']
-        cart.add_to_cart(product, size=size, color=color, quantity=quantity, replace_current_quantity=replace_current_quantity)
+        cart.add_to_cart(product, size=size, color=color, quantity=quantity)
     else:
         # Log form errors
         logger = logging.getLogger(__name__)

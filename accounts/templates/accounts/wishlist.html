@@ -67,13 +67,17 @@
                                                             <td class="product-stock-status" id='unavailable_product'><p>ناموجود در انبار</p></td>
                                                         {% endif %}
                                                         <div class="quickview-quality">
-                                                            <input class="cart-plus-minus-box" name='quantity' type='hidden' value=1 widget>  
+                                                            <input class="cart-plus-minus-box" name='quantity' type='hidden' value=1 widget>
+                                                            <input class="cart-plus-minus-box" name='size' value='LARGE' type='hidden'>  
+                                                            <input class="cart-plus-minus-box" name='color' value='BLACK' type='hidden'>    
                                                         </div>
                                                         <td class="product-wishlist-cart">
-                                                            {% if product.id|stringformat:"s" not in request.session.cart.keys %}
-                                                                <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</button>
-                                                            {% else %}
-                                                                <button type='button'class="btn--lg btn--black font-weight--reguler text-white" >  مشاهده <a href={% url 'cart:cart_detail_view' %}>سبد خرید</a></button>
+                                                            {% if product.is_active %}
+                                                                {% if product.id|stringformat:"s" not in request.session.cart.keys %}
+                                                                    <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</button>
+                                                                {% else %}
+                                                                    <button type='button'class="btn--lg btn--black font-weight--reguler text-white" >  مشاهده <a href={% url 'cart:cart_detail_view' %}>سبد خرید</a></button>
+                                                                {% endif %}
                                                             {% endif %}
                                                         </td> 
                                                     </tr>

@@ -76,8 +76,10 @@ def order_item_create(request):
                 quantity = quantity,
                 price = product.price,
                 )
+            # update the current product quantity
+            product.quantity = item['current_product_stock']
+            product.save()
         cart.clear_the_cart()
-        # saving order_obj id in session for paymant process
         return redirect('paymant:paymant_process')
     else:
         return HttpResponse('please fill out your order information form first')

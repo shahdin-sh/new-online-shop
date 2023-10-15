@@ -13,7 +13,6 @@ class IsFeatureManager(models.Manager):
         return super(IsFeatureManager, self).get_queryset().filter(is_featured=False)           
 
 class IsActiveManager(models.Manager):
-    
     def get_queryset(self):
         return super(IsActiveManager, self).get_queryset().filter(is_active=True)
 
@@ -80,6 +79,14 @@ class Product(models.Model):
     objects = models.Manager() # our default django manager
     # is_featured_manager = IsFeatureManager()
     is_active_manager = IsActiveManager()
+
+    def save(self, *args, **kwargs):
+        # Check if the quantity is 0, and if so, set is_active to False
+        if self.quantity == 0:
+            self.is_active = False
+        else:
+            self.is_active = True
+        super(Product, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
