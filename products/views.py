@@ -8,6 +8,8 @@ from .forms import CommentForm
 from cart.forms import AddToCartForm
 from cart.cart import Cart
 from allauth.account.urls import *
+from django.core.paginator import Paginator
+
 
 
 def home_page(request):
@@ -15,9 +17,21 @@ def home_page(request):
 
 
 def shop_categories(request):
-    products = Product.objects.filter(category__isnull=False, is_featured=False)
+    products = Product.is_featured_manager.filter(category__isnull=False)
+
+    # Create a Paginator object
+    page_number = request.GET.get('page')
+    paginator = Paginator(products, 6)
+
+    # Get the current page
+    page_obj = paginator.get_page(page_number)
+
+    # Create a range of page numbers (e.g., 3 pages before and 3 pages after the current page)
+    page_range = range(max(1, page_obj.number - 3), min(paginator.num_pages, page_obj.number + 3))
+
     context = {
-        'products': products,
+        'products': page_obj,
+        'page_range': page_range,
     }
     return render(request, 'categories/shop_categories.html', context)
 

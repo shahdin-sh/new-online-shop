@@ -10,7 +10,7 @@
                     <div class="col-12">
                         <div class="row breadcrumb_box  align-items-center">
                             <div class="col-lg-6 col-md-6 col-sm-6 text-center text-sm-start">
-                                <h2 class='breadcrumb'>{{ product_detail.name }}</h2>
+                                <h2 class='breadcrumb'>فروشگاه</h2>
                             </div>
                             <div class="col-lg-6  col-md-6 col-sm-6">
                                 <!-- breadcrumb-list start -->
@@ -32,14 +32,14 @@
         <div class="container">
             <div class="row row--5">
                 {% for product in products %}
-                    <div class="col-lg-3 col-md-3">
+                    <div class="{% if forloop.counter|divisibleby:1 %}col-lg-4 col-md-4{% else %}col-lg-6 col-md-6{% endif %}">
                         <div class="hero-product-image mt-10">
-                            <a href="#">
-                                <img src="{% static "images/banners/h-g-1.webp" %}" class="img-fluid" alt="Banner images">
+                            <a href="{{product.get_absolute_url}}">
+                                <img src="{{product.image.url}}" class="img-fluid" alt="Banner images">
                             </a>
                             <div class="product-banner-title">
-                                <h4><a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a></h4>
-                                <h6><a href="{% url 'products:category_detail' product.category.slug %}">{{ product.category }}</a></h6>
+                                <h4><a href="{{product.get_absolute_url}}">{{ product.name }}</a></h4>
+                                <h6><a href="{{product.category.get_absolute_url}}">{{ product.category }}</a></h6>
                             </div>
                         </div>
                     </div>
@@ -47,6 +47,28 @@
             </div>
         </div>
     </div>
+     <div class="paginatoin-area">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="pagination-box">
+                        {% if products.has_previous %}
+                            <li>
+                                <a href="?page={{products.previous_page_number}}" class="Previous"><i class="icon-chevron-left"></i></a>
+                            </li>
+                        {% endif %}
+                        {% for products_page_number in page_range %}
+                            <li class="active"><a href="?page={{products_page_number}}">{{products_page_number}}</a></li>
+                        {% endfor %}
+                        {% if products.has_next %}
+                            <li>
+                                <a href="?page={{products.next_page_number}}" class="Next"><i class="icon-chevron-right"></i></a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
      <!-- Product Area Start -->
      <div class="product-wrapper section-space--ptb_120">
         <div class="container">
@@ -84,14 +106,14 @@
                                 <ul class="nav toolber-tab-menu justify-content-start" role="tablist">
                                     <li class="tab__item nav-item active">
                                         <a class="nav-link" data-bs-toggle="tab" href="#tab_columns_01" role="tab">
-                                            <img src="assets/images/svg/column-03.svg" class="img-fluid" alt="Columns 03">
+                                            <img src={% static "images/svg/column-03.svg" %} class="img-fluid" alt="Columns 03">
                                         </a>
                                     </li>
                                     <li class="tab__item nav-item">
-                                        <a class="nav-link active" data-bs-toggle="tab" href="#tab_columns_02" role="tab"><img src="assets/images/svg/column-04.svg" class="img-fluid" alt="Columns 03"> </a>
+                                        <a class="nav-link active" data-bs-toggle="tab" href="#tab_columns_02" role="tab"><img src={% static "images/svg/column-04.svg" %} class="img-fluid" alt="Columns 03"> </a>
                                     </li>
                                     <li class="tab__item nav-item">
-                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_columns_03" role="tab"><img src="assets/images/svg/column-05.svg" class="img-fluid" alt="Columns 03"> </a>
+                                        <a class="nav-link" data-bs-toggle="tab" href="#tab_columns_03" role="tab"><img src={% static "images/svg/column-05.svg" %} class="img-fluid" alt="Columns 03"> </a>
                                     </li>
                                 </ul>
                             </div>
@@ -173,7 +195,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_1-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_1-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                         <span class="ribbon out-of-stock ">
                                         اتمام موجودی
@@ -199,7 +221,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_2-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_2-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -222,7 +244,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_3-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_3-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -245,7 +267,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_4-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_4-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                         <span class="ribbon onsale">
                                     -14%
@@ -271,7 +293,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_5-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_5-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -294,7 +316,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_6-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_6-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -317,7 +339,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_7-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_7-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -340,7 +362,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_8-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_8-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -367,7 +389,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_3-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_3-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -390,7 +412,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_4-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_4-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                         <span class="ribbon onsale">
                                     -14%
@@ -416,7 +438,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_5-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_5-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -439,7 +461,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_6-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_6-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -462,7 +484,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_7-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_7-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -485,7 +507,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_8-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_8-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -508,7 +530,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_1-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_1-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                         <span class="ribbon out-of-stock ">
                                         اتمام موجودی
@@ -534,7 +556,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_8-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_8-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -562,7 +584,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_5-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_5-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -585,7 +607,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_6-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_6-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -608,7 +630,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_7-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_7-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -631,7 +653,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_8-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_8-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">
@@ -654,7 +676,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_1-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_1-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                         <span class="ribbon out-of-stock ">
                                         اتمام موجودی
@@ -680,7 +702,7 @@
                             <div class="single-product-item text-center">
                                 <div class="products-images">
                                     <a href="product-details.html" class="product-thumbnail">
-                                        <img src="assets/images/product/1_8-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
+                                        <img src="{% static "images/product/1_8-300x300.webp" %}" class="img-fluid" alt="Product Images" width="300" height="300">
 
                                     </a>
                                     <div class="product-actions">

@@ -64,7 +64,7 @@
                                                         {% if product.is_active %} 
                                                             <td class="product-stock-status"><p>موجود در انبار</p></td> 
                                                         {% elif not product.is_active %}
-                                                            <td class="product-stock-status" id='unavailable_product'><p>ناموجود در انبار</p></td>
+                                                            <td class="product-stock-status"><p style="color: red;">ناموجود در انبار</p></td>
                                                         {% endif %}
                                                         <div class="quickview-quality">
                                                             <input class="cart-plus-minus-box" name='quantity' type='hidden' value=1 widget>
@@ -89,7 +89,7 @@
                         {% elif not user.wished_product.all %}
                         <tr>
                             <td>
-                                <h2>your wishlist is empty</h2>
+                                <h3>سبد خرید شما خالی است</h3>
                             </td>
                         </tr> 
                         {% endif %}
@@ -99,9 +99,4 @@
         </div>             
         <!-- wishlist end -->             
     </div>
-    <style>
-        #unavailable_product {
-            color:red;
-        }
-    </style>
 {% endblock content %}

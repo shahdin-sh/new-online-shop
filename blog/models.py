@@ -21,7 +21,7 @@ class IsNotSpamManager(models.Manager):
         return super(IsNotSpamManager, self).get_queryset().filter(is_spam=False)
 
 
-class Blog(models.Model):
+class Post(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     content = RichTextField()
@@ -77,7 +77,7 @@ class Category(models.Model):
 
 class Comment(models.Model):
     content = RichTextField()
-    post = models.ForeignKey('Blog', on_delete=models.CASCADE, related_name='comments')
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='post_comments')
     timestamp = models.DateTimeField(auto_now_add=True)
     is_spam = models.BooleanField(default=False)

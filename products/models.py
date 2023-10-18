@@ -36,6 +36,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
+    def get_absolute_url(self):
+        return reverse('products:category_detail', args=[self.slug])
+    
     
 class Product(models.Model):
 
@@ -70,6 +73,7 @@ class Product(models.Model):
     color = models.CharField(choices=SIZE_CHOICES, max_length=200, null=True, blank=True)
     quality = models.CharField(choices=PRODUCT_QUALITY_CHOICES, max_length=200)
     image = models.ImageField(upload_to='product/', default='product_default/shopping_kart.jpg')
+    banner = models.ImageField(upload_to='product/', default='product/bn3-1.webp')
     datetime_created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
@@ -77,7 +81,7 @@ class Product(models.Model):
 
     # Custom Managers
     objects = models.Manager() # our default django manager
-    # is_featured_manager = IsFeatureManager()
+    is_featured_manager = IsFeatureManager()
     is_active_manager = IsActiveManager()
 
     def save(self, *args, **kwargs):
@@ -92,7 +96,7 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('product_detail_view', args=[self.pk])
+        return reverse('products:product_detail', args=[self.slug])
     
     def clean_price(self):
         return f'{self.price: ,}'
