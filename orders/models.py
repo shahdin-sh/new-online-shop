@@ -28,6 +28,9 @@ class Order(models.Model):
     def get_order_items(self):
         return self.items.all()
     
+    def get_user_order(self, user):
+        return self.objects.filter(customer=user)
+    
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
