@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import CustomUserModel
+from django.conf import settings
 
 
 class Order(models.Model):
