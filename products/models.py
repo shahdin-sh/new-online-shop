@@ -22,6 +22,12 @@ class IsOrderManager(models.Manager):
         return super(IsOrderManager, self).get_queryset().order_by('-datetime_created')
     
 
+class IsNotSpamManager(models.Manager):
+    
+    def get_queryset(self):
+        return super(IsNotSpamManager, self).get_queryset().filter(is_spam=False)
+    
+
 class Category(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField()
@@ -82,7 +88,7 @@ class Product(models.Model):
     # Custom Managers
     objects = models.Manager() # our default django manager
     is_featured_manager = IsFeatureManager()
-    is_active_manager = IsActiveManager()
+    is_not_spam_manager = IsNotSpamManager()
 
     def save(self, *args, **kwargs):
         # Check if the quantity is 0, and if so, set is_active to False
@@ -103,6 +109,15 @@ class Product(models.Model):
 
 
 class Comment(models.Model):
+
+    RATING_CHOICES = (
+        ('POOR', 'poor'),
+        ('BAD', 'bad'),
+        ('NORMAL', 'normal'),
+        ('GOOD', 'good'),
+        ('PERFECT', 'perfect'),
+    )
+
     content = models.TextField()
     is_spam = models.BooleanField(default=False)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="comments")
@@ -114,7 +129,7 @@ class Comment(models.Model):
     session_token = models.CharField(max_length=32, null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
-    rating = models.PositiveIntegerField(null=True, blank=True)
+    rating = models.CharField( max_length=100, choices=RATING_CHOICES, null=True, blank=True)
 
 
     # Custom Managers

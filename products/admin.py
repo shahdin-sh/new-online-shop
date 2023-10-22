@@ -65,7 +65,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['content','author', 'name', 'email', 'product', 'datetime_created', 'is_comment', 'rating', 'session_token']
+    list_display = ['content','author', 'name', 'email', 'product', 'datetime_created', 'is_comment', 'is_spam', 'rating', 'session_token']
     ordering = ['-datetime_created']
     inlines = [
         RepliesInline

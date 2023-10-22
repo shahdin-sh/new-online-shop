@@ -9,6 +9,7 @@ from cart.forms import AddToCartForm
 from cart.cart import Cart
 from allauth.account.urls import *
 from django.core.paginator import Paginator
+import logging
 
 
 
@@ -47,10 +48,10 @@ def products_or_category_detail(request, category_slug):
 def product_detail_view(request, product_slug):
     products = Product.objects.filter(is_featured=False)
     product_detail = get_object_or_404(products, slug=product_slug)
-    comment_form = CommentForm(request.POST)
     # comment section
+    current_session = request.session.session_key
     if request.method == 'POST':
-        comment_form = CommentForm(request.POST)
+        comment_form = CommentForm(request, request.POST)
         if comment_form.is_valid():
             # reply section
             parent_obj = None
@@ -70,26 +71,35 @@ def product_detail_view(request, product_slug):
                     reply_comment.parent = parent_obj
             # comment section
             new_comment = comment_form.save(commit=False)
+            if comment_form.cleaned_data['website'] != 'please leave this field blank.':
+                new_comment.is_spam = True
             new_comment.product = product_detail
             # check if user is authenticated, give author to DB and if it is not just give name and email as a guest
             if request.user.is_authenticated:
                 new_comment.author = request.user
             else:
-                new_comment.session_token = request.session.session_key
-                new_comment.name = comment_form.cleaned_data['name']
-                new_comment.email = comment_form.cleaned_data['email']
-            # getting rating from stars label
-            # rating = request.POST.get('rating')
-            # new_comment.rating = rating
+                # restorig name and email in the session
+                guest_data  = request.session['guest_data'] = {
+                    'name': comment_form.cleaned_data['name'],
+                    'email': comment_form.cleaned_data['email'],
+                }
+                print(guest_data)
+                new_comment.session_token = current_session
+                new_comment.name = guest_data['name']
+                new_comment.email = guest_data['email']
             # The clean_email method will be called during the form validation, and the validation error will be raised if needed.
             comment_form.clean()
             new_comment.save()
             return redirect(reverse('products:product_detail', args=[product_slug]))
+        else:
+            # Log form errors
+            logger = logging.getLogger(__name__)
+            logger.error("Form validation failed: %s", comment_form.errors)
     else:
-        comment_form = CommentForm()
+        comment_form = CommentForm(request)
     context = {
         'product_detail': product_detail,
-        'comments': product_detail.comments.filter(parent=None).order_by('-datetime_created'),
+        'comments': product_detail.comments.filter(parent=None, is_spam=False).order_by('-datetime_created'),
         'comment_form': comment_form,
         'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity),
     }

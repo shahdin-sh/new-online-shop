@@ -315,6 +315,27 @@
                                             <p>نام: {% if comment.name %}{{comment.name}}{% else %}{{comment.author}}{% endif %}</p>
                                             <p>متن نظر: {{comment.content}}</p>
                                             <p>تاریخ انتشار نظر: {{comment.datetime_created}}</p>
+                                            {% if comment.rating %}
+                                                <p>امتیاز شما :
+                                                    {% if comment.rating == 'PERFECT' %}
+                                                        &#9733;&#9733;&#9733;&#9733;&#9733;
+                                                    {% endif %}
+                                                    {% if comment.rating == 'GOOD' %}
+                                                        &#9733;&#9733;&#9733;&#9733;
+                                                    {% endif %}
+                                                    {% if comment.rating == 'NORMAL' %}
+                                                        &#9733;&#9733;&#9733;
+                                                    {% endif %}
+                                                    {% if comment.rating == 'BAD' %}
+                                                        &#9733;&#9733;
+                                                    {% endif %}
+                                                    {% if comment.rating == 'POOR' %}
+                                                        &#9733;
+                                                    {% endif %}
+                                                </p>
+                                            {% else %}
+                                                <p>امتیاز شما: هیچ امتیازی ثبت نشده است</p>
+                                            {% endif %}
                                         </div>
                                         {% if comment.replies.all %}
                                             <br>
@@ -357,21 +378,38 @@
                                             {% csrf_token %}
                                             <p class="comment-form-comment">
                                                 <label>نظر شما برای محصول {{product_detail.name}}</label>
-                                                <textarea class="comment-notes" required="required" name='content'></textarea>
-                                            </p> 
-                                            <!-- only none_authenticated useres will see name and email field. -->
-                                            {% if not user.is_authenticated %}
-                                                <div class="comment-input">
-                                                    <p class="comment-form-author">
-                                                        <label>نام <span class="required">*</span></label>
-                                                        <input type="text" name="name" value={% if comments_with_session_token.exists %}{% for comment in comments_with_session_token %}{{comment.name}}{% endfor %}{% endif %}>
-                                                    </p>
-                                                    <p class="comment-form-email">
-                                                        <label>ایمیل <span class="required">*</span></label>
-                                                        <input type="text" name="email" value={% if comments_with_session_token.exists %}{% for comment in comments_with_session_token %}{{comment.email}}{% endfor %}{% endif %}>
-                                                    </p>
+                                                <textarea class="comment-notes" required="required" name='content' required></textarea>
+                                                <div class="rating">
+                                                    <label>امتیاز<span class="required">*</span></label>
+                                                    <select class="select-active" name="rating">
+                                                        <option value="PERFECT">&#9733;</option>
+                                                        <option value="GOOD">&#9733;&#9733;</option>
+                                                        <option value="NORMAL">&#9733;&#9733;&#9733;</option>
+                                                        <option value="BAD">&#9733;&#9733;&#9733;&#9733;</option>
+                                                        <option value="POOR">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+                                                    </select>
                                                 </div>
-                                            {% endif%}
+                                                <!-- Honeypot field -->
+                                                <input name='website' value='please leave this field blank.' type='hidden'>
+                                                <!-- only none_authenticated useres will see name and email field. -->
+                                                {% if not user.is_authenticated %}
+                                                    {% if not request.session.guest_data %}
+                                                        <div class="comment-input">
+                                                            <p class="comment-form-author">
+                                                                <label>نام <span class="required">*</span></label>
+                                                                <input type="text" name="name" required>
+                                                            </p>
+                                                            <p class="comment-form-email">
+                                                                <label>ایمیل <span class="required">*</span></label>
+                                                                <input type="text" name="email" required>
+                                                            </p>
+                                                        </div>
+                                                    {% else %}
+                                                        <input name='name' type='hidden' value={{request.session.guest_data.name}}>
+                                                        <input name='email' type='hidden' value={{request.session.guest_data.email}}>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </p> 
                                             <div class="comment-form-submit">
                                                 <input type="submit" value="ارسال" class="comment-submit">
                                             </div>
