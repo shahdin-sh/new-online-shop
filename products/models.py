@@ -4,6 +4,7 @@ from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from accounts.models import CustomUserModel
+import string, random
 
 
 # managers
@@ -45,7 +46,54 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('products:category_detail', args=[self.slug])
     
+
+class Discount(models.Model):
+
+    DISCOUNT_TYPE_CHOICES = (
+        ('PD', 'PERCNTAGE DISCOUNT'),
+        ('FAD', 'FIXED AMOUNT DISCOUNT'),
+        ('BOGO', 'BUY ONE GET ONE'),
+    )
+
+    DISCOUNT_STATUS_CHOICES = (
+        ('AC', 'ACTIVE'),
+        ('DC', 'DIACTIVE'),
+    )
+    promo_code = models.CharField(max_length=255, blank=True)
+    discount_type = models.CharField(max_length=255, choices=DISCOUNT_TYPE_CHOICES)
+    value = models.PositiveIntegerField()
+    description = models.CharField(max_length=100)
+    expiration_date = models.DateTimeField()
+    discount_status = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f'{self.discount_type}, id={self.id}'
+
+    def clean_value(self):
+        return f'{self.value: ,} T'    
     
+    def calculate_perceantage_discount(self, product):
+        if self.value < product.prcie:
+            discount_product = (self.value * 100) / product.price
+            return discount_product
+
+    def calculate_fixed_amount_discount(self, product):
+        if self.value < product.price:
+            discount_product = product.price - self.value
+            return discount_product
+    
+    def calculate_buy_one_get_one_discount(self, product):
+        if self.value < product.price and product.price >= 1500000:
+            pass
+
+    def save(self, *args, **kwargs):
+        if self.promo_code == '':
+            letters = string.ascii_letters.upper()
+            digits = ''.join(random.choice(letters) for _ in range(4))
+            self.promo_code  = digits
+        super(Discount, self).save(*args, **kwargs)
+    
+
 class Product(models.Model):
 
     PRODUCT_QUALITY_CHOICES = (
@@ -73,6 +121,7 @@ class Product(models.Model):
     quantity = models.IntegerField()
     is_active = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
+    # price = 120,000 t or 1,000,000 t or 3,456,990 t
     price = models.PositiveIntegerField()
     slug = models.SlugField(unique=True)
     size = models.CharField(choices=COLOR_CHOICES, max_length=200, null=True, blank=True)
@@ -83,6 +132,7 @@ class Product(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
+    discounts = models.ManyToManyField(Discount, related_name='discounts')
 
 
     # Custom Managers
@@ -106,6 +156,8 @@ class Product(models.Model):
     
     def clean_price(self):
         return f'{self.price: ,}'
+
+
 
 
 class Comment(models.Model):

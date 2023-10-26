@@ -3,6 +3,13 @@ from accounts.models import CustomUserModel
 
 
 class Order(models.Model):
+
+    ORDERS_STATUS_CHOICES = (
+        ('p', 'PAID'),
+        ('u', 'UNPAID'),
+        ('c', 'CANCELED')
+    )
+
     customer = models.OneToOneField(CustomUserModel, on_delete=models.SET_NULL, related_name='order', null=True)
     first_name = models.CharField(max_length=10)
     last_name = models.CharField(max_length=10)
@@ -17,6 +24,7 @@ class Order(models.Model):
     note = models.TextField(blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
+    order_status = models.CharField(max_length=100, choices=ORDERS_STATUS_CHOICES, default='u')
 
 
     def __str__(self):
