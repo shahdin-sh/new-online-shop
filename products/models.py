@@ -1,10 +1,12 @@
+import string, random
 from django.db import models
 from django.shortcuts import reverse
 from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from accounts.models import CustomUserModel
-import string, random
+from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # managers
@@ -50,47 +52,45 @@ class Category(models.Model):
 class Discount(models.Model):
 
     DISCOUNT_TYPE_CHOICES = (
-        ('PD', 'PERCNTAGE DISCOUNT'),
+        ('PD', 'PERCENTAGE DISCOUNT'),
         ('FAD', 'FIXED AMOUNT DISCOUNT'),
         ('BOGO', 'BUY ONE GET ONE'),
     )
 
     DISCOUNT_STATUS_CHOICES = (
         ('AC', 'ACTIVE'),
-        ('DC', 'DIACTIVE'),
+        ('DC', 'DEACTIVE'),
     )
     promo_code = models.CharField(max_length=255, blank=True)
-    discount_type = models.CharField(max_length=255, choices=DISCOUNT_TYPE_CHOICES)
-    value = models.PositiveIntegerField()
+    type = models.CharField(max_length=255, choices=DISCOUNT_TYPE_CHOICES)
+    value = models.PositiveIntegerField(blank=True, null=True)
+    percent = models.DecimalField(max_digits=3, decimal_places=1, validators=[MaxValueValidator(limit_value=100), MinValueValidator(limit_value=1)], blank=True, null=True)
     description = models.CharField(max_length=100)
     expiration_date = models.DateTimeField()
-    discount_status = models.CharField(max_length=255)
+    status = models.CharField(max_length=255, choices=DISCOUNT_STATUS_CHOICES, default='AC')
 
     def __str__(self):
-        return f'{self.discount_type}, id={self.id}'
+        return f'{self.promo_code} discount'
 
     def clean_value(self):
-        return f'{self.value: ,} T'    
+        if self.value is not None:
+            return f'{self.value: ,} T'    
     
-    def calculate_perceantage_discount(self, product):
-        if self.value < product.prcie:
-            discount_product = (self.value * 100) / product.price
-            return discount_product
+    def clean_percent(self):
+        if self.percent is not None:
+            return f'{self.value: ,} %'    
 
-    def calculate_fixed_amount_discount(self, product):
-        if self.value < product.price:
-            discount_product = product.price - self.value
-            return discount_product
-    
-    def calculate_buy_one_get_one_discount(self, product):
-        if self.value < product.price and product.price >= 1500000:
-            pass
+    def check_and_delete_if_expired(self):
+        if self.expiration_date < timezone.now():
+            self.delete()
 
     def save(self, *args, **kwargs):
-        if self.promo_code == '':
-            letters = string.ascii_letters.upper()
-            digits = ''.join(random.choice(letters) for _ in range(4))
-            self.promo_code  = digits
+        # generate promo code if the discount is percenatage discount or fixed amount discount.
+        if not self.promo_code:
+            if self.type != 'BOGO':
+                letters = string.ascii_letters.upper()
+                digits = ''.join(random.choice(letters) for _ in range(4))
+                self.promo_code  = digits
         super(Discount, self).save(*args, **kwargs)
     
 
@@ -132,7 +132,7 @@ class Product(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
-    discounts = models.ManyToManyField(Discount, related_name='discounts')
+    discounts = models.ManyToManyField(Discount, related_name='products')
 
 
     # Custom Managers
@@ -156,7 +156,6 @@ class Product(models.Model):
     
     def clean_price(self):
         return f'{self.price: ,}'
-
 
 
 

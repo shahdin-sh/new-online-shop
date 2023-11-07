@@ -1,6 +1,6 @@
 
 from products.models import Product
-
+from django.core import serializers
 
 class Cart:
     def __init__(self, request):
@@ -69,4 +69,37 @@ class Cart:
         return False if self.cart == {} else True                                                                                      
 
     def get_total_price(self):
-        return sum(item['quantity'] * item['product_obj'].price for item in self.cart.values())
+        # total_price
+        product_ids = self.cart.keys()
+        products = Product.objects.filter(id__in=product_ids)
+
+        cart = self.cart.copy()
+
+        for product in products:
+            cart[str(product.id)]['product_obj'] = product
+
+        cart_total_price = sum(item['quantity'] * item['product_obj'].price for item in self.cart.values()) 
+        return cart_total_price
+
+    def applying_discount(self, discount_value, discount_percent, discount_type):
+        # total_price
+        product_ids = self.cart.keys()
+        products = Product.objects.filter(id__in=product_ids)
+
+        cart = self.cart.copy()
+
+        for product in products:
+            cart[str(product.id)]['product_obj'] = product
+
+
+        cart_total_price = sum(item['quantity'] * item['product_obj'].price for item in self.cart.values())
+
+        # handle percentage discount calculation.
+        if discount_type == 'PD':
+            discounted_price = cart_total_price - (discount_percent * cart_total_price / 100) 
+        # handle fixed amount discount calculation.
+        elif discount_type == 'FAD':
+            discounted_price = cart_total_price - discount_value
+        
+        # applying discounted price in the cart.
+        return discounted_price

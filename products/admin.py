@@ -54,10 +54,15 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class DiscountAdmin(admin.ModelAdmin):
-    list_display = ['promo_code', 'discount_type', 'clean_value', 'description', 'expiration_date']
+    list_display = ['promo_code', 'type', 'clean_value', 'percent', 'description', 'expiration_date', 'status']
 
     def clean_value(self, obj):
-        return obj.clean_value()   
+        if obj is not None:
+            return obj.clean_value()
+        return None
+
+    # def clean_percent(self,obj):
+    #     return obj.clean_percent()   
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'quantity', 'category', 'is_active', 'is_featured', 'product_price', 'datetime_created', 'size', 'color']

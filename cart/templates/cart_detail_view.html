@@ -84,24 +84,27 @@
                         </div>                               
                     </div>                                 
                     <div class="cart-buttom-area"> 
-                        <div class="row"> 
+                        <div class="row">
                             <div class="col-lg-6"> 
-                                <div class="discount-code section-space--mt_60"> 
-                                    <h6 class="mb-30">کد تخفیف</h6> 
-                                    <p>اگر کد تخفیف دارید، وارد نمایید.</p> 
-                                    <input type="text" name="name" placeholder="کد تخفیف"/> 
-                                    <button class="coupon-btn btn btn--lg btn--border_1" type="submit">ثبت کد تخفیف</button>                                                 
-                                </div>                                             
-                            </div>                                         
+                                    <form action={% url 'cart:apply_discount'%} method='post'>
+                                        {% csrf_token %} 
+                                        <div class="discount-code section-space--mt_60"> 
+                                            <h6 class="mb-30">کد تخفیف</h6> 
+                                            <p>اگر کد تخفیف دارید، وارد نمایید.</p> 
+                                            <input type="text" name="promo_code" placeholder="کد تخفیف"/> 
+                                            <button class="coupon-btn btn btn--lg btn--border_1" type="submit">ثبت کد تخفیف</button>                                                 
+                                        </div>                                             
+                                    </form>
+                                </div>
                             <div class="col-lg-6"> 
                                 <div class="cart_totals section-space--mt_60 ms-md-auto"> 
                                     <div class="grand-total-wrap"> 
                                         <div class="grand-total-content"> 
                                             <ul> 
                                                 <li>مجموع قیمت<span> {{cart.get_total_price|intcomma}} تومان</span>
-                                                </li>                                                             
-                                                <li>مجموع قیمت (با احتساب تخفیف)<span>{{cart.get_total_price|intcomma}} تومان</span>
-                                                </li>                                                             
+                                                </li>                                                  
+                                                <li>مجموع قیمت (با احتساب تخفیف)<span>{{cart.discounted_price|intcomma}} تومان</span>
+                                                </li>                                                       
                                             </ul>                                                         
                                         </div>                                                     
                                     </div>                                                 
