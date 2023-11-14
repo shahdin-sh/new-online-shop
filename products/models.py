@@ -36,6 +36,8 @@ class Category(models.Model):
     slug = models.SlugField()
     is_featured = models.BooleanField(null=True, default=False)
     description = models.TextField(blank=True)
+    # sample of circular dependecy
+    selected_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, related_name='+')
 
 
     # Custom Managers

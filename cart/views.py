@@ -70,8 +70,8 @@ def apply_discount_for_cart_items(request):
                 # no solution has been found yet.
                 print(discounted_price)
                 # change the discount status to deactive it means that each discount after use are not usable anymore.
-                # discount_obj.status = 'DC'
-                # discount_obj.save()
+                discount_obj.status = 'DC'
+                discount_obj.save()
                 messages.success(request, 'your discount applied successfully.')
                 # redirect to the current page.
                 return redirect(request.META.get('HTTP_REFERER'))

@@ -25,7 +25,8 @@ urlpatterns = [
     # for user configuration we use both allauth and accounts
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('accounts.urls')),
-    path('', include('products.urls')),
+    path('', include('pages.urls')),
+    path('products/', include('products.urls')),
     path('cart/', include('cart.urls')),
     path('orders/', include('orders.urls')),
     path('paymant/', include('paymant.urls')),

@@ -12,11 +12,6 @@ from django.core.paginator import Paginator
 import logging
 
 
-
-def home_page(request):
-    return render(request, 'home.html')
-
-
 def shop_categories(request):
     products = Product.is_featured_manager.filter(category__isnull=False)
 
