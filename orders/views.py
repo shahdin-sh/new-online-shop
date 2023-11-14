@@ -12,9 +12,13 @@ import logging
 @item_in_cart_required
 @login_required
 def checkout(request):
+    breadcrumb_data = [{'lable': 'checkout', 'title':'Checkout'}]
+
     context = {
         'order_form': OrderForm(),
+        'breadcrumb_data': breadcrumb_data
     }
+    
     return render(request, 'orders/checkout.html', context)
 
 

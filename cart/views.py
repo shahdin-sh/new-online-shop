@@ -12,8 +12,12 @@ from django.contrib import messages
 def cart_detail_view(request):
     cart = Cart(request)
     print(cart.get_total_price())
+
+    breadcrumb_data = [{'lable':'cart', 'title': 'Cart'}]
+    
     context = {
         'cart': cart,
+        'breadcrumb_data': breadcrumb_data,
     }
     return render(request, 'cart_detail_view.html', context)
 

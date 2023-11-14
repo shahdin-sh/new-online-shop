@@ -3,34 +3,11 @@
 
 
 {% block content %}
+
     <!-- breadcrumb-area start -->
-        <div class="breadcrumb-area">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="row breadcrumb_box  align-items-center">
-                            <div class="col-lg-6 col-md-6 col-sm-6 text-center text-sm-start">
-                                <h2 class='breadcrumb'>{{ product_detail.name }}</h2>
-                            </div>
-                            <div class="col-lg-6  col-md-6 col-sm-6">
-                                <!-- breadcrumb-list start -->
-                                    <ul class="breadcrumb-list text-center text-sm-end">
-                                        <li class="breadcrumb-item"><a href="{% url 'pages:homepage' %}">
-                                            Homepage
-                                        </a></li>
-                                        <li class="breadcrumb-item"><a href="{% url 'products:product_categories' %}">
-                                            Shop Categories
-                                        </a></li>
-                                        <li class="breadcrumb-item active">{{ category.name }}</li>
-                                    </ul>
-                                <!-- breadcrumb-list end -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    {% include 'breadcrumb.html' %}
     <!-- breadcrumb-area end -->
+
     <!-- Product Area Start -->
     <div class="product-wrapper section-space--ptb_120">
         <div class="container">
@@ -168,7 +145,7 @@
                                         </div>
                                     </div>
                                     <div class="product-content">
-                                        <h6 class="prodect-title"><a href="product-details.html">{{ product.name }}</a></h6>
+                                        <h6 class="prodect-title"><a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a></h6>
                                         <div class="prodect-price">
                                             <span class="new-price">{{ product.clean_price}}</span>
                                         </div>
@@ -191,7 +168,7 @@
                                         </a>
                                         <div class="product-actions">
                                             <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
-                                            <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
                                             {% if user not in product.user_wished_product.all %}
                                                 <a href={% url 'products:add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
                                             {% else %}
@@ -201,7 +178,7 @@
                                         </div>
                                     </div>
                                     <div class="product-content">
-                                        <h6 class="prodect-title"><a href="product-details.html">{{ product.name }}</a></h6>
+                                        <h6 class="prodect-title"><a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a></h6>
                                         <div class="prodect-price">
                                             <span class="new-price">{{ product.clean_price}}</span>
                                         </div>
@@ -223,7 +200,7 @@
                                         </a>
                                         <div class="product-actions">
                                             <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
-                                            <a href="product-details.html"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
                                             {% if user not in product.user_wished_product.all %}
                                                 <a href={% url 'products:add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
                                             {% else %}
@@ -233,7 +210,7 @@
                                         </div>
                                     </div>
                                     <div class="product-content">
-                                        <h6 class="prodect-title"><a href="product-details.html">{{ product.name }}</a></h6>
+                                        <h6 class="prodect-title"><a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a></h6>
                                         <div class="prodect-price">
                                             <span class="new-price">{{ product.clean_price}}</span>
                                         </div>

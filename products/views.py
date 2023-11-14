@@ -25,9 +25,11 @@ def shop_categories(request):
     # Create a range of page numbers (e.g., 3 pages before and 3 pages after the current page)
     page_range = range(max(1, page_obj.number - 3), min(paginator.num_pages, page_obj.number + 3))
 
+    breadcrumb_data = [{'lable':'store', 'title': 'Store'}]
     context = {
         'products': page_obj,
         'page_range': page_range,
+        'breadcrumb_data': breadcrumb_data,
     }
     return render(request, 'categories/shop_categories.html', context)
 
@@ -35,8 +37,11 @@ def shop_categories(request):
 def products_or_category_detail(request, category_slug):
     categories = Category.is_featured_manager.all()
     category = get_object_or_404(categories, slug=category_slug)
+
+    breadcrumb_data = [{'lable':f'{category.name}', 'title': f'{category.name}', 'middle_lable': 'store', 'middle_url':'products:product_categories'}]
     context = {
         'category': category,
+        'breadcrumb_data': breadcrumb_data,
     }
     return render(request, 'categories/category_detail.html', context)
 
@@ -92,11 +97,20 @@ def product_detail_view(request, product_slug):
             logger.error("Form validation failed: %s", comment_form.errors)
     else:
         comment_form = CommentForm(request)
+
+    breadcrumb_data = [{'lable':f'{product_detail.name}', 
+                        'title': f'{product_detail.name}', 
+                        'middle_lable': f'{product_detail.category.name}', 
+                        'middle_url': 'products:category_detail',
+                        'middle_url_args': product_detail.category.slug
+                    }]
+
     context = {
         'product_detail': product_detail,
         'comments': product_detail.comments.filter(parent=None, is_spam=False).order_by('-datetime_created'),
         'comment_form': comment_form,
         'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity),
+        'breadcrumb_data': breadcrumb_data,
     }
     return render(request, 'products/product_detail_view.html', context)
 

@@ -14,18 +14,20 @@ from django.contrib import messages
 
 @login_required
 def wishlist_view(request):
-    return render(request, 'accounts/wishlist.html')
+    breadcrumb_data = [{'lable': 'wishlist', 'title': 'wishlist'}]
+    return render(request, 'accounts/wishlist.html', context={'breadcrumb_data': breadcrumb_data})
 
 
 @login_required
 def my_account(request):
+    breadcrumb_data = [{'lable': 'my_account','title': 'my account'}]
     context = {
         'order_form': OrderForm(),
         'user_change_form': CustomUserChangeForm(),
         'password_change_form': CustomChangePasswordForm(user=request.user),
         'current_time': persian_to_western_digits(timezone.now().strftime('%Y-%m-%d')),
+        'breadcrumb_data': breadcrumb_data,
     }
-    print(persian_to_western_digits(timezone.now().strftime('%Y-%m-%d')))
     return render(request, 'accounts/my_account.html', context)
 
 

@@ -132,7 +132,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='product/', default='product_default/shopping_kart.jpg')
     banner = models.ImageField(upload_to='product/', default='product/bn3-1.webp')
     datetime_created = models.DateTimeField(auto_now_add=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True, related_name='products')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
     discounts = models.ManyToManyField(Discount, related_name='products')
 
