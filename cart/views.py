@@ -11,7 +11,6 @@ from django.contrib import messages
 @item_in_cart_required
 def cart_detail_view(request):
     cart = Cart(request)
-    print(cart.get_total_price())
 
     breadcrumb_data = [{'lable':'cart', 'title': 'Cart'}]
     
@@ -19,13 +18,14 @@ def cart_detail_view(request):
         'cart': cart,
         'breadcrumb_data': breadcrumb_data,
     }
+
     return render(request, 'cart_detail_view.html', context)
 
 
 # we use this view as action of our forms in 'cart_detail_view' and 'product_detail_view'
 def add_product_to_the_cart(request, product_id):
     cart = Cart(request)
-    products = Product.objects.filter(is_featured=False)
+    products = Product.objects.all()
     product = get_object_or_404(products, id=product_id)
     cart_form = AddToCartForm(request.POST, product_stock=product.quantity)
     if cart_form.is_valid():

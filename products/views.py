@@ -13,11 +13,11 @@ import logging
 
 
 def shop_categories(request):
-    products = Product.is_featured_manager.filter(category__isnull=False)
+    products = Product.objects.filter(category__isnull=False, is_active=True).order_by('-datetime_created')
 
     # Create a Paginator object
     page_number = request.GET.get('page')
-    paginator = Paginator(products, 6)
+    paginator = Paginator(products, 9)
 
     # Get the current page
     page_obj = paginator.get_page(page_number)
@@ -35,7 +35,7 @@ def shop_categories(request):
 
 
 def products_or_category_detail(request, category_slug):
-    categories = Category.is_featured_manager.all()
+    categories = Category.objects.all()
     category = get_object_or_404(categories, slug=category_slug)
 
     breadcrumb_data = [{'lable':f'{category.name}', 'title': f'{category.name}', 'middle_lable': 'store', 'middle_url':'products:product_categories'}]
@@ -46,7 +46,7 @@ def products_or_category_detail(request, category_slug):
     return render(request, 'categories/category_detail.html', context)
 
 def product_detail_view(request, product_slug):
-    products = Product.objects.filter(is_featured=False)
+    products = Product.objects.filter(is_active=True)
     product_detail = get_object_or_404(products, slug=product_slug)
     # comment section
     current_session = request.session.session_key
@@ -118,7 +118,7 @@ def product_detail_view(request, product_slug):
 @login_required
 def add_to_wishlist(request, product_slug):
     # this view is using in product_detail
-    products = Product.objects.filter(is_featured=False)
+    products = Product.objects.filter(is_active=True)
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user not in product_detail.user_wished_product.all():
         product_detail.user_wished_product.add(request.user)
@@ -129,7 +129,7 @@ def add_to_wishlist(request, product_slug):
 @login_required
 def remove_from_wishlist(request, product_slug):
     # this view is using in product_detail
-    products = Product.objects.filter(is_featured=False)
+    products = Product.objects.filter(is_active=True)
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user in product_detail.user_wished_product.all():
         product_detail.user_wished_product.remove(request.user)

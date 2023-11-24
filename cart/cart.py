@@ -48,6 +48,7 @@ class Cart:
                 'size': size,
                 'color': color,
             }
+            
         self.cart[product_id]['quantity'] = quantity
         # save changes in the session.
         self.save()

@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from accounts.models import CustomUserModel
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils.html import strip_tags
 
 
 # managers
@@ -36,8 +37,8 @@ class Category(models.Model):
     slug = models.SlugField()
     is_featured = models.BooleanField(null=True, default=False)
     description = models.TextField(blank=True)
-    # sample of circular dependecy
-    selected_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, related_name='+')
+    # # sample of circular dependecy
+    # selected_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, related_name='+')
 
 
     # Custom Managers
@@ -56,7 +57,6 @@ class Discount(models.Model):
     DISCOUNT_TYPE_CHOICES = (
         ('PD', 'PERCENTAGE DISCOUNT'),
         ('FAD', 'FIXED AMOUNT DISCOUNT'),
-        ('BOGO', 'BUY ONE GET ONE'),
     )
 
     DISCOUNT_STATUS_CHOICES = (
@@ -89,22 +89,13 @@ class Discount(models.Model):
     def save(self, *args, **kwargs):
         # generate promo code if the discount is percenatage discount or fixed amount discount.
         if not self.promo_code:
-            if self.type != 'BOGO':
-                letters = string.ascii_letters.upper()
-                digits = ''.join(random.choice(letters) for _ in range(4))
-                self.promo_code  = digits
+            letters = string.ascii_letters.upper()
+            digits = ''.join(random.choice(letters) for _ in range(4))
+            self.promo_code  = digits
         super(Discount, self).save(*args, **kwargs)
     
 
 class Product(models.Model):
-
-    PRODUCT_QUALITY_CHOICES = (
-        ('PERFECT', 'perfect'),
-        ('GOOD', 'good'),
-        ('NOT BAD', 'not bad'),
-        ('BAD', 'bad'),
-        ('VERY BAD', 'very bad')
-    )
 
     COLOR_CHOICES = (
         ('BLACK', 'black'),
@@ -126,11 +117,10 @@ class Product(models.Model):
     # price = 120,000 t or 1,000,000 t or 3,456,990 t
     price = models.PositiveIntegerField()
     slug = models.SlugField(unique=True)
-    size = models.CharField(choices=COLOR_CHOICES, max_length=200, null=True, blank=True)
-    color = models.CharField(choices=SIZE_CHOICES, max_length=200, null=True, blank=True)
-    quality = models.CharField(choices=PRODUCT_QUALITY_CHOICES, max_length=200)
-    image = models.ImageField(upload_to='product/', default='product_default/shopping_kart.jpg')
-    banner = models.ImageField(upload_to='product/', default='product/bn3-1.webp')
+    size = models.CharField(choices=COLOR_CHOICES, max_length=200, default=SIZE_CHOICES[0])
+    color = models.CharField(choices=SIZE_CHOICES, max_length=200, default=COLOR_CHOICES[0])
+    image = models.ImageField(upload_to='product/',  null=True, blank=True)
+    banner = models.ImageField(upload_to='product/', null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
@@ -176,8 +166,8 @@ class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="comments")
     # author here is just users who signed in before! (authenticated users)
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='product_comments', blank=True, null=True)
-    name = models.CharField(max_length=100, null=True, blank=True)
-    email = models.CharField(max_length=200, blank=True, null=True)
+    name = models.CharField(max_length=250, null=True, blank=True)
+    email = models.CharField(max_length=250, blank=True, null=True)
     parent = models.ForeignKey('self' , null=True , blank=True , on_delete=models.CASCADE , related_name='replies')
     session_token = models.CharField(max_length=32, null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
@@ -202,3 +192,11 @@ class Comment(models.Model):
         if self.parent is None:
             return True
         return False
+    
+    def get_content_summary(self):
+        result = ''
+        for char in self.content:
+            if char == '.':
+                break
+            result += char
+        return result

@@ -850,23 +850,26 @@
                 </div>
                 <div class="minicart-content">
                     <ul class="minicart-list">
-                        {% for item in cart %}
-                            <li class="minicart-product"> <a class="product-item_remove" href={% url 'cart:remove_from_the_cart' item.product_obj.id %}><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid" src= {% static "images/product/small/cart-01.webp" %} alt="Product Image" /> </a>
-                                <div class="product-item_content"> <a class="product-item_title" href={% url 'products:product_detail' item.product_obj.slug  %}>{{item.product_obj.name}}</a>
-                                    <label>تعداد : <span>{{item.quantity}}</span>
-                                    </label>
-                                    <label class="product-item_quantity">قیمت: <span> {{item.total_price|intcomma}} تومان</span>
-                                    </label>
-                                </div>
-                            </li>
-                        {% endfor %}
+                        {% if cart.is_item %}
+                            {% for item in cart %}
+                                <li class="minicart-product"> <a class="product-item_remove" href={% url 'cart:remove_from_the_cart' item.product_obj.id %}><i class="icon-cross2"></i></a> <a class="product-item_img"> <img class="img-fluid" src= {% static "images/product/small/cart-01.webp" %} alt="Product Image" /> </a>
+                                    <div class="product-item_content"> <a class="product-item_title" href={% url 'products:product_detail' item.product_obj.slug  %}>{{item.product_obj.name}}</a>
+                                        <label>تعداد : <span>{{item.quantity}}</span>
+                                        </label>
+                                        <label class="product-item_quantity">قیمت: <span> {{item.total_price|intcomma}} تومان</span>
+                                        </label>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
                     </ul>
                 </div>
                 {% if cart.is_item %}
-                <div class="minicart-item_total"> <span class="font-weight--reguler">سبد خرید:</span> <span class="ammount font-weight--reguler">{{ cart.lenght }} محصول </span></div>
-                    <div class="minicart-item_total"> <span class="font-weight--reguler">مجموع قیمت:</span> <span class="ammount font-weight--reguler">{{ cart.get_total_price|intcomma }} تومان</span></div>
-                    <div class="minicart-btn_area"> <a href="{% url "cart:cart_detail_view" %}" class="btn btn--full btn--border_1">مشاهده سبد خرید</a></div>
-                    <div class="minicart-btn_area"> <a href={% url 'orders:checkout' %} class="btn btn--full btn--black">ثبت نهایی</a></div>
+                    <div class="minicart-item_total"> <span class="font-weight--reguler">سبد خرید:</span> <span class="ammount font-weight--reguler">{{ cart.lenght }} محصول </span></div>
+                        <div class="minicart-item_total"> <span class="font-weight--reguler">مجموع قیمت:</span> <span class="ammount font-weight--reguler">{{ cart.get_total_price|intcomma }} تومان</span></div>
+                        <div class="minicart-btn_area"> <a href="{% url "cart:cart_detail_view" %}" class="btn btn--full btn--border_1">مشاهده سبد خرید</a></div>
+                        <div class="minicart-btn_area"> <a href={% url 'orders:checkout' %} class="btn btn--full btn--black">ثبت نهایی</a>
+                    </div>
                 {% else %}
                 <div class="minicart-item_total"> <span class="font-weight--reguler">سبد خرید:</span> <span class="ammount font-weight--reguler">{{ cart.lenght }} محصول </span></div>
                 <div class="minicart-btn_area"> <a href="{% url "products:product_categories" %}" class="btn btn--full btn--border_1">اضافه کردن محصول به سبد خرید</a></div>
