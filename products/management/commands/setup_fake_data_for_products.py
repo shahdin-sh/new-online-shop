@@ -37,7 +37,7 @@ class Command(BaseCommand):
 
         # discounts data
         print(f'Adding {NUM_DISCOUNTS} Discounts...', end='')
-        discounts = [DiscountFactory() for _ in range(NUM_DISCOUNTS)]
+        discounts = [DiscountFactory(status='AC') for _ in range(NUM_DISCOUNTS)]
         print('Done')
 
         # products data

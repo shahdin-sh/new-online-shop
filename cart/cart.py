@@ -23,6 +23,10 @@ class Cart:
     def save(self):
         self.session.modified = True
     
+    def clear_the_cart(self):
+        del self.session['cart']
+        self.save()
+    
     def __iter__(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
@@ -31,13 +35,12 @@ class Cart:
 
         for product in products:
             cart[str(product.id)]['product_obj'] = product
-        
+            
         # defining total price and current product stock for each item in cart.
         for item in cart.values():
             item['total_price'] = item['quantity'] * item['product_obj'].price
             item['current_product_stock'] = item['product_obj'].quantity - item['quantity']
             yield item
-
             
     def add_to_cart(self, product, size='LARGE', color='BLACK', quantity=1):
         product_id = str(product.id)
@@ -62,45 +65,16 @@ class Cart:
     def lenght(self):
         return sum(item['quantity'] for item in self.cart.values())
     
-    def clear_the_cart(self):
-        del self.session['cart']
-        self.save()
-    
     def is_item(self):
         return False if self.cart == {} else True                                                                                      
 
     def get_total_price(self):
-        # total_price
-        product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in=product_ids)
-
-        cart = self.cart.copy()
-
-        for product in products:
-            cart[str(product.id)]['product_obj'] = product
 
         cart_total_price = sum(item['quantity'] * item['product_obj'].price for item in self.cart.values()) 
+
         return cart_total_price
+    
+    def discounted_total_price(self):
+        cart_discounted_total_price = sum(item['discounted_price'] for item in self.cart.values())
 
-    def applying_discount(self, discount_value, discount_percent, discount_type):
-        # total_price
-        product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in=product_ids)
-
-        cart = self.cart.copy()
-
-        for product in products:
-            cart[str(product.id)]['product_obj'] = product
-
-
-        cart_total_price = sum(item['quantity'] * item['product_obj'].price for item in self.cart.values())
-
-        # handle percentage discount calculation.
-        if discount_type == 'PD':
-            discounted_price = cart_total_price - (discount_percent * cart_total_price / 100) 
-        # handle fixed amount discount calculation.
-        elif discount_type == 'FAD':
-            discounted_price = cart_total_price - discount_value
-        
-        # applying discounted price in the cart.
-        return discounted_price
+        return cart_discounted_total_price

@@ -59,31 +59,35 @@ def clear_the_cart(request):
 
 def apply_discount_for_cart_items(request):
     cart = Cart(request)
-    cart_items_ids = request.session['cart'].keys()
     discount_form = DiscountForm(request.POST)
     if discount_form.is_valid():
         cleaned_data = discount_form.cleaned_data
         entered_promo_code = cleaned_data.get('promo_code')
+
         # all the promo codes are unique and each promo code should not be expired.
         discount_obj = get_object_or_404(Discount.objects.filter(promo_code=entered_promo_code, status='AC'))
-        # check if discount obj is applied for each item in cart_items
-        cart_items_with_discount = Product.objects.filter(id__in=cart_items_ids, discounts=discount_obj)
-        if not discount_obj.check_and_delete_if_expired():
-            if cart_items_with_discount.exists():
-                discounted_price = cart.applying_discount(discount_obj.value, discount_obj.percent, discount_obj.type)
-                # no solution has been found yet.
-                print(discounted_price)
-                # change the discount status to deactive it means that each discount after use are not usable anymore.
-                discount_obj.status = 'DC'
-                discount_obj.save()
-                messages.success(request, 'your discount applied successfully.')
-                # redirect to the current page.
-                return redirect(request.META.get('HTTP_REFERER'))
-            else:
-                return HttpResponse('The discount code that you have entered is not valid')
-        else:
-            return HttpResponse('Your discount has been expired.')
-    else:
-        # Log form errors
-        logger = logging.getLogger(__name__)
-        logger.error("Form validation failed: %s", discount_form.errors)
+
+        # apply discount for each item in cart
+        for item in cart:
+            item_total_price = item['total_price']
+            if discount_obj.type == 'PD':
+                discounted_price = item_total_price - ((item_total_price * discount_obj.percent) / 100)
+            elif discount_obj.type == 'FAD':
+                discounted_price = item_total_price - discount_obj.value
+
+            # The product object is not json serializable. / not solved yet.
+            # item['discounted_price'] = int(discounted_price)
+            # cart.save()
+
+            # remove discount from cart item
+            item['product_obj'].discounts.remove(discount_obj)
+
+
+        # change the discount status to deactive and delete the discount from products.
+        discount_obj.status = 'DC'
+        discount_obj.save()
+
+        messages.success(request, 'your discount applied successfully.')
+
+        # redirect to the current page.
+        return redirect(request.META.get('HTTP_REFERER'))

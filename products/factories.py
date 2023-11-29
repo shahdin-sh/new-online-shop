@@ -9,8 +9,7 @@ from accounts.models import CustomUserModel
 from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth import get_user_model 
-
-from . import models
+from products import models
 
 fake = Faker()
 
@@ -34,17 +33,18 @@ class DiscountFactory(DjangoModelFactory):
     value = None
     percent = None
     description = factory.Faker('paragraph', nb_sentences=1, variable_nb_sentences=False)
-    expiration_date = factory.LazyFunction(lambda: fake.date_time_ad(start_datetime=timezone.datetime(2023, 11, 22), end_datetime=timezone.datetime(2024, 1, 1), tzinfo=timezone.get_current_timezone()))
-    status = factory.LazyFunction(lambda: random.choice([choice[0] for choice in models.Discount.DISCOUNT_STATUS_CHOICES ]))
+    expiration_date = factory.LazyFunction(lambda: fake.date_time_ad(start_datetime=timezone.datetime(2023, 11, 29), end_datetime=timezone.datetime(2024, 1, 1), tzinfo=timezone.get_current_timezone()))
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
-        # Manually handling the value and percent field processing.
-        if random.choice([True, False]):
+        discount_type = kwargs.get('type', None)
+        if discount_type == 'FAD':
+            # if discount type be fixed amount discount
             kwargs['value'] = random.randint(100000, 1000000)
             kwargs['percent'] = None
-        else:
-            kwargs['percent'] = round(random.uniform(20, 99), 1)
+        elif discount_type == 'PD':
+            # if discount type be percentage discount
+            kwargs['percent'] = round(random.uniform(10, 99), 1)
             kwargs['value'] = None
         return super(DiscountFactory, cls)._create(model_class, *args, **kwargs)
 

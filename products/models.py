@@ -151,6 +151,7 @@ class Product(models.Model):
 
 
 
+
 class Comment(models.Model):
 
     RATING_CHOICES = (
