@@ -10,10 +10,12 @@ from cart.cart import Cart
 from allauth.account.urls import *
 from django.core.paginator import Paginator
 import logging
+from django.db.models import Prefetch
 
 
 def shop_categories(request):
-    products = Product.objects.filter(category__isnull=False, is_active=True).order_by('-datetime_created')
+
+    products = Product.objects.select_related('category').filter(category__isnull=False, is_active=True).order_by('-datetime_created')
 
     # Create a Paginator object
     page_number = request.GET.get('page')
@@ -35,7 +37,12 @@ def shop_categories(request):
 
 
 def products_or_category_detail(request, category_slug):
-    categories = Category.objects.all()
+    
+    categories = Category.objects.prefetch_related(
+        Prefetch(
+            'products', queryset=Product.objects.prefetch_related('user_wished_product').filter(is_active=True)
+        )).all()
+    
     category = get_object_or_404(categories, slug=category_slug)
 
     breadcrumb_data = [{'lable':f'{category.name}', 'title': f'{category.name}', 'middle_lable': 'store', 'middle_url':'products:product_categories'}]
@@ -45,14 +52,17 @@ def products_or_category_detail(request, category_slug):
     }
     return render(request, 'categories/category_detail.html', context)
 
+
 def product_detail_view(request, product_slug):
-    products = Product.objects.filter(is_active=True)
+    products = Product.objects.prefetch_related('comments').filter(is_active=True)
     product_detail = get_object_or_404(products, slug=product_slug)
+
     # comment section
     current_session = request.session.session_key
     if request.method == 'POST':
         comment_form = CommentForm(request, request.POST)
         if comment_form.is_valid():
+
             # reply section
             parent_obj = None
             # get parent comment id from hidden input
@@ -69,11 +79,13 @@ def product_detail_view(request, product_slug):
                     reply_comment = comment_form.save(commit=False)
                     #assign parent obj to reply comment
                     reply_comment.parent = parent_obj
+
             # comment section
             new_comment = comment_form.save(commit=False)
             if comment_form.cleaned_data['website'] != 'please leave this field blank.':
                 new_comment.is_spam = True
             new_comment.product = product_detail
+
             # check if user is authenticated, give author to DB and if it is not just give name and email as a guest
             if request.user.is_authenticated:
                 new_comment.author = request.user
@@ -87,9 +99,11 @@ def product_detail_view(request, product_slug):
                 new_comment.session_token = current_session
                 new_comment.name = guest_data['name']
                 new_comment.email = guest_data['email']
+
             # The clean_email method will be called during the form validation, and the validation error will be raised if needed.
             comment_form.clean()
             new_comment.save()
+
             return redirect(reverse('products:product_detail', args=[product_slug]))
         else:
             # Log form errors
@@ -104,18 +118,19 @@ def product_detail_view(request, product_slug):
                         'middle_url': 'products:category_detail',
                         'middle_url_args': product_detail.category.slug
                     }]
-
+    
     context = {
         'product_detail': product_detail,
-        'comments': product_detail.comments.filter(parent=None, is_spam=False).order_by('-datetime_created'),
+        'comments': product_detail.comments.filter(parent=None, is_spam=False),
         'comment_form': comment_form,
         'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity),
         'breadcrumb_data': breadcrumb_data,
     }
+
     return render(request, 'products/product_detail_view.html', context)
 
 
-@login_required
+@login_required 
 def add_to_wishlist(request, product_slug):
     # this view is using in product_detail
     products = Product.objects.filter(is_active=True)

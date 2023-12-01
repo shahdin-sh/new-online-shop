@@ -7,6 +7,7 @@ from cart.cart import Cart
 from django.contrib import messages
 from django.db import IntegrityError
 import logging
+from products.models import Product
 
 
 @item_in_cart_required
@@ -16,7 +17,7 @@ def checkout(request):
 
     context = {
         'order_form': OrderForm(),
-        'breadcrumb_data': breadcrumb_data
+        'breadcrumb_data': breadcrumb_data,
     }
     
     return render(request, 'orders/checkout.html', context)
@@ -80,11 +81,14 @@ def order_item_create(request):
                 quantity = quantity,
                 price = product.price,
                 )
+            
             # update the current product quantity
             product.quantity = item['current_product_stock']
             product.save()
         cart.clear_the_cart()
-        return redirect('paymant:paymant_process')
+
+        # return redirect('paymant:paymant_process')
+        
     else:
         return HttpResponse('please fill out your order information form first')
     

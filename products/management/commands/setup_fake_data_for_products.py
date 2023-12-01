@@ -53,7 +53,7 @@ class Command(BaseCommand):
         print(f'Adding 10 comment for each product...', end='')
         for product in all_products:
             for _ in range(random.randint(1, 10)):
-                comment = CommentFactory(product=product, is_spam=False)
+                comment = CommentFactory(product=product, is_spam=False, parent=None)
                 # creating session_token when the none authenticated user wants to add a comment.
                 if comment.author is None:
                     comment.session_token = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(32))

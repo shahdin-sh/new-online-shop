@@ -2,7 +2,8 @@ from .models import Post
 
 
 def blog_posts(request):
+    
     data = {
-        'posts': Post.is_published_manager.all()[:3]
+        'posts': Post.objects.select_related('category').filter(is_published=True)[:3]
     }
     return data

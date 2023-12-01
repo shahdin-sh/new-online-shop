@@ -9,13 +9,18 @@ import logging
 from django.utils import timezone
 from .utils import persian_to_western_digits
 from django.contrib import messages
+from .models import CustomUserModel
 
 
 
 @login_required
 def wishlist_view(request):
+
+    login_user = CustomUserModel.objects.prefetch_related('wished_product').get(username=request.user.username)
+
+
     breadcrumb_data = [{'lable': 'wishlist', 'title': 'wishlist'}]
-    return render(request, 'accounts/wishlist.html', context={'breadcrumb_data': breadcrumb_data})
+    return render(request, 'accounts/wishlist.html', context={'breadcrumb_data': breadcrumb_data, 'login_user': login_user,})
 
 
 @login_required
