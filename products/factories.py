@@ -38,14 +38,17 @@ class DiscountFactory(DjangoModelFactory):
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
         discount_type = kwargs.get('type', None)
-        if discount_type == 'FAD':
+        if discount_type == models.Discount.FIXED_AMOUNT_DISCOUNT:
             # if discount type be fixed amount discount
+
             kwargs['value'] = random.randint(100000, 1000000)
             kwargs['percent'] = None
-        elif discount_type == 'PD':
+
+        elif discount_type == models.Discount.PERCENTAGE_DISCOUNT:
             # if discount type be percentage discount
             kwargs['percent'] = round(random.uniform(10, 99), 1)
             kwargs['value'] = None
+            
         return super(DiscountFactory, cls)._create(model_class, *args, **kwargs)
 
 

@@ -69,10 +69,13 @@ def apply_discount_for_cart_items(request):
 
         # apply discount for each item in cart
         for item in cart:
+            
             item_total_price = item['total_price']
-            if discount_obj.type == 'PD':
+
+            if discount_obj.type == discount_obj.PERCENTAGE_DISCOUNT:
                 discounted_price = item_total_price - ((item_total_price * discount_obj.percent) / 100)
-            elif discount_obj.type == 'FAD':
+
+            elif discount_obj.type == discount_obj.FIXED_AMOUNT_DISCOUNT:
                 discounted_price = item_total_price - discount_obj.value
 
             # The product object is not json serializable. / not solved yet.

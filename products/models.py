@@ -55,14 +55,22 @@ class Category(models.Model):
 
 class Discount(models.Model):
 
+    # constant values for discount type choices
+    PERCENTAGE_DISCOUNT = 'PD'
+    FIXED_AMOUNT_DISCOUNT = 'FAD'
+
+    # constant values for discount status choices
+    ACTIVE = 'AC'
+    DEACTIVE = 'DC'
+
     DISCOUNT_TYPE_CHOICES = (
-        ('PD', 'PERCENTAGE DISCOUNT'),
-        ('FAD', 'FIXED AMOUNT DISCOUNT'),
+        (PERCENTAGE_DISCOUNT, 'PERCENTAGE DISCOUNT'),
+        (FIXED_AMOUNT_DISCOUNT, 'FIXED AMOUNT DISCOUNT'),
     )
 
     DISCOUNT_STATUS_CHOICES = (
-        ('AC', 'ACTIVE'),
-        ('DC', 'DEACTIVE'),
+        (ACTIVE, 'ACTIVE'),
+        (DEACTIVE, 'DEACTIVE'),
     )
     promo_code = models.CharField(max_length=255, blank=True)
     type = models.CharField(max_length=255, choices=DISCOUNT_TYPE_CHOICES)
