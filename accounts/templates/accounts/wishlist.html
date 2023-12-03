@@ -37,9 +37,9 @@
                                                         <td class="product-img">  <a href="#"><img src="{% static 'images/product/small/cart-01.webp' %}" alt=""/></a>  </td> 
                                                         <td class="product-name"><a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a></td> 
                                                         <td class="product-price"><span class="amount">{{ product.price|intcomma }} تومان</span></td>
-                                                        {% if product.is_active %} 
+                                                        {% if product.activation %} 
                                                             <td class="product-stock-status"><p>موجود در انبار</p></td> 
-                                                        {% elif not product.is_active %}
+                                                        {% elif not product.activation %}
                                                             <td class="product-stock-status"><p style="color: red;">ناموجود در انبار</p></td>
                                                         {% endif %}
                                                         <div class="quickview-quality">
@@ -48,7 +48,7 @@
                                                             <input class="cart-plus-minus-box" name='color' value='BLACK' type='hidden'>    
                                                         </div>
                                                         <td class="product-wishlist-cart">
-                                                            {% if product.is_active %}
+                                                            {% if product.activation %}
                                                                 {% if product.id|stringformat:"s" not in request.session.cart.keys %}
                                                                     <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</button>
                                                                 {% else %}

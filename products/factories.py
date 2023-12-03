@@ -56,7 +56,7 @@ class ProductFactory(DjangoModelFactory):
     name = factory.LazyFunction(lambda: ' '.join(x for x in fake.words(2)))
     description = factory.Faker('paragraph', nb_sentences=5, variable_nb_sentences=False)
     quantity = factory.LazyFunction(lambda: random.randint(1, 100)) # or factory.Faker('random-int', min=0, max=100) or factory.Faker('random-element', elements=[i for i in range(1, 101)])
-    is_featured = factory.Faker("boolean")
+    feature = factory.Faker("boolean")
     price = factory.LazyFunction(lambda: random.randint(100000, 5000000))
     slug = factory.LazyAttribute(lambda obj: '-'.join(obj.name.split(' ')).lower())
     size = factory.LazyFunction(lambda: random.choice([size[0] for size in models.Product.SIZE_CHOICES]))

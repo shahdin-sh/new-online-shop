@@ -71,7 +71,7 @@ class DiscountAdmin(admin.ModelAdmin):
     #     return obj.clean_percent()   
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'quantity', 'category', 'is_active', 'is_featured', 'product_price', 'datetime_created', 'size', 'color']
+    list_display = ['name', 'quantity', 'category', 'activation', 'feature', 'product_price', 'datetime_created', 'size', 'color']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['-datetime_created']
     inlines = [

@@ -15,7 +15,7 @@ from django.db.models import Prefetch
 
 def shop_categories(request):
 
-    products = Product.objects.select_related('category').filter(category__isnull=False, is_active=True).order_by('-datetime_created')
+    products = Product.objects.select_related('category').filter(category__isnull=False, activation=True).order_by('-datetime_created')
 
     # Create a Paginator object
     page_number = request.GET.get('page')
@@ -40,7 +40,7 @@ def products_or_category_detail(request, category_slug):
     
     categories = Category.objects.prefetch_related(
         Prefetch(
-            'products', queryset=Product.objects.prefetch_related('user_wished_product').filter(is_active=True)
+            'products', queryset=Product.objects.prefetch_related('user_wished_product').filter(activation=True)
         )).all()
     
     category = get_object_or_404(categories, slug=category_slug)
@@ -54,7 +54,8 @@ def products_or_category_detail(request, category_slug):
 
 
 def product_detail_view(request, product_slug):
-    products = Product.objects.prefetch_related('comments').filter(is_active=True)
+
+    products = Product.objects.prefetch_related('comments').filter(activation=True)
     product_detail = get_object_or_404(products, slug=product_slug)
 
     # comment section
@@ -133,7 +134,7 @@ def product_detail_view(request, product_slug):
 @login_required 
 def add_to_wishlist(request, product_slug):
     # this view is using in product_detail
-    products = Product.objects.filter(is_active=True)
+    products = Product.is_active.all()
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user not in product_detail.user_wished_product.all():
         product_detail.user_wished_product.add(request.user)
@@ -144,7 +145,7 @@ def add_to_wishlist(request, product_slug):
 @login_required
 def remove_from_wishlist(request, product_slug):
     # this view is using in product_detail
-    products = Product.objects.filter(is_active=True)
+    products = Product.is_active.all()
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user in product_detail.user_wished_product.all():
         product_detail.user_wished_product.remove(request.user)

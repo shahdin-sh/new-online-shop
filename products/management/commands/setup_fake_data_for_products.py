@@ -26,8 +26,10 @@ class Command(BaseCommand):
     def handle(self, *args: Any, **options: Any):
         # deleting the old data and the cart data
         self.stdout.write('Deleting existing instances...')
+        
         for model in list_of_models:
             model.objects.all().delete()
+        
         self.stdout.write(self.style.SUCCESS('Deletion Complete...'))
 
         # categories data
@@ -44,7 +46,7 @@ class Command(BaseCommand):
         print(f'Adding {NUM_PRODUCTS_BASED_ON_CATEGORY} Products...', end='')
         all_products = list()
         for _ in range(NUM_PRODUCTS_BASED_ON_CATEGORY):
-            product = ProductFactory(category=random.choice(categories), image='product\single-product-01.webp', banner='prodcut_banners\m4.webp')
+            product = ProductFactory(category=random.choice(categories), image='product\single-product-01.webp', banner='prodcut_banners\m4.webp', activation=True)
             all_products.append(product)
         print('Done')
 

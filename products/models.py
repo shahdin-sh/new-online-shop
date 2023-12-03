@@ -1,5 +1,6 @@
 import string, random
 from django.db import models
+from django.db.models.query import QuerySet
 from django.shortcuts import reverse
 from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
@@ -11,15 +12,16 @@ from django.utils.html import strip_tags
 
 
 # managers
-class IsFeatureManager(models.Manager):
+# class ProductManager(models.Manager):
+
+#     def activation(self):
+#         return self.get_queryset().filter(activation=True)
+
+
+class AcitveProduct(models.Manager):
+    def get_queryset(self):
+        return super(AcitveProduct, self).get_queryset().filter(activation=True)
     
-    def get_queryset(self):
-        return super(IsFeatureManager, self).get_queryset().filter(is_featured=False)           
-
-class IsActiveManager(models.Manager):
-    def get_queryset(self):
-        return super(IsActiveManager, self).get_queryset().filter(is_active=True)
-
 
 class IsOrderManager(models.Manager):
     def get_queryset(self):
@@ -43,7 +45,6 @@ class Category(models.Model):
 
     # Custom Managers
     objects = models.Manager() # our default django manager
-    is_featured_manager = IsFeatureManager()
 
     def __str__(self):
         return self.name
@@ -110,10 +111,8 @@ class Product(models.Model):
     )
 
     name = models.CharField(max_length=200)
-    description = RichTextField()
+    description = RichTextField(blank=True, null=True)
     quantity = models.IntegerField()
-    is_active = models.BooleanField(default=True)
-    is_featured = models.BooleanField(default=False)
     # price = 120,000 t or 1,000,000 t or 3,456,990 t
     price = models.PositiveIntegerField()
     slug = models.SlugField(unique=True)
@@ -125,12 +124,15 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
     discounts = models.ManyToManyField(Discount, related_name='products')
+    activation = models.BooleanField(default=True)
+    feature = models.BooleanField(default=False)
 
 
     # Custom Managers
-    objects = models.Manager() # our default django manager
-    is_featured_manager = IsFeatureManager()
-    is_not_spam_manager = IsNotSpamManager()
+    # objects = PorductManager()
+    objects = models.Manager()
+    is_active = AcitveProduct()
+
 
     def save(self, *args, **kwargs):
         # Check if the quantity is 0, and if so, set is_active to False
@@ -178,7 +180,6 @@ class Comment(models.Model):
 
     # Custom Managers
     objects = models.Manager() # our default django manager
-    is_active_manager = IsActiveManager()
     is_order_manager = IsOrderManager
 
     def __str__(self):
