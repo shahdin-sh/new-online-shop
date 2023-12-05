@@ -5,10 +5,12 @@ from accounts.models import CustomUserModel
 class Order(models.Model):
 
     ORDERS_STATUS_CHOICES = (
+
         ('p', 'PAID'),
         ('u', 'UNPAID'),
         ('c', 'CANCELED')
     )
+
 
     customer = models.OneToOneField(CustomUserModel, on_delete=models.SET_NULL, related_name='order', null=True)
     first_name = models.CharField(max_length=10)
@@ -41,8 +43,8 @@ class Order(models.Model):
     
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
-    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='items')
+    product = models.ForeignKey('products.Product', on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=1)
     price = models.PositiveIntegerField()
     color = models.CharField(max_length=200, default='black')

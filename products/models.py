@@ -129,7 +129,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='product/',  null=True, blank=True)
     banner = models.ImageField(upload_to='product/', null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
     discounts = models.ManyToManyField(Discount, related_name='products')
     activation = models.BooleanField(default=True)
