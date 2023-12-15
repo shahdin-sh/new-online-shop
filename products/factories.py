@@ -1,14 +1,11 @@
-import random
 import factory
-from datetime import datetime
-from faker import Faker
-from factory.django import DjangoModelFactory
+import random
 import string
-from decimal import Decimal
-from accounts.models import CustomUserModel
-from django.utils import timezone
-from datetime import timedelta
 from django.contrib.auth import get_user_model 
+from django.utils import timezone
+from datetime import datetime
+from factory.django import DjangoModelFactory
+from faker import Faker
 from products import models
 
 fake = Faker()

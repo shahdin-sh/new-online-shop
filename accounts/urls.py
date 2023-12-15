@@ -1,5 +1,5 @@
-from django.urls import path, include, re_path
-from .views import wishlist_view, my_account, edit_user_information, change_user_password
+from accounts.views import wishlist_view, my_account, edit_user_information, change_user_password
+from django.urls import path
 
 
 app_name = 'account'

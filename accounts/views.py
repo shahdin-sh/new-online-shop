@@ -1,15 +1,15 @@
-from django.shortcuts import render, redirect
+import logging
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
-from orders.forms import OrderForm
-from .forms import CustomUserChangeForm, CustomChangePasswordForm
 from django.http import HttpResponseBadRequest
-import logging
+from django.shortcuts import render, redirect
 from django.utils import timezone
-from .utils import persian_to_western_digits
-from django.contrib import messages
-from .models import CustomUserModel
+from django.views.decorators.http import require_POST
+from accounts.forms import CustomUserChangeForm, CustomChangePasswordForm
+from accounts.models import CustomUserModel
+from accounts.utils import persian_to_western_digits
+from orders.forms import OrderForm
 
 
 

@@ -1,13 +1,11 @@
-from django.shortcuts import render, redirect, HttpResponse, get_object_or_404, reverse
-from .forms import OrderForm
-from .models import OrderItem, Order
-from cart.decorators import item_in_cart_required
-from django.contrib.auth.decorators import login_required
-from cart.cart import Cart
-from django.contrib import messages
-from django.db import IntegrityError
 import logging
-from products.models import Product
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404, reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from cart.cart import Cart
+from cart.decorators import item_in_cart_required
+from orders.forms import OrderForm
+from orders.models import OrderItem, Order
 
 
 @item_in_cart_required

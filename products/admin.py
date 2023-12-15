@@ -3,11 +3,11 @@ from django.contrib import admin
 from django.db.models import Count, Subquery, OuterRef, CharField
 from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
-from django.utils.html import format_html
 from django.urls import reverse
-from django.utils.http import urlencode
 from django.utils import timezone
-from .models import Category,Product, Comment, Discount
+from django.utils.html import format_html
+from django.utils.http import urlencode
+from products.models import Category,Product, Comment, Discount
 
 
 # filters

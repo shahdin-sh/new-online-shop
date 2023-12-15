@@ -1,16 +1,14 @@
 import logging
+from allauth.account.urls import *
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Prefetch
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.views.decorators.http import require_POST
-from allauth.account.urls import *
 from cart.forms import AddToCartForm
-from cart.cart import Cart
-from .models import Product, Category, Comment
-from .forms import CommentForm
+from products.forms import CommentForm
+from products.models import Product, Category, Comment
 
 
 def shop_categories(request):

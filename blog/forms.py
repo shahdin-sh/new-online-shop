@@ -1,7 +1,5 @@
 from django import forms
-from .models import Comment
-from accounts.models import CustomUserModel
-from django.core.exceptions import ValidationError
+from accounts.models import Comment
 
 
 class CommentForm(forms.ModelForm):

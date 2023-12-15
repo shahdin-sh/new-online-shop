@@ -1,6 +1,5 @@
 
 from products.models import Product
-from django.core import serializers
 
 class Cart:
     def __init__(self, request):

@@ -1,9 +1,9 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
-from .models import CustomUserModel
-from allauth.account.forms import SignupForm
 from django import forms
-from config import settings
 from django.contrib.auth import password_validation
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
+from accounts.models import CustomUserModel
+from allauth.account.forms import SignupForm
+from config import settings
 
 
 class CustomUserCreationForm(UserCreationForm):

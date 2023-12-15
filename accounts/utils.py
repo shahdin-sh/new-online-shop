@@ -1,5 +1,6 @@
 import re
 
+
 def persian_to_western_digits(text):
     digits_mapping = {
         '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',

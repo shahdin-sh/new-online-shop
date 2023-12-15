@@ -1,12 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404, reverse, HttpResponse
-from .cart import Cart
-from .decorators import item_in_cart_required
-from .forms import AddToCartForm
-from products.models import Product
 import logging
+from django.shortcuts import render, redirect, get_object_or_404, reverse, HttpResponse
+from django.contrib import messages
+from cart.cart import Cart
+from cart.decorators import item_in_cart_required
+from cart.forms import AddToCartForm
 from products.forms import DiscountForm
 from products.models import Discount
-from django.contrib import messages
+from products.models import Product
 
 @item_in_cart_required
 def cart_detail_view(request):

@@ -1,11 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
-from ckeditor.fields import RichTextField
-from accounts.models import CustomUserModel
 from django.utils import timezone
 from django.utils.html import strip_tags
 from accounts.models import CustomUserModel
-from django.contrib.auth import get_user_model
+from ckeditor.fields import RichTextField
 
 
 # managers

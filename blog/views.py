@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Tag,  Category, Comment
 from django.core.paginator import Paginator
-from .forms import CommentForm
+from blog.forms import CommentForm
+from blog.models import Post, Tag,  Category, Comment
 
 
 def blog_grid(request):

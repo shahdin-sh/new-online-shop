@@ -1,5 +1,5 @@
 from django.urls import path, include, re_path
-from .views import cart_detail_view, add_product_to_the_cart, remove_product_from_the_cart, clear_the_cart, apply_discount_for_cart_items
+from cart.views import cart_detail_view, add_product_to_the_cart, remove_product_from_the_cart, clear_the_cart, apply_discount_for_cart_items
 
 
 app_name = 'cart'

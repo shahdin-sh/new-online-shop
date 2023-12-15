@@ -1,8 +1,8 @@
 from django import forms
-from .models import Comment, Discount
-from accounts.models import CustomUserModel
 from django.core.exceptions import ValidationError
-from .models import Discount
+from accounts.models import CustomUserModel
+from products.models import Comment, Discount
+from products.models import Discount
 
 
 class CommentForm(forms.ModelForm):

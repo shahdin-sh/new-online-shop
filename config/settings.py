@@ -10,12 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-from pathlib import Path
-import os
 
 import environs
+import os
 from allauth.account.apps import AccountConfig
 from environs import Env
+from pathlib import Path
 
 # for environments variables
 env = Env()

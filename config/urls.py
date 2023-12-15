@@ -21,19 +21,19 @@ from django.conf import settings
 from django.contrib.auth.views import LoginView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+
     # for user configuration we use both allauth and accounts
-    path('accounts/', include('allauth.urls')),
-    path('accounts/', include('accounts.urls')),
+    # third party urls
+    path('__debug__/', include('debug_toolbar.urls')),
     path('', include('pages.urls')),
-    path('products/', include('products.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('admin/', admin.site.urls),
+    path('blog/', include('blog.urls')),
     path('cart/', include('cart.urls')),
     path('orders/', include('orders.urls')),
     path('paymant/', include('paymant.urls')),
-    path('blog/', include('blog.urls')),
-    # third party urls
-    path('__debug__/', include('debug_toolbar.urls')),
-
+    path('products/', include('products.urls')),
 
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

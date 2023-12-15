@@ -1,9 +1,9 @@
 import functools
-from django.shortcuts import redirect
 from django.contrib import messages
-from .cart import Cart
-from products.models import Product
 from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from cart.cart import Cart
+from products.models import Product
 
 
 

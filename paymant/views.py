@@ -1,7 +1,7 @@
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404
 from orders.models import Order
 import requests, json
-from django.conf import settings
 
 
 def paymant_process(request):

@@ -1,14 +1,10 @@
 import string, random
-from django.db import models
-from django.db.models.query import QuerySet
-from django.shortcuts import reverse
-from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
-from accounts.models import CustomUserModel
-from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.utils.html import strip_tags
+from django.db import models
+from django.shortcuts import reverse
+from django.utils import timezone
+from ckeditor.fields import RichTextField
 
 
 # managers

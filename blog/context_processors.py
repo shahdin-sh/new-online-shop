@@ -1,4 +1,4 @@
-from .models import Post
+from blog.models import Post
 
 
 def blog_posts(request):

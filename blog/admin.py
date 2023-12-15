@@ -1,6 +1,6 @@
 from typing import Any
 from django.contrib import admin
-from .models import Post, Tag, Category, Comment
+from blog.models import Post, Tag, Category, Comment
 
 
 class CommentInline(admin.TabularInline):
