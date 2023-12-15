@@ -72,6 +72,7 @@ class Discount(models.Model):
         (ACTIVE, 'ACTIVE'),
         (DEACTIVE, 'DEACTIVE'),
     )
+
     promo_code = models.CharField(max_length=255, blank=True)
     type = models.CharField(max_length=255, choices=DISCOUNT_TYPE_CHOICES)
     value = models.PositiveIntegerField(blank=True, null=True)
@@ -81,7 +82,7 @@ class Discount(models.Model):
     status = models.CharField(max_length=255, choices=DISCOUNT_STATUS_CHOICES, default='AC')
 
     def __str__(self):
-        return f'{self.promo_code} discount'
+        return f'{self.promo_code} | {self.description}'
 
     def clean_value(self):
         if self.value is not None:
@@ -101,6 +102,7 @@ class Discount(models.Model):
             letters = string.ascii_letters.upper()
             digits = ''.join(random.choice(letters) for _ in range(4))
             self.promo_code  = digits
+        
         super(Discount, self).save(*args, **kwargs)
     
 

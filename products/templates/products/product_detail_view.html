@@ -101,64 +101,60 @@
                                 <p>وضعیت : <span>موجود</span></p>
                             </div>
                         {% endif %}
-
-
                         <div class="quickview-peragraph mt-10">
                             <p>{{product_detail.description|safe}}</p>
                         </div>
-                        {% if product_detail.is_active %}
-                            <form action={% url 'cart:add_to_cart' product_detail.id %} method='post'>
-                                {% csrf_token %}
-                                <div class="product-size-wrapper mt-20">
-                                    <select class="select-active" name='size' required> 
-                                        <option value="LARGE">بزرگ</option>                                                         
-                                        <option value="MEDIUM">متوسط</option>                                                         
-                                        <option value="SMALL">کوچک</option>                                                         
-                                    </select> 
-                                </div>
-                                <div class="product-color-wrapper mt-20">
-                                    <select class="select-active" name='color' required> 
-                                        <option value="BLACK">سیاه</option>                                                         
-                                        <option value="WHITE">سفید</option>                                                         
-                                        <option value="PINK">صورتی</option>                                                         
-                                    </select> 
-                                </div>
-                                <div class="quickview-action-wrap mt-30">
-                                    <div class="quickview-cart-box">
-                                        {% if product_detail.id|stringformat:"s" not in request.session.cart.keys %}
-                                            <div class="quickview-quality">
-                                                <div class="cart-plus-minus">
-                                                    <input class="cart-plus-minus-box" name="quantity" type="number" value="1" max="{{product_detail.quantity}}" min="1">  
-                                                </div>
+                        <form action={% url 'cart:add_to_cart' product_detail.id %} method='post'>
+                            {% csrf_token %}
+                            <div class="product-size-wrapper mt-20">
+                                <select class="select-active" name='size' required> 
+                                    <option value="LARGE">بزرگ</option>                                                         
+                                    <option value="MEDIUM">متوسط</option>                                                         
+                                    <option value="SMALL">کوچک</option>                                                         
+                                </select> 
+                            </div>
+                            <div class="product-color-wrapper mt-20">
+                                <select class="select-active" name='color' required> 
+                                    <option value="BLACK">سیاه</option>                                                         
+                                    <option value="WHITE">سفید</option>                                                         
+                                    <option value="PINK">صورتی</option>                                                         
+                                </select> 
+                            </div>
+                            <div class="quickview-action-wrap mt-30">
+                                <div class="quickview-cart-box">
+                                    {% if product_detail.id|stringformat:"s" not in request.session.cart.keys %}
+                                        <div class="quickview-quality">
+                                            <div class="cart-plus-minus">
+                                                <input class="cart-plus-minus-box" name="quantity" type="number" value="1" max="{{product_detail.quantity}}" min="1">  
                                             </div>
-                                        {% endif %}
-                                        <div class="quickview-button">
-                                            {% if product_detail.id|stringformat:"s"  not in request.session.cart %}
-                                                <div class="quickview-cart button">
-                                                    <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</button>
-                                                </div>
-                                            {% else %}
-                                                <div class="quickview-cart button">
-                                                    <button type='button'class="btn--lg btn--black font-weight--reguler text-white" >این محصول به <a href={% url 'cart:cart_detail_view' %}>سبد خرید</a> شما اضافه شده است</button>
-                                                </div>
+                                        </div>
+                                    {% endif %}
+                                    <div class="quickview-button">
+                                        {% if product_detail.id|stringformat:"s"  not in request.session.cart %}
+                                            <div class="quickview-cart button">
+                                                <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</button>
+                                            </div>
+                                        {% else %}
+                                            <div class="quickview-cart button">
+                                                <button type='button'class="btn--lg btn--black font-weight--reguler text-white" >این محصول به <a href={% url 'cart:cart_detail_view' %}>سبد خرید</a> شما اضافه شده است</button>
+                                            </div>
 
-                                            {% endif%}
-                                            <div class="quickview-wishlist button">
-                                                {% if user not in product_detail.user_wished_product.all %}
-                                                    <a title="Add to wishlist" href="{% url 'products:add_to_wishlist' product_detail.slug %}"  onclick="document.getElementById('wishlist_form').submit()">
-                                                        <i class="far fa-heart"></i>
-                                                    </a>
-                                                {% else %}
-                                                    <a href="{% url 'products:remove_from_wishlist' product_detail.slug %}" title="remove from wishlist">
-                                                        <i class="fas fa-heart"></i>
-                                                    </a>
-                                                {% endif %}
-                                            </div>
+                                        {% endif%}
+                                        <div class="quickview-wishlist button">
+                                            {% if user not in product_detail.user_wished_product.all %}
+                                                <a title="Add to wishlist" href="{% url 'products:add_to_wishlist' product_detail.slug %}"  onclick="document.getElementById('wishlist_form').submit()">
+                                                    <i class="far fa-heart"></i>
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'products:remove_from_wishlist' product_detail.slug %}" title="remove from wishlist">
+                                                    <i class="fas fa-heart"></i>
+                                                </a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        {% endif %}
+                            </div>
+                        </form>
                         <div class="product_meta mt-30">
                             <div class="sku_wrapper item_meta">
                                 <span class="label"> موجودی: </span>
