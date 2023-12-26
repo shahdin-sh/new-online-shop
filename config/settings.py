@@ -70,6 +70,8 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'paymant.apps.PaymantConfig',
     'blog',
+    # Rest Framework
+    'rest_framework',
 ]
 SITE_ID = 1
 
@@ -181,8 +183,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # accounts config
 AUTH_USER_MODEL = 'accounts.CustomUserModel'
-LOGIN_REDIRECT_URL = 'products:homepage'
-LOGOUT_REDIRECT_URL = 'products:homepage'
+LOGIN_REDIRECT_URL = 'pages:homepage'
+LOGOUT_REDIRECT_URL = 'pages:homepage'
 
 
 # allauth config, set additional config later.

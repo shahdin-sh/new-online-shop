@@ -126,6 +126,7 @@ class DiscountAdmin(admin.ModelAdmin):
     list_filter = ['expiration_date', 'status']
     list_per_page = 10
     search_fields = ['promo_code']
+    actions = ['convert_to_deactive_status']
     
     def save_model(self, request, obj, form, change):
         if obj.expiration_date < timezone.now():
@@ -153,6 +154,12 @@ class DiscountAdmin(admin.ModelAdmin):
     def discount_product(self, obj):
         url = reverse('admin:products_product_changelist') + '?' + urlencode({'discounts__id': obj.id})
         return format_html('<a href={}>{}</a>', url, obj.products.count())
+    
+    @admin.action(description='Convert to deactive status')
+    def convert_to_deactive_status(self, request, queryset):
+        update_count  = queryset.update(status=Discount.DEACTIVE)
+        self.message_user(request, f"Successfully convert {update_count} discount's status to deactive.")
+
     
 
 
