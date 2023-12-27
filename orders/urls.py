@@ -7,5 +7,5 @@ app_name = 'orders'
 urlpatterns = [
     path('checkout/', checkout, name='checkout'),
     path('customer_create', create_and_update_customer, name='create_and_update_customer'),
-    path('order_item_create', order_create, name='order_create')
+    path('order_create', order_create, name='order_create')
 ]

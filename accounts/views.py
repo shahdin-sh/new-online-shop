@@ -10,6 +10,7 @@ from accounts.forms import CustomUserChangeForm, CustomChangePasswordForm
 from accounts.models import CustomUserModel
 from accounts.utils import persian_to_western_digits
 from orders.forms import CustomerWithAddressForm
+from orders.models import Order
 
 
 
@@ -25,14 +26,20 @@ def wishlist_view(request):
 
 @login_required
 def my_account(request):
+    # accsesing users order
+    user_orders = Order.objects.prefetch_related('items').filter(customer__user=request.user)
+
     breadcrumb_data = [{'lable': 'my_account','title': 'my account'}]
+
     context = {
         'order_form': CustomerWithAddressForm(),
         'user_change_form': CustomUserChangeForm(),
         'password_change_form': CustomChangePasswordForm(user=request.user),
+        'user_orders': user_orders,
         'current_time': persian_to_western_digits(timezone.now().strftime('%Y-%m-%d')),
         'breadcrumb_data': breadcrumb_data,
     }
+
     return render(request, 'accounts/my_account.html', context)
 
 

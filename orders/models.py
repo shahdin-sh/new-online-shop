@@ -33,15 +33,15 @@ class Order(models.Model):
 
     ORDERS_STATUS_CHOICES = (
 
-        ('p', 'PAID'),
-        ('u', 'UNPAID'),
-        ('c', 'CANCELED')
+        ('Paid', 'PAID'),
+        ('Unpaid', 'UNPAID'),
+        ('Canceled', 'CANCELED')
     )
 
     customer = models.ForeignKey(CustomerWithAddress, on_delete=models.PROTECT, related_name='orders', blank=True, null=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
-    order_status = models.CharField(max_length=100, choices=ORDERS_STATUS_CHOICES, default='u')
+    order_status = models.CharField(max_length=100, choices=ORDERS_STATUS_CHOICES, default='Unpaid')
 
 
     def __str__(self):

@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.http import urlencode
 from orders.models import Order, OrderItem, CustomerWithAddress
-from django.db.models import Prefetch
+from django.db.models import Prefetch, F
 
 # admin inlines
 class OrderItemInline(admin.TabularInline):
@@ -42,20 +42,20 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['order', 'product', 'quantity', 'product_price', 'total_price', 'color', 'size', 'datetime_created']
+    list_display = ['order', 'product', 'quantity', 'product_price', 'clean_total_price', 'color', 'size', 'datetime_created']
     readonly_fields = list_display
     list_filter = ['order', 'order__customer']
     ordering = ['-order__datetime_created']
 
     def get_queryset(self, request):
         customer_prefetch = Prefetch('order__customer', queryset=CustomerWithAddress.objects.select_related('user'))
-        return super().get_queryset(request).select_related('order', 'product').prefetch_related(customer_prefetch).all()
+        return super().get_queryset(request).select_related('order', 'product').prefetch_related(customer_prefetch).annotate(total_price=F("price") * F("quantity"))
 
     def product_price(self, obj):
         return f"{obj.price:,} T"
     
-    def total_price(self, obj):
-        return f"{obj.product.price * obj.quantity:,} T"
+    def clean_total_price(self, obj):
+        return f"{obj.total_price:,} T"
     
 
 class CustomerWithAddressAdmin(admin.ModelAdmin):
