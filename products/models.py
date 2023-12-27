@@ -125,7 +125,7 @@ class Product(models.Model):
     size = models.CharField(choices=COLOR_CHOICES, max_length=200, default=SIZE_CHOICES[0])
     color = models.CharField(choices=SIZE_CHOICES, max_length=200, default=COLOR_CHOICES[0])
     image = models.ImageField(upload_to='product/',  null=True, blank=True)
-    banner = models.ImageField(upload_to='product/', null=True, blank=True)
+    banner = models.ImageField(upload_to='product_banners/', null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')

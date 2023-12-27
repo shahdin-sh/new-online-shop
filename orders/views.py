@@ -4,91 +4,85 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from cart.cart import Cart
 from cart.decorators import item_in_cart_required
-from orders.forms import OrderForm
+from orders.forms import CustomerWithAddressForm
 from orders.models import OrderItem, Order
 
 
 @item_in_cart_required
 @login_required
 def checkout(request):
+
     breadcrumb_data = [{'lable': 'checkout', 'title':'Checkout'}]
 
     context = {
-        'order_form': OrderForm(),
+        'customer_form': CustomerWithAddressForm(),
         'breadcrumb_data': breadcrumb_data,
     }
     
     return render(request, 'orders/checkout.html', context)
 
 
-# we create order an order item with this view.
 @login_required
-def order_create(request):
-    user = request.user
-    try:
-        order = Order.objects.get(customer=user)
-    except Order.DoesNotExist:
-        order = None
+def create_and_update_customer(request):
+    current_user = request.user
     if request.method == 'POST':
-        order_form = OrderForm(request.POST, instance=order)
-        if order_form.is_valid():
-            order_obj = order_form.save(commit=False)
-            order_obj.customer = user
-            order_obj.save()
-            # save the user informations.
-            user.first_name = order_obj.first_name
-            user.last_name = order_obj.last_name
-            user.email = order_obj.email
-            user.save()
-            if order:
-                messages.success(request, 'your informations updated successfully')
+        customer_form = CustomerWithAddressForm(request.POST, instance=current_user.customer_info)
+        if customer_form.is_valid():
+            create_new_customer = customer_form.save(commit=False)
+            create_new_customer.user = current_user
+            create_new_customer.save()
+
+            if not current_user.customer_info:
+                messages.success(request, f'your inforamtion and your address added successfully {current_user.username}.')
             else:
-                messages.success(request, 'your informations created successfully')
+                messages.success(request, f'your inforamtion and your address updated successfully {current_user.username}.')
+
+            #  redirect user to the current page
+            return redirect(request.META.get('HTTP_REFERER'))
         else:
-             # Log form errors
+            # Log form errors
             logger = logging.getLogger(__name__)
-            logger.error("Form validation failed: %s", order_form.errors)
-            
+            logger.error("Form validation failed: %s", customer_form.errors)
     else:
-        order_form = OrderForm()
-    # redirect user to the current page
-    return redirect(request.META.get('HTTP_REFERER'))
+        customer_form = CustomerWithAddressForm()
    
 
 @login_required
-def order_item_create(request):
-    user = request.user
-    # check if user fiil out order form or not.
-    try:
-        order = Order.objects.get(customer=user)
-    except Order.DoesNotExist:
-        order = None
-    if order:
-        cart = Cart(request)
-        # getting product variant from the cart.
-        for item in cart:
-            product = item['product_obj']
-            size = item['size']
-            color = item['color']
-            quantity = item['quantity']
-            OrderItem.objects.create(
-                order = get_object_or_404(Order.objects.filter(customer=user)),
-                product = product,
-                size = size,
-                color = color,
-                quantity = quantity,
-                price = product.price,
-                )
-            
-            # update the current product quantity
-            product.quantity = item['current_product_stock']
-            product.save()
-        cart.clear_the_cart()
+def order_create(request):
+    # check if user has a customer information or not
+    current_user = request.user
+    cart = Cart(request)
 
-        # return redirect('paymant:paymant_process')
-        
-    else:
-        return HttpResponse('please fill out your order information form first')
-    
-        
-        
+    if request.method == 'POST':
+
+        if current_user.customer_info:
+
+            # creating order and order item
+            order_obj = Order.objects.create(
+                customer = current_user.customer_info
+            )
+
+            for item in cart:
+                product = item['product_obj']
+                size = item['size']
+                color = item['color']
+                quantity = item['quantity']
+
+                OrderItem.objects.create(
+                    order = order_obj,
+                    product = product,
+                    size = size,
+                    color = color,
+                    quantity = quantity,
+                    price = product.price,
+                )
+
+            # saving the order in the session Pafor the paymant function
+            request.session['order_id'] = order_obj.id
+
+            cart.clear_the_cart()
+
+            return redirect('paymant:paymant_process')
+        else:
+            return HttpResponse('please fill out your info and address form first, then submit your order.')
+   

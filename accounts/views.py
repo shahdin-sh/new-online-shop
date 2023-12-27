@@ -9,7 +9,7 @@ from django.views.decorators.http import require_POST
 from accounts.forms import CustomUserChangeForm, CustomChangePasswordForm
 from accounts.models import CustomUserModel
 from accounts.utils import persian_to_western_digits
-from orders.forms import OrderForm
+from orders.forms import CustomerWithAddressForm
 
 
 
@@ -27,7 +27,7 @@ def wishlist_view(request):
 def my_account(request):
     breadcrumb_data = [{'lable': 'my_account','title': 'my account'}]
     context = {
-        'order_form': OrderForm(),
+        'order_form': CustomerWithAddressForm(),
         'user_change_form': CustomUserChangeForm(),
         'password_change_form': CustomChangePasswordForm(user=request.user),
         'current_time': persian_to_western_digits(timezone.now().strftime('%Y-%m-%d')),

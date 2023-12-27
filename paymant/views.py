@@ -5,7 +5,9 @@ import requests, json
 
 
 def paymant_process(request):
-    order = get_object_or_404(Order.objects.filter(customer=request.user))
+    # getting order id from the session
+    order_id = request.session.get('order_id')
+    order = Order.objects.get(id=order_id)
     toman_total_price = order.get_total_price()
     rial_total_price = toman_total_price * 10
 
@@ -19,7 +21,7 @@ def paymant_process(request):
     request_data = {
         'merchant_id': settings.ZARINPAL_MERCHANT_ID,
         'amount': rial_total_price,
-        'description': f'{order.id}: {order.first_name}  {order.last_name} order',
+        'description': f'{order.id}: {order.customer.first_name}  {order.customer.last_name} order',
         'callback_url': 'http://127.0.0.1:8000',
     }
 
