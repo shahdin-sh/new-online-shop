@@ -98,7 +98,7 @@
                             </div>
                         {% else %}
                             <div class="stock mt-10">
-                                <p>وضعیت : <span>موجود</span></p>
+                                <p>وضعیت : <span  style="color: green;">موجود</span></p>
                             </div>
                         {% endif %}
                         <div class="quickview-peragraph mt-10">
@@ -279,7 +279,7 @@
                          <!-- Start Single Content -->
                         <div class="product_tab_content tab-pane" id="reviews" role="tabpanel">
                             <div class="rating_wrap mb-30">
-                                {% if comment %}
+                                {% if product_detail.comments %}
                                     <h4>نظرات</h4>
                                     <br>
                                     {% for comment in comments %}

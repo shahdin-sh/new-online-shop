@@ -44,7 +44,7 @@ def add_product_to_the_cart(request, product_id):
 
 def remove_product_from_the_cart(request, product_id):
     cart = Cart(request)
-    products = Product.objects.filter(is_featured=False)
+    products = Product.objects.all()
     product = get_object_or_404(products, id=product_id)
     cart.remove_from_the_cart(product)
     return redirect(request.META.get('HTTP_REFERER'))

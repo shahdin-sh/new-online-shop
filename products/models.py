@@ -156,6 +156,11 @@ class Product(models.Model):
     
     def clean_price(self):
         return f'{self.price: ,}'
+    
+    def out_of_stock(self):
+        if self.quantity == 0:
+            return True
+        return False
 
 
 
