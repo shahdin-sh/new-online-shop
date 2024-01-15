@@ -14,7 +14,9 @@
                     <div class="{% if forloop.counter|divisibleby:1 %}col-lg-4 col-md-4{% else %}col-lg-6 col-md-6{% endif %}">
                         <div class="hero-product-image mt-10">
                             <a href="{{product.get_absolute_url}}">
-                                <img src="{{product.image.url}}" class="img-fluid" alt="Banner images">
+                                {% if product.image %}
+                                    <img src="{{product.image.url}}" class="img-fluid" alt="Banner images">
+                                {% endif %}
                             </a>
                             <div class="product-banner-title">
                                 <h4><a href="{{product.get_absolute_url}}">{{ product.name }}</a></h4>

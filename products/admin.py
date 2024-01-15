@@ -62,6 +62,28 @@ class ProductAmountFilter(admin.SimpleListFilter):
             return queryset.filter(products_count__gt=20)
 
 
+class ProductImageFilter(admin.SimpleListFilter):
+    # const values
+    PRODUCT_WITH_IMAGE = 'if_image'
+    PRODUCT_WITHOUT_IMAGE = 'if_not_image'
+
+    title = ('Product Image Status')
+    parameter_name = 'product_image_filter'
+
+    def lookups(self, request, model_admin):
+        return [
+            (ProductImageFilter.PRODUCT_WITH_IMAGE, 'With Image'),
+            (ProductImageFilter.PRODUCT_WITHOUT_IMAGE, 'With Out Image'),
+        ] 
+
+    def queryset(self, request, queryset):
+        if self.value() == ProductImageFilter.PRODUCT_WITH_IMAGE:
+            return queryset.filter(image__isnull=False)
+        if self.value() == ProductImageFilter.PRODUCT_WITHOUT_IMAGE:
+            return queryset.filter(image__isnull=True)
+
+
+
 # Start Inlines
 class CommentsInline(admin.TabularInline):
     model = Comment
@@ -160,12 +182,6 @@ class DiscountAdmin(admin.ModelAdmin):
         update_count  = queryset.update(status=Discount.DEACTIVE)
         self.message_user(request, f"Successfully convert {update_count} discount's status to deactive.")
 
-    
-
-
-    # def clean_percent(self,obj):
-    #     return obj.clean_percent()   
-
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'quantity', 'product_category', 'comments_amount', 'activation', 'feature', 'product_price', 'datetime_created', 'size', 'color']
@@ -174,7 +190,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_select_related = ['category']
     search_fields = ['name']
     list_per_page = 20
-    list_filter = ['datetime_created', InventoryFilter]
+    list_filter = ['datetime_created', InventoryFilter, ProductImageFilter]
     actions = [
         'clean_inventory',
     ]
