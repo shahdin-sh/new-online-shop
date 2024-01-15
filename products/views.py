@@ -38,7 +38,7 @@ def products_or_category_detail(request, category_slug):
     
     categories = Category.objects.prefetch_related(
         Prefetch(
-            'products', queryset=Product.objects.prefetch_related('user_wished_product').filter(activation=True)
+            'products', queryset=Product.objects.prefetch_related('user_wished_product').filter(activation=True, category__products__isnull=False)
         )).all()
     
     category = get_object_or_404(categories, slug=category_slug)

@@ -1,9 +1,11 @@
+import random
+from ..views import shop_categories
 from accounts.models import CustomUserModel
-from ..models import Product, Category
+from django.core.paginator import Paginator
 from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
 from products.views import shop_categories
-import random
+from ..models import Product, Category
 
 
 class TestProductViews(TestCase):
@@ -48,62 +50,43 @@ class TestProductViews(TestCase):
         self.add_to_wishlist = reverse('products:add_to_wishlist', args=[self.product.slug])
         self.remove_from_wishlist = reverse('products:remove_from_wishlist', args=[self.product.slug])
 
-       
-    def test_shop_categories_response_code(self):
+
+     # test shop_categories_view
+          
+    def test_shop_categories_view_status_code(self):
         response = self.client.get(self.shop_categories)
         self.assertEqual(response.status_code, 200)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # def test_home_page_view_GET_request_and_template_used(self):
-    #     response = self.client.get(self.home_page)
-    #     print(response)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'home.html')
+    def test_shop_categories_view_correct_template(self):
+        response = self.client.get(self.shop_categories)
+        self.assertTemplateUsed(response, 'categories/shop_categories.html')
     
-    # def test_shop_categories_view_GET_request_and_template_used(self):
-    #     response = self.client.get(self.shop_categories)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'category/shop_categories.html')
+    def test_shop_categories_view_contains_product(self):
+        response = self.client.get(self.shop_categories)
+        self.assertIn(self.product, response.context['products'])
     
-    # def test_product_detail_view_GET_request_and_template_used(self):
-    #     response = self.client.get(self.category_detail_or_products)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTemplateUsed(response, 'category/category_detail.html')
+    def test_shop_categories_view_pagination(self):
+        # test if pagination is working correctly
+        response = self.client.get(self.shop_categories)
+        paginator = Paginator(response.context['products'], 9)
 
-    # def test_product_detail_view_POST_request(self):
-    #     response = self.client.post(self.product_detail)
-    #     print(response)
-    #     self.assertEqual(response.status_code, 302)
+        self.assertEqual(paginator.num_pages, 1) # Assuming there are fewer than 9 products in the test setup
+    
+    def test_shop_categories_view_contains_page_range(self):
+        response = self.client.get(self.shop_categories)
+        self.assertIn('page_range', response.context)
 
+        # Check if 'page_range' is iterable and not empty
+        page_range = response.context['page_range']
+    
+    
+        for products_page_number in page_range:
+            self.assertInHTML(f"<li class='active'><a href='?page={products_page_number}'>{products_page_number}</a></li>", response.content.decode('utf-8'))
+    
+    def test_shop_categories_view_contains_breadcrumb(self):
+        response = self.client.get(self.shop_categories)
+        self.assertIn('breadcrumb_data', response.context)
+        self.assertEqual(response.context['breadcrumb_data'],  [{'lable':'store', 'title': 'Store'}])
 
 
 
