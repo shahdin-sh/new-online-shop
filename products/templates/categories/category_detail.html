@@ -131,7 +131,9 @@
                                 <div class="single-product-item text-center">
                                     <div class="products-images">
                                         <a href="{% url 'products:product_detail' product.slug %}" class="product-thumbnail">
-                                            <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
+                                            {% if product.image %}
+                                                <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
+                                            {% endif %}
 
                                         </a>
                                         <div class="product-actions">
@@ -163,7 +165,9 @@
                                 <div class="single-product-item text-center">
                                     <div class="products-images">
                                         <a href="product-details.html" class="product-thumbnail">
-                                            <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
+                                            {% if product.image %}
+                                                <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
+                                            {% endif %}
 
                                         </a>
                                         <div class="product-actions">
@@ -195,7 +199,9 @@
                                 <div class="single-product-item text-center">
                                     <div class="products-images">
                                         <a href="product-details.html" class="product-thumbnail">
-                                            <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
+                                            {% if product.image %}
+                                                <img src="{{ product.image.url }}" class="img-fluid" alt="Product Images" width="300" height="300">
+                                            {% endif %}
 
                                         </a>
                                         <div class="product-actions">

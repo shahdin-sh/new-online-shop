@@ -226,6 +226,7 @@ class ProductAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['get_content_summary', 'author', 'name', 'email', 'product', 'datetime_created', 'is_spam', 'rating', 'session_token']
     list_per_page = 10
+    list_filter = ['is_spam']
     search_fields = ['author', 'name', 'email']
     ordering = ['author']
 

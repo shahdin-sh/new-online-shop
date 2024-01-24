@@ -10,6 +10,9 @@ from cart.forms import AddToCartForm
 from products.forms import CommentForm
 from products.models import Product, Category, Comment
 
+# Create a logger
+logger = logging.getLogger(__name__)
+
 
 def shop_categories(request):
 
@@ -106,7 +109,6 @@ def product_detail_view(request, product_slug):
             return redirect(reverse('products:product_detail', args=[product_slug]))
         else:
             # Log form errors
-            logger = logging.getLogger(__name__)
             logger.error("Form validation failed: %s", comment_form.errors)
     else:
         comment_form = CommentForm(request)
