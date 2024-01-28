@@ -1,23 +1,37 @@
 import random
-from accounts.models import CustomUserModel
+from django.contrib.auth import get_user_model
+from django.contrib.messages import get_messages
 from django.core.paginator import Paginator
 from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
-from django.forms import model_to_dict
-from cart.forms import AddToCartForm
+from accounts.forms import CustomLoginForm
+from accounts.models import CustomUserModel
+from products.models import Product, Category, Comment
 from unittest.mock import patch
-from ..models import Product, Category, Comment
-from ..forms import CommentForm
 
 
-class TestProductViews(TestCase):
+class TestProductsViews(TestCase):
 
     def setUp(self):
 
         self.user = CustomUserModel.objects.create(
-            username='user_1', 
-            password='user123',
-            profile_avatar='/media/default_avatar/img_avatar.png',
+            username = 'user',
+            email = 'User123$@gmail.com',
+            password = 'USER123@',
+            profile_avatar = '/media/default_avatar/img_avatar.png',
+            first_name = 'user first name', 
+            last_name = 'user last name',
+            date_joined = '2024-01-26 12:10:54.566470+00:00'
+        )
+
+        self.user_2 = CustomUserModel.objects.create(
+            username = 'user2',
+            email = 'User2123$@gmail.com',
+            password = 'USER2123@',
+            profile_avatar = '/media/default_avatar/img_avatar.png',
+            first_name = 'user first name 2', 
+            last_name = 'user last name 2',
+            date_joined = '2024-01-27 12:10:54.566470+00:00'
         )
 
         self.category_1 = Category.objects.create(
@@ -78,9 +92,15 @@ class TestProductViews(TestCase):
         self.product_detail = reverse('products:product_detail', args=[self.product_1.slug])
         self.add_to_wishlist = reverse('products:add_to_wishlist', args=[self.product_1.slug])
         self.remove_from_wishlist = reverse('products:remove_from_wishlist', args=[self.product_1.slug])
+        self.wishlist_view = reverse('account:wishlist_view')
+
+        # handling nonexisting products Urls
+        self.nonexisting_category = reverse('products:category_detail', args=['nonexisting-category-slug'])
+        self.nonexisting_product = reverse('products:product_detail', args=['nonexisting-product-slug'])
 
 
-     # test shop_categories view
+
+    # test shop_categories view
           
     def test_shop_categories_view_status_code(self):
         response = self.client.get(self.shop_categories)
@@ -118,6 +138,7 @@ class TestProductViews(TestCase):
         self.assertEqual(response.context['breadcrumb_data'],  [{'lable':'store', 'title': 'Store'}])
 
 
+
     # test products_or_category_detail view
         
     def test_category_detail_view_existing_category(self):
@@ -126,8 +147,7 @@ class TestProductViews(TestCase):
         self.assertEqual(response.status_code, 200)
     
     def test_category_detail_view_nonexisting_category(self):
-        nonexisting_category = reverse('products:category_detail', args=['nonexisting-category-slug'])
-        response = self.client.get(nonexisting_category)
+        response = self.client.get(self.nonexisting_category)
         self.assertNotIn('category', response.context)
         self.assertEqual(response.status_code, 404)
 
@@ -151,11 +171,11 @@ class TestProductViews(TestCase):
        self.assertContains(response, self.product_1)
 
 
-    # test product detail view
+    # test product_detail view
 
     def test_product_detail_view_post_comment_for_authenticated_users(self):
         # log in the user
-        self.client.login(username=self.user.username, password=self.user.password)
+        self.client.force_login(self.user)
 
         # form data for a user comment
         form_data = {
@@ -169,7 +189,7 @@ class TestProductViews(TestCase):
 
     def test_product_detail_view_post_comment_for_guests(self):
         # making sure that the user is logging out
-        self.client.login(username=self.user.username, password=self.user.password)
+        self.client.force_login(self.user)
         self.client.logout()
 
         form_data = {
@@ -187,7 +207,7 @@ class TestProductViews(TestCase):
         self.assertContains(response, 'product_detail')
 
     def test_product_detail_view_nonexisting_product(self):
-        response = self.client.get(reverse('products:product_detail', args=['nonexisting-product-slug']))
+        response = self.client.get(self.nonexisting_product)
         self.assertEqual(response.status_code, 404)
       
     def test_product_detail_view_correct_template(self):
@@ -283,4 +303,111 @@ class TestProductViews(TestCase):
         # Check that the reply is saved  in database
         self.assertTrue(Comment.objects.filter(content=reply.content, parent=parent_comment))
     
+    def test_product_detail_view_redirect_page(self):
+        data = {
+            'content': 'random content'
+        }
+
+        response = self.client.post(self.product_detail, data)
+        self.assertRedirects(response, self.product_detail, status_code=302, target_status_code=200)
+
+
+        
+    # test add_to_wishlist view
     
+    def test_add_to_wishlist_view_access_for_authenticated_users(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.add_to_wishlist)
+        self.assertEqual(response.status_code, 200)
+       
+    def test_add_to_wishlist_view_denied_access_for_anonymous_users(self):
+
+        # log out the user
+        self.client.force_login(self.user)
+        self.client.logout()
+        
+        response = self.client.get(self.add_to_wishlist)
+
+        # Check anonymous user is redirected to login page
+        self.assertRedirects(response, f'/accounts/login/?next=/products/{self.product_1.slug}/add_to_wishlist', status_code=302, target_status_code=200)
+    
+    def test_add_to_wishlist_view_nonexisting_product(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.nonexisting_product)
+        self.assertEqual(response.status_code, 404)
+    
+    def test_add_to_wishlist_view_add_if_user_not_in_user_wished_product(self):
+        self.client.force_login(self.user_2)
+
+        response = self.client.get(self.add_to_wishlist)
+
+        # test the success message
+        messages = [str(message) for message in list(get_messages(response.wsgi_request))]
+        self.assertEqual(len(messages), 1)
+        self.assertIn(f'{self.product_1.name} add to your wishlist successfuly.', messages)
+
+        # user_2 is not in product_1.user_wished_product and based on view logic user_2 add to wished_product and redirection will happen, 302 status code
+        self.assertRedirects(response, self.wishlist_view, status_code=302, target_status_code=200)
+
+
+    def test_add_to_wishlist_view_dont_add_if_user_in_user_wished_product(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.add_to_wishlist)
+
+        # user is already in product_1 wished product and base on view logic the response status code is 200
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, 'this product has already added to your wishlist.')
+
+
+
+    # test remove from wishlist view
+    
+    def test_remove_from_wishist_view_accsess_for_authenticated_users(self):
+        self.client.force_login(self.user_2)
+
+        response = self.client.get(self.remove_from_wishlist)
+        self.assertEqual(response.status_code, 200)
+    
+    def test_remove_from_wishlist_view_denied_access_for_anonymous_users(self):
+        # log out the user
+        self.client.force_login(self.user)
+        self.client.logout()
+
+        response = self.client.get(self.remove_from_wishlist)
+
+        # login required decoator cause redirection to login page for anonymous users
+        self.assertRedirects(response,  f'/accounts/login/?next=/products/{self.product_1.slug}/remove_from_wishlist', status_code=302, target_status_code=200)
+    
+    def test_remove_from_wishist_view_nonexisting_product(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(self.nonexisting_product)
+        self.assertEqual(response.status_code, 404)
+
+    def test_remove_from_wishlist_view_remove_if_user_in_user_wished_product(self):
+        self.client.force_login(self.user)
+
+        # if user is in user wished product then Remove user
+        self.assertTrue(self.user in self.product_1.user_wished_product.all())
+
+        response = self.client.get(self.remove_from_wishlist)
+
+        self.product_1.user_wished_product.remove(self.user)
+
+        self.assertTrue(self.user not in self.product_1.user_wished_product.all())
+
+        self.assertRedirects(response, self.wishlist_view, status_code=302, target_status_code=200)
+    
+    def test_remove_from_wishist_view_dont_remove_if_user_is_not_in_user_wished_product(self):
+        self.client.force_login(self.user_2)
+
+        self.assertNotIn(self.user_2, self.product_1.user_wished_product.all())
+
+        response = self.client.get(self.remove_from_wishlist)
+
+        self.assertEqual(response.status_code, 200)
+         

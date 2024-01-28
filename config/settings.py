@@ -200,7 +200,7 @@ ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 4
 FIRST_NAME_MIN_LENGHT = 30
 LAST_NAME_MIN_LENGHT = 30
 ACCOUNT_FORMS = {
-    'login': 'allauth.account.forms.LoginForm',
+    'login': 'accounts.forms.CustomLoginForm',
     'signup': 'accounts.forms.CustomSignupForm',
     'add_email': 'allauth.account.forms.AddEmailForm',
     'change_password': 'allauth.account.forms.ChangePasswordForm',

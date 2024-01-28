@@ -2,6 +2,7 @@ import logging
 from allauth.account.urls import *
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.contrib import messages
 from django.db.models import Prefetch
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -131,13 +132,14 @@ def product_detail_view(request, product_slug):
     return render(request, 'products/product_detail_view.html', context)
 
 
-@login_required 
+@login_required
 def add_to_wishlist(request, product_slug):
     # this view is using in product_detail
     products = Product.is_active.all()
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user not in product_detail.user_wished_product.all():
         product_detail.user_wished_product.add(request.user)
+        messages.success(request, f'{product_detail.name} add to your wishlist successfuly.')
         return redirect('account:wishlist_view')
     return HttpResponse('this product has already added to your wishlist.')
 
@@ -149,7 +151,8 @@ def remove_from_wishlist(request, product_slug):
     product_detail = get_object_or_404(products, slug=product_slug)
     if request.user in product_detail.user_wished_product.all():
         product_detail.user_wished_product.remove(request.user)
+        messages.success(request, f'{product_detail.name} remove from your wishlist successfuly.')
         return redirect('account:wishlist_view')
-    return HttpResponse('this product has already removed from your wishlist.')
+    return HttpResponse('this product is not existing in your wishlist.')
 
 # Every function based views should be impelemented as class based views too: 
