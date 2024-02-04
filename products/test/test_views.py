@@ -2,9 +2,8 @@ import random
 from django.contrib.auth import get_user_model
 from django.contrib.messages import get_messages
 from django.core.paginator import Paginator
-from django.test import TestCase, Client, RequestFactory
+from django.test import TestCase, Client
 from django.urls import reverse
-from accounts.forms import CustomLoginForm
 from accounts.models import CustomUserModel
 from products.models import Product, Category, Comment
 from unittest.mock import patch
@@ -97,8 +96,6 @@ class TestProductsViews(TestCase):
         # handling nonexisting products Urls
         self.nonexisting_category = reverse('products:category_detail', args=['nonexisting-category-slug'])
         self.nonexisting_product = reverse('products:product_detail', args=['nonexisting-product-slug'])
-
-
 
     # test shop_categories view
           

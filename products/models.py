@@ -36,7 +36,7 @@ class Category(models.Model):
     is_featured = models.BooleanField(null=True, default=False)
     description = models.TextField(blank=True)
     # # sample of circular dependecy
-    # selected_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, related_name='+')
+    selected_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, related_name='+')
 
 
     # Custom Managers
@@ -127,6 +127,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='product/')
     banner = models.ImageField(upload_to='product_banners/', null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
+    datetime_modified = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
     discounts = models.ManyToManyField(Discount, related_name='products')

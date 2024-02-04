@@ -124,7 +124,7 @@ class RepliesInline(admin.TabularInline):
 # Start Registering Models
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'is_featured', 'description', 'product_amount']
+    list_display = ['name', 'slug', 'is_featured', 'description', 'product_amount', 'selected_product']
     ordering = ['is_featured']
     prepopulated_fields = {'slug': ('name',)}
     list_per_page = 10
@@ -184,7 +184,7 @@ class DiscountAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'quantity', 'product_category', 'comments_amount', 'activation', 'feature', 'product_price', 'datetime_created', 'size', 'color']
+    list_display = ['name', 'quantity', 'product_category', 'comments_amount', 'activation', 'feature', 'product_price', 'datetime_created', 'datetime_modified', 'size', 'color']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['-datetime_created']
     list_select_related = ['category']
