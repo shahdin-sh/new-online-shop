@@ -144,16 +144,19 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class DiscountAdmin(admin.ModelAdmin):
-    list_display = ['promo_code', 'type','discount_product', 'clean_value', 'clean_percent', 'description', 'expiration_date', 'status']
+    list_display = ['promo_code', 'type','discount_product', 'clean_value', 'clean_percent', 'description', 'expiration_date', 'status', 'datetime_created', 'datetime_modified']
+    list_display_links = ['promo_code', 'type']
+    readonly_fields = ['promo_code']
     list_filter = ['expiration_date', 'status']
     list_per_page = 10
     search_fields = ['promo_code']
     actions = ['convert_to_deactive_status']
     
-    def save_model(self, request, obj, form, change):
+    def save_model(self, request, obj, form, change): 
         if obj.expiration_date < timezone.now():
             obj.status = Discount.DEACTIVE
         return super().save_model(request, obj, form, change)
+
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('products').annotate(

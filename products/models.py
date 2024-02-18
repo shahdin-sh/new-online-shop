@@ -1,5 +1,7 @@
 import string, random
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.shortcuts import reverse
@@ -50,7 +52,6 @@ class Category(models.Model):
     
 
 class Discount(models.Model):
-
     # constant values for discount type choices
     PERCENTAGE_DISCOUNT = 'PD'
     FIXED_AMOUNT_DISCOUNT = 'FAD'
@@ -69,13 +70,16 @@ class Discount(models.Model):
         (DEACTIVE, 'DEACTIVE'),
     )
 
-    promo_code = models.CharField(max_length=255, blank=True)
+    promo_code = models.CharField(max_length=4, blank=True)
     type = models.CharField(max_length=255, choices=DISCOUNT_TYPE_CHOICES)
     value = models.PositiveIntegerField(blank=True, null=True)
     percent = models.DecimalField(max_digits=3, decimal_places=1, validators=[MaxValueValidator(limit_value=100), MinValueValidator(limit_value=1)], blank=True, null=True)
     description = models.CharField(max_length=100)
-    expiration_date = models.DateTimeField()
+    expiration_date = models.DateTimeField(default=(timezone.now() + timezone.timedelta(days=10)))
     status = models.CharField(max_length=255, choices=DISCOUNT_STATUS_CHOICES, default='AC')
+    datetime_created = models.DateField(auto_now_add=True, blank=True, null=True)
+    datetime_modified = models.DateField(auto_now=True, blank=True, null=True)
+    
 
     def __str__(self):
         return f'{self.promo_code} | {self.description}'
@@ -86,21 +90,38 @@ class Discount(models.Model):
     
     def clean_percent(self):
         if self.percent is not None:
-            return f'{self.value: ,} %'    
+            return f'{self.percent: ,} %'    
 
     def check_and_delete_if_expired(self):
-        if self.expiration_date < timezone.now():
+        if self.expiration_date <= timezone.now():
             self.delete()
 
     def save(self, *args, **kwargs):
-        # generate promo code if the discount is percenatage discount or fixed amount discount.
-        if not self.promo_code:
+        # generate promo code when object is being created
+        if not self.promo_code and self.pk == None:
             letters = string.ascii_letters.upper()
-            digits = ''.join(random.choice(letters) for _ in range(4))
-            self.promo_code  = digits
-        
+            promo_code = ''.join(random.choice(letters) for _ in range(4))
+            self.promo_code  = promo_code
+        else:
+             previous_promo_code = Discount.objects.get(pk=self.pk).promo_code
+             self.promo_code = previous_promo_code
+
         super(Discount, self).save(*args, **kwargs)
     
+    def clean(self):
+        super().clean
+        if self.expiration_date <= timezone.now():
+            raise ValidationError('Expiration date can not be earlier than the current time.')
+        
+        # if value field is filled, set percent field to None and via versa
+        if self.value and self.percent is not None:
+            raise ValidationError('Only one percent or value can be filled.', code='invalid', params={})
+        
+        if self.type == Discount.PERCENTAGE_DISCOUNT and self.value is not None:
+            raise ValidationError(f'Value field is not allowed to fill when type is {Discount.PERCENTAGE_DISCOUNT}')
+        elif self.type == Discount.FIXED_AMOUNT_DISCOUNT and self.percent is not None:
+            raise ValidationError(f'Percent field is not allowed to fill when type is {Discount.FIXED_AMOUNT_DISCOUNT}')
+
 
 class Product(models.Model):
 
