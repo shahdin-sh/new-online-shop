@@ -25,7 +25,7 @@ class DiscountFactory(DjangoModelFactory):
     class Meta:
         model = models.Discount
 
-    promo_code = factory.LazyFunction(lambda: ''.join(random.choice(string.ascii_letters.upper()) for _ in range(4)))
+    # promo_code = factory.LazyFunction(lambda: ''.join(random.choice(string.ascii_letters.upper()) for _ in range(4)))
     type = factory.LazyFunction(lambda: random.choice([choice[0] for choice in models.Discount.DISCOUNT_TYPE_CHOICES]))
     value = None
     percent = None

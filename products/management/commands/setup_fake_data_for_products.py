@@ -11,7 +11,7 @@ from cart.cart import Cart
 
 fake = Faker()
 
-list_of_models = [Category, Product, Discount, Comment]
+list_of_models = [Product, Category, Discount, Comment]
 # define the number of object that should generate for our models
 NUM_CATEGORIES = 10
 NUM_PRODUCTS_BASED_ON_CATEGORY = 100
@@ -27,6 +27,7 @@ class Command(BaseCommand):
         # deleting the old data and the cart data
         self.stdout.write('Deleting existing instances...')
         
+        # delete base on protected foreignkey
         for model in list_of_models:
             model.objects.all().delete()
         
@@ -46,13 +47,13 @@ class Command(BaseCommand):
         print(f'Adding {NUM_PRODUCTS_BASED_ON_CATEGORY} Products...', end='')
         all_products = list()
         for _ in range(NUM_PRODUCTS_BASED_ON_CATEGORY):
-            product = ProductFactory(category=random.choice(categories), image='product\single-product-01.webp', banner='prodcut_banners\m4.webp', activation=True)
+            product = ProductFactory(category=random.choice(categories), image='product\single-product-01.webp', banner='product_banners\m4.webp', activation=True)
             all_products.append(product)
         print('Done')
 
 
         # comment data
-        print(f'Adding 10 comment for each product...', end='')
+        print(f'Adding comment in range of 1 to 10 amount for each product...', end='')
         for product in all_products:
             for _ in range(random.randint(1, 10)):
                 comment = CommentFactory(product=product, is_spam=False, parent=None)

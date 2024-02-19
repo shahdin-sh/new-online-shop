@@ -75,7 +75,7 @@ class Discount(models.Model):
     value = models.PositiveIntegerField(blank=True, null=True)
     percent = models.DecimalField(max_digits=3, decimal_places=1, validators=[MaxValueValidator(limit_value=100), MinValueValidator(limit_value=1)], blank=True, null=True)
     description = models.CharField(max_length=100)
-    expiration_date = models.DateTimeField(default=(timezone.now() + timezone.timedelta(days=10)))
+    expiration_date = models.DateTimeField(default=(timezone.now() + timezone.timedelta(days=10)).replace(hour=0, minute=0, second=0, microsecond=0))
     status = models.CharField(max_length=255, choices=DISCOUNT_STATUS_CHOICES, default='AC')
     datetime_created = models.DateField(auto_now_add=True, blank=True, null=True)
     datetime_modified = models.DateField(auto_now=True, blank=True, null=True)
@@ -139,19 +139,19 @@ class Product(models.Model):
 
     name = models.CharField(max_length=200)
     description = RichTextField(blank=True, null=True)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(validators=[MaxValueValidator(limit_value=100), MinValueValidator(limit_value=0)])
     # price = 120,000 t or 1,000,000 t or 3,456,990 t
-    price = models.PositiveIntegerField()
+    price = models.PositiveIntegerField(validators=[MaxValueValidator(limit_value=10000000), MinValueValidator(limit_value=1000)])
     slug = models.SlugField(unique=True)
     size = models.CharField(choices=COLOR_CHOICES, max_length=200, default=SIZE_CHOICES[0])
     color = models.CharField(choices=SIZE_CHOICES, max_length=200, default=COLOR_CHOICES[0])
-    image = models.ImageField(upload_to='product/')
+    image = models.ImageField(upload_to='product/', null=True, blank=True)
     banner = models.ImageField(upload_to='product_banners/', null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
     user_wished_product = models.ManyToManyField(get_user_model(), blank=True, related_name='wished_product')
-    discounts = models.ManyToManyField(Discount, related_name='products')
+    discounts = models.ManyToManyField(Discount, related_name='products', blank=True)
     activation = models.BooleanField(default=True)
     feature = models.BooleanField(default=False)
 
@@ -161,15 +161,7 @@ class Product(models.Model):
     objects = models.Manager()
     is_active = AcitveProduct()
 
-
-    def save(self, *args, **kwargs):
-        # Check if the quantity is 0, and if so, set is_active to False
-        if self.quantity == 0:
-            self.is_active = False
-        else:
-            self.is_active = True
-        super(Product, self).save(*args, **kwargs)
-
+    
     def __str__(self):
         return self.name
 

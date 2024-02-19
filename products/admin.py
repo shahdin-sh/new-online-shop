@@ -187,7 +187,8 @@ class DiscountAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'quantity', 'product_category', 'comments_amount', 'activation', 'feature', 'product_price', 'datetime_created', 'datetime_modified', 'size', 'color']
+    list_display = ['name', 'quantity', 'product_category', 'comments_amount', 'activation', 'feature', 'product_price', 'image', 'banner', 'datetime_created', 'datetime_modified', 'size', 'color']
+    list_display_links = ['name', 'image', 'banner']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['-datetime_created']
     list_select_related = ['category']
@@ -209,8 +210,10 @@ class ProductAdmin(admin.ModelAdmin):
     def product_price(self, obj):
         return f"{obj.price:,} T"
     
+    @admin.display(description='category')
     def product_category(self, obj):
-        return obj.category.name
+        url = reverse('admin:products_category_changelist') + '?' + urlencode({'category_id': obj.category.id})
+        return format_html("<a href='{}'>{}</a>", url, obj.category.name)
     
     @admin.display(description='comments')
     def comments_amount(self, obj):
