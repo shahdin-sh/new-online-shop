@@ -257,7 +257,7 @@ class TestProductsViews(TestCase):
     def test_product_detail_view_comment_spam_status(self):
         response = self.client.get(self.product_detail)
     
-        self.assertIn("<input name='website' value='please leave this field blank.' type='hidden'>", response.content.decode('utf-8'))
+        self.assertIn("<input name='website' value='please leave this field blank' type='hidden'>", response.content.decode('utf-8'))
 
         self.assertFalse(self.comment_1.is_spam)
         self.assertFalse(self.comment_2.is_spam)
@@ -407,4 +407,4 @@ class TestProductsViews(TestCase):
         response = self.client.get(self.remove_from_wishlist)
 
         self.assertEqual(response.status_code, 200)
-         
+        

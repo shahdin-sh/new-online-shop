@@ -14,7 +14,7 @@ class CommentForm(forms.ModelForm):
     def __init__(self, request, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
         # honeypot field
-        self.fields['website'] = forms.CharField(required=False, help_text="Please leave this field blank",)
+        self.fields['website'] = forms.CharField(required=False)
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -25,6 +25,14 @@ class CommentForm(forms.ModelForm):
             if CustomUserModel.objects.filter(email__iexact=email).exists() or Comment.objects.filter(email=email, session_token=None).exists():
                 raise ValidationError("This email is already in use.")
         return email
+    
+    def clean_username(self):
+        name = self.cleaned_data['name']
+
+        if name:
+            if CustomUserModel.objects.filter(username=name).exists():
+                raise ValidationError("This name is someone elses username and it is in use.")
+
 
 
 class DiscountForm(forms.ModelForm):

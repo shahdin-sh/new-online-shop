@@ -6,6 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.shortcuts import reverse
 from django.utils import timezone
+from accounts.models import CustomUserModel
 from ckeditor.fields import RichTextField
 
 
@@ -118,9 +119,10 @@ class Discount(models.Model):
             raise ValidationError('Only one percent or value can be filled.', code='invalid', params={})
         
         if self.type == Discount.PERCENTAGE_DISCOUNT and self.value is not None:
-            raise ValidationError(f'Value field is not allowed to fill when type is {Discount.PERCENTAGE_DISCOUNT}')
+            raise ValidationError(f'Value field is not allowed to fill when type is {Discount.PERCENTAGE_DISCOUNT}', code='invalid', params={})
+        
         elif self.type == Discount.FIXED_AMOUNT_DISCOUNT and self.percent is not None:
-            raise ValidationError(f'Percent field is not allowed to fill when type is {Discount.FIXED_AMOUNT_DISCOUNT}')
+            raise ValidationError(f'Percent field is not allowed to fill when type is {Discount.FIXED_AMOUNT_DISCOUNT}', code='invalid', params={})
 
 
 class Product(models.Model):
@@ -181,6 +183,7 @@ class Product(models.Model):
 
 class Comment(models.Model):
 
+
     RATING_CHOICES = (
         ('POOR', 'poor'),
         ('BAD', 'bad'),
@@ -209,14 +212,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
-
+    
     @property
     def children(self):
         return Comment.objects.filter(parent=self).reverse()
 
-    @property
     def is_parent(self):
-        if self.parent is None:
+        if self.children.exists():
             return True
         return False
     
@@ -226,4 +228,28 @@ class Comment(models.Model):
             if char == '.':
                 break
             result += char
-        return result
+        return result + '.'
+
+
+    def clean(self):
+        super().clean
+
+        # author, name and email conditions
+        condition_a = self.author is not  None and self.name is not None and self.email is not None
+        # condition_b = self.author is None and self.email is None and self.name is None
+        condition_b = self.author is None and self.email is None and self.name is not None
+        condition_c = self.author is None and self.email is not None and self.name is None
+        condition_d = self.author is not None and self.email is None and self.name is not None
+        condition_e = self.author is not None and self.email is not None and self.name is None
+        
+        if self.parent is not None and self.product != self.parent.product:
+            raise ValidationError(f'product must be {self.parent.product}.', code='invalid', params={})
+    
+        if CustomUserModel.objects.filter(email=self.email) or CustomUserModel.objects.filter(username=self.name):
+            raise ValidationError('Email or name has already taken by authenticated users', code='invalid', params={})
+        
+        if condition_a or condition_b or condition_c or condition_d or condition_e:
+            raise ValidationError('Invalid selection related to author, name and fields.', code='invalid', params={})
+        
+        if self.author is not None and self.session_token is not None:
+            raise ValidationError('Session token is only related to comments that have name and email.')

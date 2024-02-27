@@ -330,6 +330,8 @@
                                             <br>
                                             <form action={% url 'products:product_detail' product_detail.slug  %} method='post'>
                                                 {% csrf_token %}
+                                                  <!-- Honeypot field -->
+                                                  <input name='website' value='please leave this field blank' type='hidden'>
                                                 <!-- Hidden input for parent comment.id -->
                                                 <input type="hidden" name="parent_id" value="{{ comment.id }}">
                                                 <p class="comment-form-comment">
@@ -365,7 +367,7 @@
                                                     </select>
                                                 </div>
                                                 <!-- Honeypot field -->
-                                                <input name='website' value='please leave this field blank.' type='hidden'>
+                                                <input name='website' value='please leave this field blank' type='hidden'>
                                                 <!-- only none_authenticated useres will see name and email field. -->
                                                 {% if not user.is_authenticated %}
                                                     {% if not request.session.guest_data %}

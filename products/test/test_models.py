@@ -13,7 +13,7 @@ from products.models import Product, Category, Discount, Comment
 class TestProductsModels(TestCase):
     
     def setUp(self):
-         
+
         self.user = get_user_model().objects.create(
             username = 'user',
             email = 'User123$@gmail.com',
@@ -69,28 +69,22 @@ class TestProductsModels(TestCase):
 
         # if a author field (authenticated user) is filled then name,email and session_token fields should remain null
         self.authorized_comment = Comment.objects.create(
-            content = 'This is a comment for perfect product',
+            content = 'This is a authorized comment for perfect product',
             is_spam = False,
             product = self.product,
             author = self.user,
-            name= '',
-            email= '',
-            parent=None,
-            session_token='',
-            rating=Comment.RATING_CHOICES[4]
+            rating= Comment.RATING_CHOICES[4]
         )
 
         # if name,email and session_token (guest information) fields are filled then author field should remain null 
         self.guest_comment = Comment.objects.create(
-            content = 'This is a comment for perfect product',
+            content = 'This is a guest comment for perfect product',
             is_spam = False,
             product = self.product,
-            author = None,
             name = 'Jane Smith',
             email = 'jane@example.com',
-            parent = None,
             session_token = 'qwertyuioplkjhgfdsazxcvb12345678',
-            rating = 'PERFECT'
+            rating = Comment.RATING_CHOICES[4]
         )
         # Many to Many products fields
         self.product.user_wished_product.set([self.user])
@@ -178,6 +172,7 @@ class TestProductsModels(TestCase):
         self.assertEqual(self.category.selected_product, self.product)
 
     def test_category_reverse_access_related_models_objects(self):
+        # selected_prodcut related name is '+' which means reverse relation is not possibe
         with self.assertRaises(AttributeError):
             self.category.selected_product_set.all()
     
@@ -427,7 +422,7 @@ class TestProductsModels(TestCase):
     # Test Custom Validations
             
     def test_discount_expiration_date_clean_method_condition(self):
-        discount_obj_with_earlier_ex_date_than_now = Discount.objects.create(
+        discount_obj_with_earlier_expiration_date_than_now = Discount.objects.create(
             type = Discount.FIXED_AMOUNT_DISCOUNT,
             value = 100000,
             percent = None,
@@ -436,7 +431,7 @@ class TestProductsModels(TestCase):
             expiration_date = timezone.now() - timezone.timedelta(minutes=1)
         )
 
-        discount_obj_with_exact_ex_date_than_now = Discount.objects.create(
+        discount_obj_with_exact_expiration_date_than_now = Discount.objects.create(
             type = Discount.FIXED_AMOUNT_DISCOUNT,
             value = 100000,
             percent = None,
@@ -445,9 +440,11 @@ class TestProductsModels(TestCase):
             expiration_date = timezone.now()
         )
 
-        with self.assertRaises(ValidationError):
-            discount_obj_with_earlier_ex_date_than_now.full_clean()
-            discount_obj_with_exact_ex_date_than_now.full_clean()
+        with self.assertRaises(ValidationError) as e:
+            discount_obj_with_earlier_expiration_date_than_now.full_clean()
+            discount_obj_with_exact_expiration_date_than_now.full_clean()
+        
+        self.assertIn('Expiration date can not be earlier than the current time.', str(e.exception))
 
     def test_value_and_percent_field_clean_method_condition(self):
         self.percentage_discount.value = 100000
@@ -457,9 +454,11 @@ class TestProductsModels(TestCase):
         self.fixed_amount_discount.save()
 
         # one of the value or percent field can be filled
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(ValidationError) as e:
             self.percentage_discount.full_clean()
             self.fixed_amount_discount.full_clean()
+        
+        self.assertIn('Only one percent or value can be filled.', str(e.exception))
     
     def test_discount_type_field_relation_to_value_and_percent_field_clean_method_condition(self):
         # percentage discount type is PD
@@ -467,14 +466,23 @@ class TestProductsModels(TestCase):
         self.percentage_discount.value = 100000
         self.percentage_discount.save()
 
+        with self.assertRaises(ValidationError) as e_1:
+            self.percentage_discount.full_clean()
+
+        self.assertIn(f'Value field is not allowed to fill when type is {Discount.PERCENTAGE_DISCOUNT}', str(e_1.exception))
+
+
         # fixed amount discount type is FAD
         self.fixed_amount_discount.value = None
         self.fixed_amount_discount.percent = 10.0
         self.fixed_amount_discount.save()
 
-        with self.assertRaises(ValidationError):
-            self.percentage_discount.full_clean()
+        with self.assertRaises(ValidationError) as e_2:
             self.fixed_amount_discount.full_clean()
+        
+        self.assertIn(f'Percent field is not allowed to fill when type is {Discount.FIXED_AMOUNT_DISCOUNT}', str(e_2.exception))
+
+
 
 
     # Test Product Model
@@ -658,7 +666,7 @@ class TestProductsModels(TestCase):
 
     # Model Relationship Testing
     
-    def test_product_category_relation_to_product_model(self):
+    def test_category_relation_to_product_model(self):
         # test Foreignkey relationship
         self.assertEqual(self.product.category, self.category)
 
@@ -675,7 +683,7 @@ class TestProductsModels(TestCase):
         related_manager = getattr(self.category, 'products')
         self.assertTrue(isinstance(related_manager, models.Manager))
     
-    def test_product_user_wished_product_relation_to_product_model(self):
+    def test__user_wished_product_relation_to_product_model(self):
         # test ManytoManyField relationship
         self.assertIn(self.user, self.product.user_wished_product.all())
 
@@ -713,3 +721,332 @@ class TestProductsModels(TestCase):
         self.product.save()
 
         self.assertTrue(self.product.out_of_stock())
+    
+
+    # Test Comment Model
+    
+    # CRUD Testing
+    def test_comment_creation(self):
+
+        # authorized comment creation
+        self.assertEqual(self.authorized_comment.content, 'This is a authorized comment for perfect product')
+        self.assertEqual(self.authorized_comment.is_spam, False)
+        self.assertEqual(self.authorized_comment.product, self.product)
+        self.assertEqual(self.authorized_comment.author, self.user)
+        self.assertEqual(self.authorized_comment.rating, Comment.RATING_CHOICES[4])
+
+        # guest comment creation
+        self.assertEqual(self.guest_comment.content, 'This is a guest comment for perfect product')
+        self.assertEqual(self.guest_comment.is_spam, False)
+        self.assertEqual(self.guest_comment.product, self.product)
+        self.assertEqual(self.guest_comment.name, 'Jane Smith')
+        self.assertEqual(self.guest_comment.email, 'jane@example.com')
+        self.assertEqual(self.guest_comment.session_token, 'qwertyuioplkjhgfdsazxcvb12345678')
+        self.assertEqual(self.guest_comment.rating, Comment.RATING_CHOICES[4])
+    
+    def test_comment_update(self):
+        self.authorized_comment.content = 'Another content for this comment.'
+        self.authorized_comment.save()
+
+        self.assertEqual(self.authorized_comment.content, 'Another content for this comment.')
+    
+    def test_comment_deletion(self):
+        self.authorized_comment.delete()
+        self.guest_comment.delete()
+
+
+        with self.assertRaises(Comment.DoesNotExist):
+            Comment.objects.get(id__in=[self.authorized_comment.id, self.guest_comment.id])
+    
+        
+    # Field Attributes Testing
+    
+    def test_comment_max_lenght_attribute_validation(self):
+        with self.assertRaises(django_db_dataerror):
+            # name and email field
+            self.guest_comment.name = 'A' * 251
+            self.guest_comment.save()
+
+            self.guest_comment.email = 'A' * 251
+            self.guest_comment.save()
+
+            # session_token field
+            self.guest_comment.session_token = 'A' * 33
+            self.guest_comment.save()
+
+            # rating field
+            self.authorized_comment.rating = 'A' * 101
+            self.authorized_comment.save()
+
+            self.guest_comment.rating = 'A' * 101
+            self.guest_comment.save()
+    
+    def test_comment_is_spam_field_attributes_validation(self):
+        self.assertFalse(self.authorized_comment.is_spam)
+        self.assertFalse(self.guest_comment.is_spam)
+    
+    def test_comment_name_and_email_field_attributes_validation(self):
+        # Both of these fields are nullable and blankable
+        self.guest_comment.name = ''
+        self.guest_comment.save()
+
+        self.assertEqual(self.guest_comment.name, '')
+
+        self.guest_comment.email = ''
+        self.guest_comment.save()
+
+        self.assertEqual(self.guest_comment.email, '')
+
+        self.assertIsNone(self.authorized_comment.name)
+
+        self.assertIsNone(self.authorized_comment.email)
+    
+    def test_comment_parent_field_attributes_validation(self):
+        # parent field is a nullable and blankable field
+          
+        self.assertIsNone(self.guest_comment.parent)  
+        self.assertIsNone(self.authorized_comment.parent)      
+    
+    def test_comment_datetime_created_field_attributes_validation(self):
+        # auto_now_add attribute testing
+        comment = Comment.objects.create(
+            content = 'random content',
+            product = self.product,
+            author = self.user,
+        )
+
+        current_time = timezone.now().replace(microsecond=0)
+
+        self.assertEqual(comment.datetime_created.replace(microsecond=0), current_time)
+    
+    def test_comment_datetime_modified_field_attributes_validation(self):
+        # auto_now attribute testing
+        current_time = timezone.now().replace(microsecond=0)
+
+        # After changing the objects and saving it again, datetime_modfication field will restore the current datetime because of auto_now attribute
+        self.authorized_comment.content = 'something'
+        self.authorized_comment.save()
+
+        self.guest_comment.content = 'something'
+        self.guest_comment.save()
+
+        self.assertEqual( self.authorized_comment.datetime_modified.replace(microsecond=0), current_time)
+        self.assertEqual(self.guest_comment.datetime_modified.replace(microsecond=0), current_time)
+    
+    def test_comment_rating_field_attributes_validation(self):
+        for choice in Comment.RATING_CHOICES:
+            self.authorized_comment.rating = choice
+            self.authorized_comment.save()
+
+            self.guest_comment.rating = choice
+            self.guest_comment.save()
+
+            self.assertEqual(self.authorized_comment.rating, choice)
+            self.assertEqual(self.guest_comment.rating, choice)
+
+
+    # Comment Relationship Testing
+    
+    def test_product_relation_to_comment_model(self):
+        # test Foreignkey relation
+        self.assertEqual(self.authorized_comment.product, self.product)
+        self.assertIn(self.authorized_comment, self.product.comments.all())
+
+        self.assertEqual(self.guest_comment.product, self.product)
+        self.assertIn(self.guest_comment, self.product.comments.all())
+
+        # test on_delete method which is CASCADE
+        self.product.delete()
+
+        with self.assertRaises(Comment.DoesNotExist):
+            Comment.objects.get(id__in=[self.authorized_comment.id, self.guest_comment.id])
+
+        # Verify that the reverse relation 'comments' exists on the Product instance
+        self.assertTrue(hasattr(self.product, 'comments'))
+
+        # Verify that the related name 'products' is correctly set on the Category instance
+        related_manager = getattr(self.product, 'comments')
+        self.assertTrue(isinstance(related_manager, models.Manager))
+    
+    def test_author_relation_to_comment_model(self):
+        # test Foreignkey relation
+        self.assertEqual(self.authorized_comment.author, self.user)
+        self.assertIn(self.authorized_comment, self.user.product_comments.all())
+
+        # Ensure that none authenticated users are not related to author field
+        self.assertNotIn(self.guest_comment, self.user.product_comments.all())
+
+        # test on_delete method which is CASCADE
+        self.user.delete()
+
+        with self.assertRaises(Comment.DoesNotExist):
+            Comment.objects.get(id=self.authorized_comment.id)
+        
+        # Verify that reverse relation 'product_comments' exists on the CustomUser instance
+        self.assertTrue(hasattr(self.user, 'product_comments'))
+
+        # Verify that the related name 'comment products' is correctly set on the CustomUser instance
+        related_manager = getattr(self.user, 'product_comments')
+        self.assertTrue(isinstance(related_manager, models.Manager))
+    
+    def test_parent_relation_to_comment_model(self):
+        # test Foreignkey relation
+        reply = Comment.objects.create(
+            content = 'something',
+            product = self.product,
+            author = self.user,
+            parent = self.authorized_comment
+        )
+
+        self.assertEqual(reply.parent, self.authorized_comment)
+        self.assertIn(reply, self.authorized_comment.replies.all())
+
+        # test on_delete method which is CASCADE
+        self.authorized_comment.delete()
+
+        with self.assertRaises(Comment.DoesNotExist):
+            Comment.objects.get(id=reply.id)
+        
+        # Verify that reverse relation 'replies' exists on Comment instance
+        self.assertTrue(hasattr(self.authorized_comment, 'replies'))
+
+        # Verify that the related names 'replies' correctly set on the Comment instance
+        related_manager = getattr(self.authorized_comment, 'replies')
+        self.assertTrue(isinstance(related_manager, models.Manager))
+    
+
+    # Test Comment Custom Methods
+        
+    def test_comment_str_method(self):
+        self.assertEqual(self.authorized_comment.__str__(), self.authorized_comment.content)
+
+        self.assertEqual(self.guest_comment.__str__(), self.guest_comment.content)
+
+    def test_comment_children_method(self):
+        reply = Comment.objects.create(
+            content = 'something',
+            product = self.product,
+            author = self.user,
+            parent = self.authorized_comment
+        )
+
+        self.assertEqual(self.authorized_comment.children.count(), 1)
+
+        for children in self.authorized_comment.children.all():
+            self.assertEqual(children, reply)
+            self.assertEqual(children.parent, self.authorized_comment)
+    
+    def test_comment_is_parent_method(self):
+        self.assertFalse(self.authorized_comment.is_parent())
+
+        Comment.objects.create(
+            content = 'something',
+            product = self.product,
+            author = self.user,
+            parent = self.authorized_comment
+        )
+
+        self.assertTrue(self.authorized_comment.is_parent())
+
+    def test_comment_get_content_summary_method(self):
+        self.authorized_comment.content = 'This is a very long content. please make it short.'
+        self.authorized_comment.save()
+
+        self.assertEqual(self.authorized_comment.get_content_summary(), 'This is a very long content.')
+        
+       
+    # Test Custom Validations
+    
+    def test_parent_and_replies_product_match_clean_method_condition(self):
+        reply = Comment.objects.create(
+            content = 'something',
+            product = self.product,
+            author = self.user,
+            parent = self.authorized_comment
+        )
+
+        another_product = Product.objects.create(
+            name = 'product',
+            quantity = 20,
+            price = 100000,
+            slug = 'product',
+            category = self.category,
+        )
+
+        reply.product = another_product
+        reply.save()
+
+        # replie's product shoud be same with parent's product
+        with self.assertRaises(ValidationError) as e:
+            reply.full_clean()
+        
+        self.assertIn(f'product must be {self.authorized_comment.product}', str(e.exception))
+
+
+    
+    def test_guest_name_and_email_clean_method_condition(self):
+        self.guest_comment.name = self.user.username
+        self.guest_comment.email = self.user.email 
+        self.guest_comment.save()
+
+        with self.assertRaises(ValidationError) as e:
+            self.guest_comment.full_clean()
+        
+        self.assertIn('Email or name has already taken by authenticated users', str(e.exception))
+
+    def test_author_and_name_and_email_field_clean_method_condition(self):
+        conditions = ['conidtion_a', 'condition_b', 'condition_c', 'conidtion_d', 'condition_e']
+        
+        # condition a 
+        if conditions[0]:
+            self.authorized_comment.name = 'something'
+            self.authorized_comment.email = 'something@gmail.com'
+            self.authorized_comment.save()
+
+        # condition b
+        if conditions[1]:
+            self.authorized_comment.author = None
+            self.authorized_comment.name = 'something'
+            self.authorized_comment.email = None
+            self.authorized_comment.save()
+
+        # condition c
+        if conditions[2]:
+            self.authorized_comment.author = None
+            self.authorized_comment.name = None
+            self.authorized_comment.email = 'something@gmail.com'
+            self.authorized_comment.save()
+
+        # condition d
+        if conditions[3]:
+            self.authorized_comment.author = self.user
+            self.authorized_comment.name = None
+            self.authorized_comment.email = 'something@gmail.com'
+            self.authorized_comment.save()
+
+        # condition e
+        if conditions[4]:
+            self.authorized_comment.author = self.user
+            self.authorized_comment.name = 'something'
+            self.authorized_comment.email = None
+            self.authorized_comment.save()
+        
+        for condition in conditions:
+            if condition:
+                with self.assertRaises(ValidationError) as e:
+                    self.authorized_comment.full_clean()
+
+                self.assertIn('Invalid selection related to author, name and fields.', str(e.exception))
+    
+    def test_author_relation_with_session_token_field(self):
+        self.authorized_comment.session_token = 'A' * 32
+        self.authorized_comment.save()
+        
+        with self.assertRaises(ValidationError) as e:
+            self.authorized_comment.full_clean()
+        
+        self.assertIn('Session token is only related to comments that have name and email.', str(e.exception))
+
+        
+        
+        

@@ -62,6 +62,20 @@ class ProductAmountFilter(admin.SimpleListFilter):
             return queryset.filter(products_count__gt=20)
 
 
+class RepliesFilter(admin.SimpleListFilter):
+    title = ('Replies')
+    parameter_name = 'replies'
+
+    def lookups(self, request, model_admin):
+        return [
+            ('replies', 'Replies')
+        ]
+    
+    def queryset(self, request, queryset):
+        if self.value() == 'replies':
+            return queryset.filter(parent__isnull=False) 
+
+
 class ProductImageFilter(admin.SimpleListFilter):
     # const values
     PRODUCT_WITH_IMAGE = 'if_image'
@@ -230,11 +244,11 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['get_content_summary', 'author', 'name', 'email', 'product', 'datetime_created', 'is_spam', 'rating', 'session_token']
+    list_display = ['type', 'get_content_summary', 'author', 'name', 'email', 'comments_product', 'replies', 'comments', 'datetime_created', 'datetime_modified', 'is_spam', 'rating', 'session_token']
     list_per_page = 10
-    list_filter = ['is_spam']
+    list_filter = ['is_spam', RepliesFilter]
     search_fields = ['author', 'name', 'email']
-    ordering = ['author']
+    # ordering = ['product']
 
     inlines = [
         RepliesInline
@@ -242,7 +256,36 @@ class CommentAdmin(admin.ModelAdmin):
     autocomplete_fields = ['product', ]
 
     def get_queryset(self, request):
-        return super().get_queryset(request).prefetch_related('author').filter(parent__isnull=True)
+        return super().get_queryset(request).prefetch_related('author')
+    
+    def comments_product_creation(self, obj):
+         return obj.product.datetime_created
+    
+    # order comments based on their product datetime creation
+    comments_product_creation.admin_order_field = 'product__datetime_created'
+    
+    def replies(self, obj):
+        if obj.parent is None:
+            url = reverse('admin:products_comment_changelist') + '?' + urlencode({'parent__id': obj.id})
+            return format_html('<a href={}>{}</a>', url, obj.replies.all().count())
+    
+    @admin.display(description='parent')
+    def comments(self, obj):
+        if obj.parent is not None:
+            url = reverse('admin:products_comment_changelist') + '?' + urlencode({'replies__id': obj.id})
+            return format_html('<a href={}>{}</a>', url, f'parent:{obj.parent.id}')
+    
+    @admin.display(description='product')
+    def comments_product(self, obj):
+        url = reverse('admin:products_product_changelist') + '?' + urlencode({'product__id': obj.product.id})
+        return format_html('<a href={}>{}</a>', url, obj.product.name)
+    
+    def type(self,obj):
+        if obj.parent:
+            return f'Reply:id:{obj.id}'
+        return f'Comment:id:{obj.id}'
+
+
 
 # End registering models 
 

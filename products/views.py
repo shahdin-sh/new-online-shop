@@ -85,20 +85,25 @@ def product_detail_view(request, product_slug):
 
             # comment section
             new_comment = comment_form.save(commit=False)
-            if comment_form.cleaned_data['website'] != 'please leave this field blank.':
+
+            # honeypot section
+            if comment_form.cleaned_data['website'] != 'please leave this field blank':
                 new_comment.is_spam = True
+                # return HttpResponse('Spam Detection')
+
             new_comment.product = product_detail
 
             # check if user is authenticated, give author to DB and if it is not just give name and email as a guest
             if request.user.is_authenticated:
                 new_comment.author = request.user
+
             else:
                 # restorig name and email in the session
                 guest_data  = request.session['guest_data'] = {
                     'name': comment_form.cleaned_data['name'],
                     'email': comment_form.cleaned_data['email'],
                 }
-                print(guest_data)
+                # restoring informations in DB
                 new_comment.session_token = current_session
                 new_comment.name = guest_data['name']
                 new_comment.email = guest_data['email']
