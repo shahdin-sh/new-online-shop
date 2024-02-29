@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import CustomUserModel
+from django.conf import settings
 
 
 class CustomerWithAddress(models.Model):
@@ -12,7 +12,7 @@ class CustomerWithAddress(models.Model):
         ('UAE', 'united arabic emirates')
     )
 
-    user = models.OneToOneField(CustomUserModel, on_delete=models.PROTECT, related_name='customer_info')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='customer_info')
     first_name = models.CharField(max_length=10)
     last_name = models.CharField(max_length=10)
     company = models.CharField(max_length=50, blank=True)

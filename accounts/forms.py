@@ -11,13 +11,13 @@ from allauth.account.forms import LoginForm
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUserModel
-        fields = ['username', 'email', 'profile_avatar', 'first_name', 'last_name', 'date_joined']
+        fields = ['username', 'email', 'profile_avatar', 'first_name', 'last_name']
 
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUserModel
-        fields = ['username', 'email', 'profile_avatar', 'first_name', 'last_name', 'date_joined']
+        fields = ['username', 'email', 'profile_avatar', 'first_name', 'last_name']
 
 
 # using allauth sign up form

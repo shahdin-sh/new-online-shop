@@ -77,7 +77,7 @@ def order_create(request):
                     price = product.price,
                 )
 
-            # saving the order in the session Pafor the paymant function
+            # saving the order in the session for the paymant function
             request.session['order_id'] = order_obj.id
 
             cart.clear_the_cart()
