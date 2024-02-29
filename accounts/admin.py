@@ -23,7 +23,11 @@ class CustomUserAdmin(UserAdmin):
         ),
     )
 
-    list_display = ['username', 'email', 'first_name', 'last_name', 'profile_avatar', 'is_staff']
+    list_display = ['username', 'email', 'first_name', 'last_name', 'profile_avatar', 'is_staff', 'get_group']
+
+    @admin.display(description='groups')
+    def get_group(self, obj):
+        return ','.join([group.name for group in obj.groups.all()])
 
 
 # Registering admin

@@ -59,7 +59,7 @@ class OrderItemAdmin(admin.ModelAdmin):
     
 
 class CustomerWithAddressAdmin(admin.ModelAdmin):
-    list_display = ['user', 'first_name', 'last_name', 'company', 'country', 'address', 'town' , 'zip_code', 'phone_number', 'email']
+    list_display = ['user', 'first_name', 'last_name', 'email', 'company', 'country', 'address', 'town' , 'zip_code', 'phone_number']
     list_filter = ['user']
     inlines = [
         OrderInline

@@ -5,7 +5,7 @@ from django.contrib import messages
 from cart.cart import Cart
 from cart.decorators import item_in_cart_required
 from orders.forms import CustomerWithAddressForm
-from orders.models import OrderItem, Order
+from orders.models import OrderItem, Order, CustomerWithAddress
 
 
 @item_in_cart_required
@@ -26,10 +26,16 @@ def checkout(request):
 def create_and_update_customer(request):
     current_user = request.user
     if request.method == 'POST':
-        customer_form = CustomerWithAddressForm(request.POST, instance=current_user.customer_info)
+        customer_form = CustomerWithAddressForm(request.POST)
+
         if customer_form.is_valid():
             create_new_customer = customer_form.save(commit=False)
+
             create_new_customer.user = current_user
+            create_new_customer.first_name = current_user.first_name
+            create_new_customer.last_name = current_user.last_name
+            create_new_customer.email = current_user.email
+
             create_new_customer.save()
 
             if not current_user.customer_info:
@@ -55,11 +61,11 @@ def order_create(request):
 
     if request.method == 'POST':
 
-        if current_user.customer_info:
+        if CustomerWithAddress.objects.filter(user=current_user).exists():
 
             # creating order and order item
             order_obj = Order.objects.create(
-                customer = current_user.customer_info
+                customer = current_user
             )
 
             for item in cart:
@@ -85,4 +91,3 @@ def order_create(request):
             return redirect('paymant:paymant_process')
         else:
             return HttpResponse('please fill out your info and address form first, then submit your order.')
-   

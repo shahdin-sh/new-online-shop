@@ -8,7 +8,6 @@ from django.shortcuts import reverse
 from django.utils import timezone
 from ckeditor.fields import RichTextField
 
-from accounts.models import CustomUserModel
 
 
 # managers
@@ -246,7 +245,7 @@ class Comment(models.Model):
         if self.parent is not None and self.product != self.parent.product:
             raise ValidationError(f'product must be {self.parent.product}.', code='invalid', params={})
     
-        if CustomUserModel.objects.filter(email=self.email) or CustomUserModel.objects.filter(username=self.name):
+        if get_user_model().filter(email=self.email) or get_user_model().filter(username=self.name):
             raise ValidationError('Email or name has already taken by authenticated users', code='invalid', params={})
         
         if condition_a or condition_b or condition_c or condition_d or condition_e:
