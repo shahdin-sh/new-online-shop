@@ -65,7 +65,7 @@ def order_create(request):
 
             # creating order and order item
             order_obj = Order.objects.create(
-                customer = current_user
+                customer = current_user.customer_info
             )
 
             for item in cart:
