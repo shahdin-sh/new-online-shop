@@ -91,7 +91,15 @@
 
                         <h5 class="font-weight--reguler mb-10">{{ product_detail.name }}</h5>
 
-                        <h3 class="price">{{ product_detail.clean_price }}</h3>
+                        {% if product_detail_has_discount %}
+                            <div class="on-sale-price"><span class="new-price">{{product_detail.discounted_price|intcomma}} تومان</span><span class="old-price">{{product_detail.clean_price}} تومان</span> </div>
+
+                        {% else %}
+                            <h3 class="price">{{ product_detail.clean_price }}</h3>
+
+                        {% endif%}
+                        
+    
                         {% if product_detail.quantity == 0 %}
                             <div class="stock out-of-stock mt-10">
                                 <p>وضعیت : <span>اتمام موجودی</span></p>

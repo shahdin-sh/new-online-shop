@@ -856,7 +856,12 @@
                                     <div class="product-item_content"> <a class="product-item_title" href={% url 'products:product_detail' item.product_obj.slug  %}>{{item.product_obj.name}}</a>
                                         <label>تعداد : <span>{{item.quantity}}</span>
                                         </label>
-                                        <label class="product-item_quantity">قیمت: <span> {{item.total_price|intcomma}} تومان</span>
+                                        <label class="product-item_quantity">قیمت:
+                                            {% if item.total_discounted_price %} 
+                                                <span> {{item.total_discounted_price|intcomma}} تومان</span>
+                                            {% else %}
+                                                <span> {{item.total_price|intcomma}} تومان</span>
+                                            {% endif %}
                                         </label>
                                     </div>
                                 </li>
@@ -865,8 +870,8 @@
                     </ul>
                 </div>
                 {% if cart.is_item %}
-                    <div class="minicart-item_total"> <span class="font-weight--reguler">سبد خرید:</span> <span class="ammount font-weight--reguler">{{ cart.lenght }} محصول </span></div>
-                        <div class="minicart-item_total"> <span class="font-weight--reguler">مجموع قیمت:</span> <span class="ammount font-weight--reguler">{{ cart.get_total_price|intcomma }} تومان</span></div>
+                    <div class="minicart-item_total"> <span class="font-weight--reguler">سبد خرید:</span> <span class="ammount font-weight--reguler">{{ cart.lenght }} محصول </span></div> 
+                        <div class="minicart-item_total"> <span class="font-weight--reguler">مجموع قیمت:</span> <span class="ammount font-weight--reguler">{{ cart.get_total_discounted_price|intcomma }} تومان</span></div>
                         <div class="minicart-btn_area"> <a href="{% url "cart:cart_detail_view" %}" class="btn btn--full btn--border_1">مشاهده سبد خرید</a></div>
                         <div class="minicart-btn_area"> <a href={% url 'orders:checkout' %} class="btn btn--full btn--black">ثبت نهایی</a>
                     </div>

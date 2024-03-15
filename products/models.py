@@ -9,7 +9,6 @@ from django.utils import timezone
 from ckeditor.fields import RichTextField
 
 
-
 # managers
 # class ProductManager(models.Manager):
 
@@ -74,12 +73,13 @@ class Discount(models.Model):
     promo_code = models.CharField(max_length=4, blank=True)
     type = models.CharField(max_length=255, choices=DISCOUNT_TYPE_CHOICES)
     value = models.PositiveIntegerField(blank=True, null=True)
-    percent = models.DecimalField(max_digits=3, decimal_places=1, validators=[MaxValueValidator(limit_value=100), MinValueValidator(limit_value=1)], blank=True, null=True)
+    percent = models.DecimalField(max_digits=3, decimal_places=0, validators=[MaxValueValidator(limit_value=100), MinValueValidator(limit_value=1)], blank=True, null=True)
     description = models.CharField(max_length=100)
     expiration_date = models.DateTimeField(default=(timezone.now() + timezone.timedelta(days=10)).replace(hour=0, minute=0, second=0, microsecond=0))
     status = models.CharField(max_length=255, choices=DISCOUNT_STATUS_CHOICES, default='AC')
     datetime_created = models.DateField(auto_now_add=True, blank=True, null=True)
     datetime_modified = models.DateField(auto_now=True, blank=True, null=True)
+    usage_by = models.ManyToManyField(get_user_model(), related_name='applied_discount', blank=True)
     
 
     def __str__(self):
@@ -87,11 +87,12 @@ class Discount(models.Model):
 
     def clean_value(self):
         if self.value is not None:
-            return f'{self.value: ,} T'    
+            value = int(str(self.value)[:-3] + '000')
+            return f'{value: ,}'    
     
     def clean_percent(self):
         if self.percent is not None:
-            return f'{self.percent: ,} %'    
+            return f'{self.percent: ,}'    
 
     def check_and_delete_if_expired(self):
         if self.expiration_date <= timezone.now():
@@ -171,7 +172,9 @@ class Product(models.Model):
         return reverse('products:product_detail', args=[self.slug])
     
     def clean_price(self):
-        return f'{self.price: ,}'
+        # convert to netural prices
+        price = int(str(self.price)[:-3] + '000')
+        return f'{price: ,}'
     
     def out_of_stock(self):
         if self.quantity == 0:
@@ -245,7 +248,7 @@ class Comment(models.Model):
         if self.parent is not None and self.product != self.parent.product:
             raise ValidationError(f'product must be {self.parent.product}.', code='invalid', params={})
     
-        if get_user_model().filter(email=self.email) or get_user_model().filter(username=self.name):
+        if get_user_model().objects.filter(email=self.email) or get_user_model().objects.filter(username=self.name):
             raise ValidationError('Email or name has already taken by authenticated users', code='invalid', params={})
         
         if condition_a or condition_b or condition_c or condition_d or condition_e:

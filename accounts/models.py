@@ -3,14 +3,13 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.utils import timezone
+
 
 
 class CustomUserModel(AbstractUser):
     # applying Custom change to the AbstractUser field.
     profile_avatar = models.ImageField(upload_to='profile_avatar/', blank=True, default='media/default_avatar/author.webp')
     email = models.EmailField(unique=True)
-
     
     def profile_avatar_check(self):
         try:

@@ -188,7 +188,7 @@ class TestProductsModels(TestCase):
     
 
 
-    # Test Discount model
+    # Test Discount model / add discount usage_by field test
     
 
     # CRUD Testing
@@ -304,8 +304,9 @@ class TestProductsModels(TestCase):
         self.assertEqual(self.percentage_discount.percent, None)
         self.assertIsNone(self.fixed_amount_discount.percent)
 
-        # test percnet range, decimal_places = 1, max=100, min=1
-        valid_percent_values = [23.2, 78.0, 1.0, 99.9]
+        # test percnet range, decimal_places = 0, max=100, min=1
+        valid_percent_values = [23, 78, 1, 99]
+
         for valid_percent_value in valid_percent_values:
             self.percentage_discount.percent = valid_percent_value
             self.percentage_discount.save()
@@ -353,11 +354,16 @@ class TestProductsModels(TestCase):
         self.assertEqual(self.fixed_amount_discount.__str__(), f'{self.fixed_amount_discount.promo_code} | {self.fixed_amount_discount.description}')
     
     def test_discount_clean_value_method(self):
-        self.assertEqual(self.fixed_amount_discount.clean_value(),  f'{self.fixed_amount_discount.value: ,} T' )
+        self.fixed_amount_discount.value = 100501
+        self.fixed_amount_discount.save()
+
+        # the last three digits of the value turned to zero, decimal to natural
+        self.assertEqual(self.fixed_amount_discount.clean_value(), ' 100,000')
+
         self.assertIsNone(self.percentage_discount.clean_value())
     
     def test_discount_clena_percent_method(self):
-        self.assertEqual(self.percentage_discount.clean_percent(), f'{self.percentage_discount.percent: ,} %')
+        self.assertEqual(self.percentage_discount.clean_percent(), f'{self.percentage_discount.percent: ,}')
     
     def test_discount_check_and_delete_if_expired(self):
         earlier_time_than_now =  timezone.now() - timezone.timedelta(days=1)
@@ -562,10 +568,7 @@ class TestProductsModels(TestCase):
                 self.product.save()
                 
                 self.product.full_clean()
-    
-    def test_product_negative_price_amount(self):
-        pass
-                
+
     def test_product_slug_field_being_unique_validation(self):
         
         # the slug belongs to the self.product.slug
@@ -712,7 +715,11 @@ class TestProductsModels(TestCase):
         self.assertEqual(self.product.get_absolute_url(), reverse('products:product_detail', args=[self.product.slug]))
     
     def test_product_clean_price_method(self):
-        self.assertEqual(self.product.clean_price(), f'{self.product.price: ,}')
+        # the last three digits of price turn to zero, decimal to natural 
+        self.product.price = 1340685
+        self.product.save()
+
+        self.assertEqual(self.product.clean_price(), f' 1,340,000')
     
     def test_product_out_of_stock_method(self):
         self.assertFalse(self.product.out_of_stock())

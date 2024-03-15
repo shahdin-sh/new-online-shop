@@ -61,6 +61,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey('products.Product', on_delete=models.SET_NULL, related_name='order_items', null=True)
     quantity = models.PositiveIntegerField(default=1)
     price = models.PositiveIntegerField()
+    discounted_price = models.PositiveBigIntegerField(default=0)
     color = models.CharField(max_length=200, default='black')
     size = models.CharField(max_length=200, default='large')
     datetime_created = models.DateTimeField(auto_now_add=True)
@@ -74,5 +75,7 @@ class OrderItem(models.Model):
         return f"{obj.price:,} T"
     
     def total_price(self):
-        return f"{self.price * self.quantity:,}"
+        if self.discounted_price != 0:
+            return (self.quantity * self.discounted_price)
+        return (self.quantity * self.price)
 

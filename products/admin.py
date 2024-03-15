@@ -158,10 +158,10 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class DiscountAdmin(admin.ModelAdmin):
-    list_display = ['promo_code', 'type','discount_product', 'clean_value', 'clean_percent', 'description', 'expiration_date', 'status', 'datetime_created', 'datetime_modified']
+    list_display = ['promo_code', 'type','discount_product', 'clean_value', 'clean_percent', 'description', 'expiration_date', 'is_expired', 'status', 'datetime_created', 'datetime_modified']
     list_display_links = ['promo_code', 'type']
     readonly_fields = ['promo_code']
-    list_filter = ['expiration_date', 'status']
+    list_filter = ['expiration_date', 'status',]
     list_per_page = 10
     search_fields = ['promo_code']
     actions = ['convert_to_deactive_status']
@@ -180,14 +180,19 @@ class DiscountAdmin(admin.ModelAdmin):
             ))
 
     def clean_value(self, obj):
-        if obj is not None:
-            return obj.clean_value()
-        return None
+        if obj.value:
+            return f'{obj.clean_value()} T' 
     
     def clean_percent(self, obj):
         if obj.percent:
             return f'{obj.percent} %'
-        return obj.percent
+    
+    @admin.display(description='expiration status')
+    def is_expired(self, obj):
+        if obj.expiration_date <= timezone.now():
+            return 'Expired'
+        return 'Valid'
+
     
     @admin.display(description='products')
     def discount_product(self, obj):
@@ -198,6 +203,7 @@ class DiscountAdmin(admin.ModelAdmin):
     def convert_to_deactive_status(self, request, queryset):
         update_count  = queryset.update(status=Discount.DEACTIVE)
         self.message_user(request, f"Successfully convert {update_count} discount's status to deactive.")
+    
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -222,7 +228,7 @@ class ProductAdmin(admin.ModelAdmin):
         return super().get_queryset(request).prefetch_related('comments')
 
     def product_price(self, obj):
-        return f"{obj.price:,} T"
+        return f'{obj.clean_price()} T'
     
     @admin.display(description='category')
     def product_category(self, obj):

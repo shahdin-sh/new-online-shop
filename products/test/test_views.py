@@ -5,8 +5,9 @@ from django.core.paginator import Paginator
 from django.test import TestCase, Client
 from django.urls import reverse
 from accounts.models import CustomUserModel
-from products.models import Product, Category, Comment
+from products.models import Product, Category, Comment, Discount
 from unittest.mock import patch
+from cart.cart import Cart
 
 
 class TestProductsViews(TestCase):
@@ -38,6 +39,16 @@ class TestProductsViews(TestCase):
             slug = 'random-slug',
             is_featured = False,
             description = 'some_random_description',
+        )
+
+        # A Percentage Discount
+        self.percentage_discount = Discount.objects.create(
+            type = Discount.PERCENTAGE_DISCOUNT,
+            value = None,
+            percent = 23.4,
+            description = '10 percent off discount',
+            status = Discount.ACTIVE,
+            # expiration date
         )
 
         self.product_1 = Product.objects.create(
@@ -82,6 +93,12 @@ class TestProductsViews(TestCase):
         # set user_wished_product
         self.product_1.user_wished_product.set([self.user])
 
+        # create a sample request object
+        class Request:
+            def __init__(self):
+                self.session = {}
+
+        self.request = Request()
 
         self.client = Client()
 
@@ -96,6 +113,7 @@ class TestProductsViews(TestCase):
         # handling nonexisting products Urls
         self.nonexisting_category = reverse('products:category_detail', args=['nonexisting-category-slug'])
         self.nonexisting_product = reverse('products:product_detail', args=['nonexisting-product-slug'])
+
 
     # test shop_categories view
           
@@ -236,6 +254,10 @@ class TestProductsViews(TestCase):
         self.assertIn('breadcrumb_data', response.context)
         self.assertEqual(response.context['breadcrumb_data'],  [{'lable':f'{self.product_1.name}', 'title': f'{self.product_1.name}', 'middle_lable': f'{self.product_1.category.name}', 'middle_url': 'products:category_detail', 'middle_url_args': self.product_1.category.slug}])
     
+    def test_product_detail_contains_has_discount_boolean(self):
+        response = self.client.get(self.product_detail)
+        self.assertIn('product_detail_has_discount', response.context)
+    
     def test_product_detail_view_logg_form_errors(self):
 
         with patch('products.views.logger', autospec=True) as mock_logger:
@@ -307,9 +329,28 @@ class TestProductsViews(TestCase):
 
         response = self.client.post(self.product_detail, data)
         self.assertRedirects(response, self.product_detail, status_code=302, target_status_code=200)
+    
+    # adding this test at 3/9/2024
+    def test_product_detail_discounted_price(self):
+        pass
+        # # setup cart data
+        # cart = Cart(self.request)
+
+        # # adding item to the cart
+        # cart.add_to_cart(self.product_1, self.product_1.size, self.product_1.color, quantity=4)
+
+        # # applying discount to the cart item
+        # cart.applied_discount(self.percentage_discount, self.product_1)
+
+        # # set discounted price for product detail
+        # discounted_price = self.cart[str(self.product_1.id)].get('discounted_price')
+        # self.product_1.discounted_price = discounted_price
+
+        # self.assertEqual(self.product_1.discounted_price, discounted_price)
+        # self.assertNotEqual(self.product_1.discounted_price, 0)
+    
 
 
-        
     # test add_to_wishlist view
     
     def test_add_to_wishlist_view_access_for_authenticated_users(self):

@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from cart.forms import AddToCartForm
+from cart.cart import Cart
 from products.forms import CommentForm
 from products.models import Product, Category, Comment
 
@@ -42,9 +43,10 @@ def products_or_category_detail(request, category_slug):
     
     categories = Category.objects.prefetch_related(
         Prefetch(
-            'products', queryset=Product.objects.prefetch_related('user_wished_product').filter(activation=True, category__products__isnull=False)
+            'products', queryset=Product.objects.prefetch_related('user_wished_product').filter(activation=True, category__isnull=False)
         )).all()
-    
+
+
     category = get_object_or_404(categories, slug=category_slug)
 
     breadcrumb_data = [{'lable':f'{category.name}', 'title': f'{category.name}', 'middle_lable': 'store', 'middle_url':'products:product_categories'}]
@@ -59,6 +61,14 @@ def product_detail_view(request, product_slug):
 
     products = Product.objects.prefetch_related('comments').filter(activation=True)
     product_detail = get_object_or_404(products, slug=product_slug)
+
+    # Check if this product has a discounted price in the cart session
+    cart = request.session.get('cart')
+    if cart and str(product_detail.id) in cart.keys():
+        discounted_price = cart[str(product_detail.id)].get('discounted_price', 0)
+
+        # adding discounted_price field directly to product detail
+        product_detail.discounted_price = discounted_price
 
     # comment section
     current_session = request.session.session_key
@@ -132,6 +142,7 @@ def product_detail_view(request, product_slug):
         'comment_form': comment_form,
         'add_to_cart_form': AddToCartForm(product_stock=product_detail.quantity),
         'breadcrumb_data': breadcrumb_data,
+        'product_detail_has_discount':  Cart(request).is_discount_applies(product_detail)
     }
 
     return render(request, 'products/product_detail_view.html', context)

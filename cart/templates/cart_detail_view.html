@@ -31,7 +31,11 @@
                                         <td></td> 
                                         <td class="product-img"> <a href="#"><img src={% static "images/product/small/cart-01.webp" %} alt=""/></a> </td> 
                                         <td class="product-name"><a href={% url 'products:product_detail' item.product_obj.slug %}>{{item.product_obj.name}}</a></td> 
-                                    <td class="product-price"><span class="amount">{{item.product_obj.price|intcomma}} تومان</span></td> 
+                                        {% if item.discounted_price %}
+                                            <td class="product-price"><span class="amount">{{item.discounted_price|intcomma}} تومان</span></td> 
+                                        {% else %}
+                                            <td class="product-price"><span class="amount">{{item.product_obj.price|intcomma}} تومان</span></td> 
+                                        {% endif %}
                                         <td class="cart-quality">
                                             <form action={% url 'cart:add_to_cart' item.product_obj.id %} method='post'>
                                                 {% csrf_token %} 
@@ -46,8 +50,12 @@
                                                 </div>
 
                                             </form>                                                         
-                                        </td>                                                     
-                                        <td class="price-total"> <span class="amount">{{item.total_price|intcomma}} تومان</span> </td> 
+                                        </td>
+                                        {% if item.total_discounted_price %}                                                     
+                                            <td class="price-total"> <span class="amount">{{item.total_discounted_price|intcomma}} تومان</span> </td>
+                                        {% elif item.total_price%}
+                                            <td class="price-total"> <span class="amount">{{item.total_price|intcomma}} تومان</span> </td> 
+                                        {% endif %}
                                         <td class="product-remove"> <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}><i class="icon-cross2"></i></a> </td> 
                                     </tr>
                                 {% endfor %}                                                                                                                          
@@ -82,7 +90,7 @@
                                             <ul> 
                                                 <li>مجموع قیمت<span> {{cart.get_total_price|intcomma}} تومان</span>
                                                 </li>                                                  
-                                                <li>مجموع قیمت (با احتساب تخفیف)<span>{{cart.discounted_price|intcomma}} تومان</span>
+                                                <li>مجموع قیمت (با احتساب تخفیف)<span>{{cart.get_total_discounted_price|intcomma}} تومان</span>
                                                 </li>                                                       
                                             </ul>                                                         
                                         </div>                                                     

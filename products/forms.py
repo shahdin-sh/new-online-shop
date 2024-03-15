@@ -40,13 +40,14 @@ class DiscountForm(forms.ModelForm):
         model = Discount
         fields = ['promo_code']
     
-    def check_promo_code(self, obj):
-        # applying this method for preventing discount promo code duplication.
-        entered_promo_code = self.cleaned_data.get('promo_code')
-        if entered_promo_code:
-            if Discount.objects.filter(promo_code=entered_promo_code, status='DC').exists():
-                raise ValidationError('This discount code has alreday been used.')
-            if not Discount.objects.filter(promo_code=entered_promo_code).exists:
-                raise ValidationError('This promo code is not valid.')
-        return entered_promo_code
+    # def check_promo_code(self, obj):
+    #     # applying this method for preventing discount promo code duplication.
+    #     entered_promo_code = self.cleaned_data.get('promo_code')
+    #     if entered_promo_code:
+    #         if Discount.objects.filter(promo_code=entered_promo_code, status='DC').exists():
+    #             raise ValidationError('This discount code has alreday been used.')
+            
+    #         if not Discount.objects.filter(promo_code=entered_promo_code).exists():
+    #             raise ValidationError('This promo code is not valid.')
+    #     return entered_promo_code
         

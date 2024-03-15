@@ -45,8 +45,9 @@
                                 <p class="cart-page-title">کد تخفیف دارید؟ <a class="checkout-click" href="#">برای ثبت اینجا کلیک کنید.</a></p> 
                                 <div class="checkout-coupon-info"> 
                                     <p>اگر کد تخفیف دارید، جهت ثبت وارد نمایید.</p> 
-                                    <form action="#"> 
-                                        <input type="text" placeholder="کد تخفیف"/> 
+                                    <form action={% url 'cart:apply_discount' %} method='post'>
+                                        {% csrf_token %} 
+                                        <input type="text" placeholder="کد تخفیف"/ name='promo_code' required> 
                                         <input type="submit" value="ثبت"/> 
                                     </form>                                         
                                 </div>                                     
@@ -167,17 +168,11 @@
                                                         {% for item in cart %}                                     
                                                             <div class="your-order-middle"> 
                                                                 <ul>
-                                                                    <li>
-                                                                    <span>{{item.product_obj.name}}</span>
-                                                                        <input name='quantity' value={{item.quantity}} type='text'>
-                                                                        <span>{{item.product_obj.price|intcomma}} تومان </span>
-                                                                    </li>
-                                                                    <span> prdouct_stock : {{item.current_product_stock}}</span>                                                                                                                                        
-                                                                </ul>
-                                                                <ul>
-                                                                    <li>
-                                                                        <span>Total Price : {{item.total_price|intcomma}} </span>
-                                                                    </li>
+                                                                    {% if item.discounted_price %}
+                                                                        <li>{{item.product_obj.name}} X {{item.quantity}} <span>{{item.total_discounted_price|intcomma}} تومان </span></li> 
+                                                                    {% else %}
+                                                                        <li>{{item.product_obj.name}} X {{item.quantity}} <span>{{item.total_price|intcomma}} تومان </span></li>         
+                                                                    {% endif %}                                                                                                                                                                                    
                                                                 </ul>
                                                                 <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}>Remove</a>
                                                             </div>
@@ -192,7 +187,7 @@
                                                         <div class="your-order-info order-total"> 
                                                             <ul> 
                                                                 <li>
-                                                                    <strong>جمع با تخفیف</strong> <span>{{cart.get_total_price|intcomma}} تومان </span>
+                                                                    <strong>جمع با تخفیف</strong> <span>{{cart.get_total_discounted_price|intcomma}} تومان </span>
                                                                 </li>                                                             
                                                             </ul>                                                         
                                                         </div>                                                     

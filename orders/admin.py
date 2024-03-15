@@ -8,10 +8,16 @@ from django.db.models import Prefetch, F
 # admin inlines
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
-    fields = ['order', 'product', 'quantity', 'price']
+    fields = ['order', 'product', 'quantity', 'price', 'discounted_price']
     readonly_fields = fields
     classes = ('collapse', )
     can_delete = False
+
+    @admin.display(description='discounted price ')
+    def clean_discounted_price(self, obj):
+        if obj.discounted_price != 0:
+            return f"{obj.discounted_price: ,} T"
+        return 0
 
 
 class OrderInline(admin.TabularInline):
@@ -42,7 +48,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['order', 'product', 'quantity', 'product_price', 'clean_total_price', 'color', 'size', 'datetime_created']
+    list_display = ['order', 'product', 'quantity', 'product_price','clean_discounted_price', 'clean_total_price', 'color', 'size', 'datetime_created']
     readonly_fields = list_display
     list_filter = ['order', 'order__customer']
     ordering = ['-order__datetime_created']
@@ -53,6 +59,12 @@ class OrderItemAdmin(admin.ModelAdmin):
 
     def product_price(self, obj):
         return f"{obj.price:,} T"
+    
+    @admin.display(description='discounted price ')
+    def clean_discounted_price(self, obj):
+        if obj.discounted_price != 0:
+            return f"{obj.discounted_price:,} T"
+        return 0
     
     def clean_total_price(self, obj):
         return f"{obj.total_price:,} T"

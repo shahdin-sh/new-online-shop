@@ -6,6 +6,7 @@ from cart.cart import Cart
 from cart.decorators import item_in_cart_required
 from orders.forms import CustomerWithAddressForm
 from orders.models import OrderItem, Order, CustomerWithAddress
+from products.models import Discount
 
 
 @item_in_cart_required
@@ -63,7 +64,7 @@ def order_create(request):
 
         if CustomerWithAddress.objects.filter(user=current_user).exists():
 
-            # creating order and order item
+            # creating order
             order_obj = Order.objects.create(
                 customer = current_user.customer_info
             )
@@ -73,7 +74,9 @@ def order_create(request):
                 size = item['size']
                 color = item['color']
                 quantity = item['quantity']
+                discounted_price = item.get('discounted_price', 0)
 
+                # creating order item for each item in cart
                 OrderItem.objects.create(
                     order = order_obj,
                     product = product,
@@ -81,11 +84,21 @@ def order_create(request):
                     color = color,
                     quantity = quantity,
                     price = product.price,
+                    discounted_price = discounted_price
                 )
 
             # saving the order in the session for the paymant function
             request.session['order_id'] = order_obj.id
 
+            # Retrieve 'user_discounts' from session, loop through them to update 'usage_by' for each discount with the current user, and save after order items get created.
+            user_discounts = request.session.get('user_discounts')
+            if user_discounts:
+                for key, value in user_discounts.items():
+                    discount_obj = Discount.objects.get(id=value.get('id'))
+
+                    discount_obj.usage_by.set([current_user])
+                    discount_obj.save()
+                        
             cart.clear_the_cart()
 
             return redirect('paymant:paymant_process')
