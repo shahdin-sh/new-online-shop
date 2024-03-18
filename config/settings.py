@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     "debug_toolbar",
     "ckeditor",
+    "rosetta",
     # local apps
     'accounts',
     'crispy_forms',
@@ -113,10 +114,12 @@ TEMPLATES = [
                 'cart.context_processors.shopping_cart',
                 'orders.context_processors.order_items',
                 'blog.context_processors.blog_posts',
+                'context_processors.admin_panel_language',
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
@@ -158,13 +161,25 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+LANGUAGE_CODE = 'fa'
+TIME_ZONE = 'Asia/Tehran'
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('fa', 'Farsi')
+]
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, "products/locale"),
+    os.path.join(BASE_DIR, "templates/locale"),
+    os.path.join(BASE_DIR, "accounts/locale"),
+    os.path.join(BASE_DIR, "blog/locale"),
+    os.path.join(BASE_DIR, "cart/locale"),
+    os.path.join(BASE_DIR, "orders/locale"),
+]
 
 
 # Static files (CSS, JavaScript, Images)

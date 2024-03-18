@@ -1,4 +1,4 @@
-
+{% load i18n %}
 
 
 {% block content %}
@@ -15,7 +15,7 @@
                                 <!-- breadcrumb-list start -->
                                     <ul class="breadcrumb-list text-center text-sm-end">
                                         <li class="breadcrumb-item"><a href="{% url 'pages:homepage' %}">
-                                            Homepage
+                                            {% trans 'Homepage'%}
                                         </a></li>
                                         {% if item.middle_lable %}
                                             <li class="breadcrumb-item">

@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 from accounts.forms import CustomUserChangeForm, CustomChangePasswordForm
 from accounts.models import CustomUserModel
@@ -12,6 +13,8 @@ from accounts.utils import persian_to_western_digits
 from orders.forms import CustomerWithAddressForm
 from orders.models import Order
 
+# const values for breadcrumb data
+breadcrumb_my_account = _('my_account')
 
 
 @login_required
@@ -20,16 +23,16 @@ def wishlist_view(request):
     login_user = CustomUserModel.objects.prefetch_related('wished_product').get(username=request.user.username)
 
 
-    breadcrumb_data = [{'lable': 'wishlist', 'title': 'wishlist'}]
+    breadcrumb_data = [{'lable': _('wishlist'), 'title': _('wishlist')}]
     return render(request, 'accounts/wishlist.html', context={'breadcrumb_data': breadcrumb_data, 'login_user': login_user,})
 
 
 @login_required
-def my_account(request):
+def current_user_account(request):
     # accsesing users order
     user_orders = Order.objects.prefetch_related('items').filter(customer__user=request.user)
 
-    breadcrumb_data = [{'lable': 'my_account','title': 'my account'}]
+    breadcrumb_data = [{'lable': breadcrumb_my_account,'title': breadcrumb_my_account}]
 
     context = {
         'order_form': CustomerWithAddressForm(),

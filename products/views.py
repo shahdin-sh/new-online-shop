@@ -1,16 +1,19 @@
 import logging
-from allauth.account.urls import *
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.db.models import Prefetch
 from django.http import HttpResponse
+from django.utils.translation import gettext as _
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from cart.forms import AddToCartForm
 from cart.cart import Cart
 from products.forms import CommentForm
 from products.models import Product, Category, Comment
+
+# const values for breadcrumb data
+breadcrumb_store = _('store')
 
 # Create a logger
 logger = logging.getLogger(__name__)
@@ -30,7 +33,7 @@ def shop_categories(request):
     # Create a range of page numbers (e.g., 3 pages before and 3 pages after the current page)
     page_range = range(max(1, page_obj.number - 3), min(paginator.num_pages, page_obj.number + 3))
 
-    breadcrumb_data = [{'lable':'store', 'title': 'Store'}]
+    breadcrumb_data = [{'lable': breadcrumb_store, 'title': breadcrumb_store}]
     context = {
         'products': page_obj,
         'page_range': page_range,
@@ -49,7 +52,7 @@ def products_or_category_detail(request, category_slug):
 
     category = get_object_or_404(categories, slug=category_slug)
 
-    breadcrumb_data = [{'lable':f'{category.name}', 'title': f'{category.name}', 'middle_lable': 'store', 'middle_url':'products:product_categories'}]
+    breadcrumb_data = [{'lable': category.name, 'title': category.name, 'middle_lable': breadcrumb_store, 'middle_url':'products:product_categories'}]
     context = {
         'category': category,
         'breadcrumb_data': breadcrumb_data,
@@ -153,10 +156,14 @@ def add_to_wishlist(request, product_slug):
     # this view is using in product_detail
     products = Product.is_active.all()
     product_detail = get_object_or_404(products, slug=product_slug)
-    if request.user not in product_detail.user_wished_product.all():
+
+    # query optimization
+    if not product_detail.user_wished_product.filter(id=request.user.id).exists():
         product_detail.user_wished_product.add(request.user)
         messages.success(request, f'{product_detail.name} add to your wishlist successfuly.')
+        
         return redirect('account:wishlist_view')
+    
     return HttpResponse('this product has already added to your wishlist.')
 
 
@@ -165,10 +172,13 @@ def remove_from_wishlist(request, product_slug):
     # this view is using in product_detail
     products = Product.is_active.all()
     product_detail = get_object_or_404(products, slug=product_slug)
-    if request.user in product_detail.user_wished_product.all():
+
+    if product_detail.user_wished_product.filter(id=request.user.id).exists():
         product_detail.user_wished_product.remove(request.user)
         messages.success(request, f'{product_detail.name} remove from your wishlist successfuly.')
+
         return redirect('account:wishlist_view')
+    
     return HttpResponse('this product is not existing in your wishlist.')
 
 # Every function based views should be impelemented as class based views too: 

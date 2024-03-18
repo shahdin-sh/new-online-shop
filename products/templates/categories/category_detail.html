@@ -1,4 +1,5 @@
 {% extends '_base.html' %}
+{% load i18n %}
 {% load static %}
 
 
@@ -137,12 +138,12 @@
 
                                         </a>
                                         <div class="product-actions">
-                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
-                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">{% trans 'observing details'%}</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">{% trans 'add to cart' %}</span></a>
                                             {% if user not in product.user_wished_product.all %}
-                                                <a href={% url 'products:add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                                <a href={% url 'products:add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">{% trans 'add to wishlist' %}</span></a>
                                             {% else %}
-                                                <a href={% url 'products:remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
+                                                <a href={% url 'products:remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">{% trans 'remove from wishlist' %}</span></a>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -171,12 +172,12 @@
 
                                         </a>
                                         <div class="product-actions">
-                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
-                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">{% trans 'observing details' %}</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">{% trans 'add to cart' %}</span></a>
                                             {% if user not in product.user_wished_product.all %}
-                                                <a href={% url 'products:add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                                <a href={% url 'products:add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">{% trans 'add to wishlist' %}</span></a>
                                             {% else %}
-                                                <a href={% url 'products:remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
+                                                <a href={% url 'products:remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">{% trans 'remove from wishlist' %}</span></a>
                                             {% endif %}
                                            
                                         </div>
@@ -205,12 +206,12 @@
 
                                         </a>
                                         <div class="product-actions">
-                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>
-                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">افزودن به سبد خرید</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-plus"></i><span class="tool-tip">{% trans 'observing details' %}</span></a>
+                                            <a href="{% url 'products:product_detail' product.slug %}"><i class="p-icon icon-bag2"></i> <span class="tool-tip">{% trans 'add to cart' %}</span></a>
                                             {% if user not in product.user_wished_product.all %}
-                                                <a href={% url 'products:add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">افزودن به علاقه مندی ها</span></a>
+                                                <a href={% url 'products:add_to_wishlist' product.slug %}><i class="p-icon icon-heart"></i> <span class="tool-tip">{% trans 'add to wishlist' %}</span></a>
                                             {% else %}
-                                                <a href={% url 'products:remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">حذف از علاقه مندی ها</span></a>
+                                                <a href={% url 'products:remove_from_wishlist' product.slug %}><i class="fas fa-heart"></i> <span class="tool-tip">{% trans 'remove from wishlist' %}</span></a>
                                             {% endif %}
                                            
                                         </div>
@@ -234,19 +235,19 @@
                     <div class="row align-items-center">
                         <div class="col-lg-3 col-md-4">
                             <div class="section-title text-md-start text-center tablet-mt__20 small-mt__20">
-                                <h3 class="section-title">محصولات پرطرفدار</h3>
+                                <h3 class="section-title">{% trans 'popular products' %}</h3>
                             </div>
                         </div>
                         <div class="col-lg-9 col-md-8">
                             <ul class="nav product-tab-menu  justify-content-center justify-content-md-end" role="tablist">
                                 <li class="tab__item nav-item active">
-                                    <a class="nav-link active" data-bs-toggle="tab" href="#tab_list_01" role="tab">همه</a>
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#tab_list_01" role="tab">{% trans 'all' %}</a>
                                 </li>
                                 <li class="tab__item nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#tab_list_02" role="tab">جانبی</a>
+                                    <a class="nav-link" data-bs-toggle="tab" href="#tab_list_02" role="tab">{% trans 'accessories' %}</a>
                                 </li>
                                 <li class="tab__item nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#tab_list_03" role="tab">صندلی</a>
+                                    <a class="nav-link" data-bs-toggle="tab" href="#tab_list_03" role="tab">{% trans 'chairs' %}</a>
                                 </li>
                             </ul>
                         </div>
@@ -263,9 +264,7 @@
                                             <a href="product-details.html" class="product-thumbnail">
                                                 <img src="assets/images/product/1_1-300x300.webp" class="img-fluid" alt="Product Images" width="300" height="300">
 
-                                                <span class="ribbon out-of-stock ">
-                                                اتمام موجودی
-                                            </span>
+                                                <span class="ribbon out-of-stock ">اتمام موجودی</span>
                                             </a>
                                             <div class="product-actions">
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#prodect-modal"><i class="p-icon icon-plus"></i><span class="tool-tip">مشاهده جزئیات</span></a>

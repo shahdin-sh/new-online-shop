@@ -46,10 +46,15 @@ class Order(models.Model):
 
     def __str__(self):
         return f'order_id {self.id} for {self.customer}'
-
-    def get_total_price(self):
-        return sum(item.price * item.quantity for item in self.items.all())
     
+    def intcomma(self, value):
+        return f'{value:,} T'
+
+    @property
+    def get_order_total_price(self): 
+        return sum([item.get_item_total_price for item in self.items.all()])
+    
+    @property
     def get_order_items(self):
         return self.items.all()
     
@@ -71,11 +76,15 @@ class OrderItem(models.Model):
     def __str__(self):
         return f'{self.order} items'
     
-    def product_price(self, obj):
-        return f"{obj.price:,} T"
+    def intcomma(self, value):
+        return f'{value:,} T'
     
-    def total_price(self):
+    @property
+    def get_item_total_price(self):
         if self.discounted_price != 0:
-            return (self.quantity * self.discounted_price)
-        return (self.quantity * self.price)
+            discounted_total_price = self.quantity * self.discounted_price
+            return discounted_total_price
+        
+        total_price = self.quantity * self.price
+        return total_price
 

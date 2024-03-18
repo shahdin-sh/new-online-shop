@@ -36,7 +36,7 @@
                                                         <td class="product-remove">  <a href="{% url 'products:remove_from_wishlist' product.slug %}"><i class="icon-cross2"></i></a>  </td> 
                                                         <td class="product-img">  <a href="#"><img src="{% static 'images/product/small/cart-01.webp' %}" alt=""/></a>  </td> 
                                                         <td class="product-name"><a href="{% url 'products:product_detail' product.slug %}">{{ product.name }}</a></td> 
-                                                        <td class="product-price"><span class="amount">{{ product.price|intcomma }} تومان</span></td>
+                                                        <td class="product-price"><span class="amount">{{ product.clean_price }} تومان</span></td>
                                                         {% if product.activation %} 
                                                             <td class="product-stock-status"><p>موجود در انبار</p></td> 
                                                         {% elif not product.activation %}

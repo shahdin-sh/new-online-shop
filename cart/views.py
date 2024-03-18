@@ -1,7 +1,8 @@
 import logging
 from django.contrib import messages
 from django.http import HttpResponseBadRequest
-from django.shortcuts import render, redirect, get_object_or_404, reverse, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.translation import gettext as _
 from cart.cart import Cart
 from cart.decorators import item_in_cart_required
 from cart.forms import AddToCartForm
@@ -9,13 +10,16 @@ from products.forms import DiscountForm
 from products.models import Discount
 from products.models import Product
 
+# const values for breadcrumb data
+breadcrumb_cart = _('cart')
+
 logger = logging.getLogger(__name__)
 
 @item_in_cart_required
 def cart_detail_view(request):
     cart = Cart(request)
 
-    breadcrumb_data = [{'lable':'cart', 'title': 'Cart'}]
+    breadcrumb_data = [{'lable': breadcrumb_cart, 'title': breadcrumb_cart}]
 
 
     context = {

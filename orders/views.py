@@ -2,18 +2,22 @@ import logging
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils.translation import gettext as _
 from cart.cart import Cart
 from cart.decorators import item_in_cart_required
 from orders.forms import CustomerWithAddressForm
 from orders.models import OrderItem, Order, CustomerWithAddress
 from products.models import Discount
 
+# const values for breadcrumb data
+breadcrumb_checkout = _('checkout')
+
 
 @item_in_cart_required
 @login_required
 def checkout(request):
 
-    breadcrumb_data = [{'lable': 'checkout', 'title':'Checkout'}]
+    breadcrumb_data = [{'lable': breadcrumb_checkout, 'title':breadcrumb_checkout}]
 
     context = {
         'customer_form': CustomerWithAddressForm(),

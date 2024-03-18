@@ -1,7 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
+from django.utils.translation import gettext as _
 from blog.forms import CommentForm
 from blog.models import Post, Tag,  Category, Comment
+
+# const values for breadcrumb data
+breadcrumb_blog = _('blog')
 
 
 def blog_grid(request):
@@ -14,7 +18,7 @@ def blog_grid(request):
     # Get the current page
     page_obj = paginator.get_page(page_number)
 
-    breadcrumb_data = [{'lable': 'blog', 'title': 'Blog'}]
+    breadcrumb_data = [{'lable': breadcrumb_blog, 'title': breadcrumb_blog}]
 
     context = {
         'page_obj': page_obj,
@@ -41,7 +45,7 @@ def post_detail(request, slug):
     else:
         comment_form = CommentForm()
 
-    breadcrumb_data = [{'lable': f'{post.title}', 'title':f'{post.title}', 'middle_lable':'blog', 'middle_url':'blog:blog_gird'}]
+    breadcrumb_data = [{'lable': f'{post.title}', 'title':f'{post.title}', 'middle_lable': breadcrumb_blog , 'middle_url':'blog:blog_gird'}]
 
     context = {
         'post_detail': post,
@@ -68,7 +72,7 @@ def tag_detail_view(request, tag_slug):
     # Get the current page
     page_obj = paginator.get_page(page_number)
 
-    breadcrumb_data = [{'lable': f'{tag.name} tag', 'title':f'{tag.name} Tag', 'middle_lable':'blog','middle_url':'blog:blog_gird'}]
+    breadcrumb_data = [{'lable': (tag.name + _('tag')), 'title': (tag.name + _('tag')), 'middle_lable': breadcrumb_blog ,'middle_url':'blog:blog_gird'}]
     
     context = {
         'page_obj': page_obj,
@@ -94,7 +98,7 @@ def category_detail_view(request, category_slug):
     # Get the current page
     page_obj = paginator.get_page(page_number)
 
-    breadcrumb_data = [{'lable': f'{category.name} category', 'title':f'{category.name} Category', 'middle_lable':'blog','middle_url':'blog:blog_gird'}]
+    breadcrumb_data = [{'lable': (category.name + _('category')), 'title': (category.name + _('category')), 'middle_lable': breadcrumb_blog ,'middle_url':'blog:blog_gird'}]
 
     context = {
         'page_obj': page_obj,

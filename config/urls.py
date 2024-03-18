@@ -22,12 +22,6 @@ from django.contrib.auth.views import LoginView
 
 urlpatterns = [
 
-    # for user configuration we use both allauth and accounts
-    # third party urls
-    path('__debug__/', include('debug_toolbar.urls')),
-    path('', include('pages.urls')),
-    path('accounts/', include('accounts.urls')),
-    path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('blog/', include('blog.urls')),
@@ -35,6 +29,15 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('paymant/', include('paymant.urls')),
     path('products/', include('products.urls')),
+
+
+    # for user configuration we use both allauth and accounts
+    # third party urls
+    path('__debug__/', include('debug_toolbar.urls')),
+    path('', include('pages.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('rosetta', include('rosetta.urls'))
 
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

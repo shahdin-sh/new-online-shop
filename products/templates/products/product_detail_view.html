@@ -1,6 +1,7 @@
 {% extends '_base.html' %}
-{% load  static %}
 {% load comment_tags %}
+{% load i18n %}
+{% load  static %}
 {% load humanize %}
 
 {% block styles%}
@@ -95,18 +96,17 @@
                             <div class="on-sale-price"><span class="new-price">{{product_detail.discounted_price|intcomma}} تومان</span><span class="old-price">{{product_detail.clean_price}} تومان</span> </div>
 
                         {% else %}
-                            <h3 class="price">{{ product_detail.clean_price }}</h3>
-
+                            <h3 class="price">{{ product_detail.clean_price }} {% trans '$' %}</h3>
                         {% endif%}
                         
     
                         {% if product_detail.quantity == 0 %}
                             <div class="stock out-of-stock mt-10">
-                                <p>وضعیت : <span>اتمام موجودی</span></p>
+                                <p>{% trans 'status' %} : <span>{% trans 'out of stock'%}</span></p>
                             </div>
                         {% else %}
                             <div class="stock mt-10">
-                                <p>وضعیت : <span  style="color: green;">موجود</span></p>
+                                <p>{% trans 'status' %} : <span  style="color: green;">{% trans 'in stock' %}</span></p>
                             </div>
                         {% endif %}
                         <div class="quickview-peragraph mt-10">
@@ -117,16 +117,16 @@
                                 {% csrf_token %}
                                 <div class="product-size-wrapper mt-20">
                                     <select class="select-active" name='size' required> 
-                                        <option value="LARGE">بزرگ</option>                                                         
-                                        <option value="MEDIUM">متوسط</option>                                                         
-                                        <option value="SMALL">کوچک</option>                                                         
+                                        <option value="LARGE">{% trans 'big' %}</option>                                                         
+                                        <option value="MEDIUM">{% trans 'medium' %}</option>                                                         
+                                        <option value="SMALL">{% trans 'small' %}</option>                                                         
                                     </select> 
                                 </div>
                                 <div class="product-color-wrapper mt-20">
                                     <select class="select-active" name='color' required> 
-                                        <option value="BLACK">سیاه</option>                                                         
-                                        <option value="WHITE">سفید</option>                                                         
-                                        <option value="PINK">صورتی</option>                                                         
+                                        <option value="BLACK">{% trans 'black' %}</option>                                                         
+                                        <option value="WHITE">{% trans 'white' %}</option>                                                         
+                                        <option value="PINK">{% trans 'pink' %}</option>                                                         
                                     </select> 
                                 </div>
                                 <div class="quickview-action-wrap mt-30">
@@ -141,7 +141,7 @@
                                         <div class="quickview-button">
                                             {% if product_detail.id|stringformat:"s"  not in request.session.cart %}
                                                 <div class="quickview-cart button">
-                                                    <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">افزودن به سبد خرید</button>
+                                                    <button type='submit' class="btn--lg btn--black font-weight--reguler text-white">{% trans 'add to cart' %}</button>
                                                 </div>
                                             {% else %}
                                                 <div class="quickview-cart button">
@@ -165,23 +165,23 @@
                                 </div>
                             </form>
                         {% else %}
-                            <h5>این محصول موجود نمی باشد. موجود شد اطلاع بده</h5>
+                            <h5>{% trans 'this product is out of stock when it is available, inform me. ' %}</h5>
                         {% endif %}
                         <div class="product_meta mt-30">
                             <div class="sku_wrapper item_meta">
-                                <span class="label"> موجودی: </span>
+                                <span class="label"> {% trans 'stock' %}: </span>
                                 <span class="sku">{{ product_detail.quantity }}</span>
                             </div>
                             <div class="posted_in item_meta">
-                                    <span class="label">دسته بندی: </span><a href={% url 'products:category_detail' product_detail.category.slug %}>{{ product_detail.category }}</a>
+                                    <span class="label">{% trans 'category' %}: </span><a href={% url 'products:category_detail' product_detail.category.slug %}>{{ product_detail.category }}</a>
                             </div>
                             <div class="tagged_as item_meta">
-                                <span class="label">برچسب ها: </span><a href="#">مبلمان</a>
+                                <span class="label">{% trans 'tags' %}: </span><a href="#">مبلمان</a>
                             </div>
                         </div>
 
                         <div class="product_socials section-space--mt_60">
-                            <span class="label">اشتراک گذاری :</span>
+                            <span class="label">{% trans 'share' %} :</span>
                             <ul class="helendo-social-share socials-inline">
                                 <li>
                                     <a class="share-twitter helendo-twitter" href="#" target="_blank"><i class="social_twitter"></i></a>
@@ -209,13 +209,13 @@
                     <div class="product-details-tab section-space--pt_90">
                         <ul role="tablist" class=" nav">
                             <li class="active" role="presentation">
-                                <a data-bs-toggle="tab" role="tab" href="#description" class="active">شرح</a>
+                                <a data-bs-toggle="tab" role="tab" href="#description" class="active">{% trans 'description' %}</a>
                             </li>
                             <li role="presentation">
-                                <a data-bs-toggle="tab" role="tab" href="#sheet">اطلاعات تکمیلی</a>
+                                <a data-bs-toggle="tab" role="tab" href="#sheet">{% trans 'further information' %}</a>
                             </li>
                             <li role="presentation">
-                                <a data-bs-toggle="tab" role="tab" href="#reviews">بررسی</a>
+                                <a data-bs-toggle="tab" role="tab" href="#reviews">{% trans 'overview' %}</a>
                             </li>
                         </ul>
                     </div>
@@ -229,7 +229,7 @@
                                     <div class="row align-items-center">
                                         <div class="col-lg-7 order-md-1 order-2">
                                             <div class="details mt-30">
-                                                <h5 class="mb-10">جزئیات</h5>
+                                                <h5 class="mb-10">{% trans 'detail' %}</h5>
                                                 <p>{{ product_detail.description|safe }}</p>
                                             </div>
                                         </div>
@@ -245,7 +245,7 @@
                                         <div class="col-lg-7 order-md-1 order-2">
                                             <div class="details mt-30">
                                                 <div class="pro_feature">
-                                                    <h5 class="title_3 mb-10">امکانات</h5>
+                                                    <h5 class="title_3 mb-10">{% trans 'featurs' %}</h5>
                                                     <ul class="feature_list">
                                                         <li><a href="#"><i class="arrow_triangle-right"></i>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم</a></li>
                                                         <li><a href="#"><i class="arrow_triangle-right"></i>لورم ایپسوم متن ساختگی با تولید سادگی</a></li>
@@ -288,18 +288,18 @@
                         <div class="product_tab_content tab-pane" id="reviews" role="tabpanel">
                             <div class="rating_wrap mb-30">
                                 {% if product_detail.comments %}
-                                    <h4>نظرات</h4>
+                                    <h4>{% trans 'comments' %}</h4>
                                     <br>
                                     {% for comment in comments %}
                                         <p>------------------------------------------------------------------------------------------------------------------------</p>
                                         <div class='comment_section'>
                                             <h6>نظر شماره  {{comment.id}}</h6>
                                             <br>
-                                            <p>نام: {% if comment.name %}{{comment.name}}{% else %}{{comment.author}}{% endif %}</p>
-                                            <p>متن نظر: {{comment.content}}</p>
-                                            <p>تاریخ انتشار نظر: {{comment.datetime_created}}</p>
+                                            <p>{% trans 'name' %}: {% if comment.name %}{{comment.name}}{% else %}{{comment.author}}{% endif %}</p>
+                                            <p>{% trans 'comment content' %}: {{comment.content}}</p>
+                                            <p>{% trans 'comment publish date' %}: {{comment.datetime_created}}</p>
                                             {% if comment.rating %}
-                                                <p>امتیاز شما :
+                                                <p>{% trans 'your rate' %} :
                                                     {% if comment.rating == 'PERFECT' %}
                                                         &#9733;&#9733;&#9733;&#9733;&#9733;
                                                     {% endif %}
@@ -317,7 +317,7 @@
                                                     {% endif %}
                                                 </p>
                                             {% else %}
-                                                <p>امتیاز شما: هیچ امتیازی ثبت نشده است</p>
+                                                <p>امتیاز شما: {% trans 'no rate has been submitted.' %}</p>
                                             {% endif %}
                                         </div>
                                         {% if comment.replies.all %}
@@ -326,9 +326,9 @@
                                             {% for reply in comment.replies.all %}
                                                 <br>
                                                 <div class='reply_section'>
-                                                    <p>نام: {% if reply.name %}{{reply.name}}{% else %}{{reply.author}}{% endif %}</p>
-                                                    <p>متن بازخورد: {{reply.content}}</p>
-                                                    <p>تاریخ انتشار بازخورد: {{reply.datetime_created}}</p>
+                                                    <p>{% trans 'name' %}: {% if reply.name %}{{reply.name}}{% else %}{{reply.author}}{% endif %}</p>
+                                                    <p>{% trans 'reply content' %}: {{reply.content}}</p>
+                                                    <p>{% trans 'reply publish date' %}: {{reply.datetime_created}}</p>
                                                 </div>
                                                 <br>
                                             {% endfor %}
@@ -343,7 +343,7 @@
                                                 <!-- Hidden input for parent comment.id -->
                                                 <input type="hidden" name="parent_id" value="{{ comment.id }}">
                                                 <p class="comment-form-comment">
-                                                    <label>بازخورد شما</label>
+                                                    <label>{% trans 'your reply' %}</label>
                                                     <textarea class="comment-notes" name='content'></textarea>
                                                     <input class="btn btn-primary" type="submit" value="ارسال">
                                                 </p>
@@ -365,7 +365,7 @@
                                                 <label>نظر شما برای محصول {{product_detail.name}}</label>
                                                 <textarea class="comment-notes" required="required" name='content' required></textarea>
                                                 <div class="rating">
-                                                    <label>امتیاز<span class="required">*</span></label>
+                                                    <label>{% trans 'rate' %}<span class="required">*</span></label>
                                                     <select class="select-active" name="rating">
                                                         <option value="POOR">&#9733;</option>
                                                         <option value="BAD">&#9733;&#9733;</option>
