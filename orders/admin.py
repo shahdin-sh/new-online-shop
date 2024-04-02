@@ -4,6 +4,7 @@ from django.utils.html import format_html
 from django.utils.http import urlencode
 from orders.models import Order, OrderItem, CustomerWithAddress
 from django.db.models import Prefetch, F
+from jalali_date import date2jalali, datetime2jalali
 
 # admin inlines
 class OrderItemInline(admin.TabularInline):
@@ -30,7 +31,7 @@ class OrderInline(admin.TabularInline):
 # admin models
 class OrderAdmin(admin.ModelAdmin):
 
-    list_display = ['order_id','customer', 'showing_order_items', 'order_total_price', 'datetime_created', 'datetime_modified', 'order_status']
+    list_display = ['order_id','customer', 'showing_order_items', 'order_total_price', 'datetime_created_to_jalali', 'datetime_modified_to_jalali', 'order_status']
     list_filter = ['order_status']
     
     inlines = [
@@ -50,6 +51,15 @@ class OrderAdmin(admin.ModelAdmin):
         url = reverse('admin:orders_orderitem_changelist') + '?' + urlencode({'order__id': obj.id})
         return format_html('<a href={}>{}</a>', url, obj.items.count())
     
+    @admin.display(description='jalali datetime_created')
+    def datetime_created_to_jalali(self, obj):
+        return datetime2jalali(obj.datetime_created).strftime('%a, %d %b %Y %H:%M:%S')
+    
+    @admin.display(description='jalali datetime_modified')
+    def datetime_modified_to_jalali(self, obj):
+        return datetime2jalali(obj.datetime_modified).strftime('%a, %d %b %Y %H:%M:%S')
+
+    
     @admin.action(description='total price')
     def order_total_price(self, obj):
         return obj.intcomma(obj.get_order_total_price)
@@ -57,7 +67,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['order', 'product', 'quantity', 'product_price','clean_discounted_price', 'clean_total_price', 'color', 'size', 'datetime_created']
+    list_display = ['order', 'product', 'quantity', 'product_price','clean_discounted_price', 'clean_total_price', 'color', 'size', 'datetime_created_to_jalali', 'datetime_modified_to_jalali']
     readonly_fields = list_display
     list_filter = ['order', 'order__customer']
     ordering = ['-order__datetime_created']
@@ -78,6 +88,15 @@ class OrderItemAdmin(admin.ModelAdmin):
     @admin.display(description='total price')
     def clean_total_price(self, obj):
         return obj.intcomma(obj.get_item_total_price)
+    
+    @admin.display(description='jalali datetime_created')
+    def datetime_created_to_jalali(self, obj):
+        return datetime2jalali(obj.datetime_created).strftime('%a, %d %b %Y %H:%M:%S')
+    
+    @admin.display(description='jalali datetime_modified')
+    def datetime_modified_to_jalali(self, obj):
+        return datetime2jalali(obj.datetime_modified).strftime('%a, %d %b %Y %H:%M:%S')
+
     
 
 class CustomerWithAddressAdmin(admin.ModelAdmin):

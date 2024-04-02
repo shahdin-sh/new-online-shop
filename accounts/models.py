@@ -16,6 +16,7 @@ class CustomUserModel(AbstractUser):
             return self.profile_avatar.url
         except ValueError:
             return '/media/default_avatar/img_avatar.png'
+        
     # With the @receiver decorator, we can link a signal with a function
     @receiver(post_save, sender=User)
     def update_profile_signal(sender, instance, created, **kwargs):

@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import format_html
 from django.utils.http import urlencode
+from jalali_date import date2jalali, datetime2jalali
+from jalali_date.admin import ModelAdminJalaliMixin
 from products.models import Category,Product, Comment, Discount
 
 
@@ -157,8 +159,8 @@ class CategoryAdmin(admin.ModelAdmin):
         return [ProductAmountFilter] 
 
 
-class DiscountAdmin(admin.ModelAdmin):
-    list_display = ['promo_code', 'type','discount_product', 'clean_value', 'clean_percent', 'description', 'expiration_date', 'is_expired', 'status', 'datetime_created', 'datetime_modified']
+class DiscountAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
+    list_display = ['promo_code', 'type','discount_product', 'clean_value', 'clean_percent', 'description', 'expiration_date_to_jalali', 'is_expired', 'status', 'datetime_created_to_jalali', 'datetime_modified_to_jalali']
     list_display_links = ['promo_code', 'type']
     readonly_fields = ['promo_code']
     list_filter = ['expiration_date', 'status',]
@@ -199,6 +201,18 @@ class DiscountAdmin(admin.ModelAdmin):
         url = reverse('admin:products_product_changelist') + '?' + urlencode({'discounts__id': obj.id})
         return format_html('<a href={}>{}</a>', url, obj.products.count())
     
+    @admin.display(description='jalali expiration_date')
+    def expiration_date_to_jalali(self, obj):
+        return datetime2jalali(obj.expiration_date).strftime('%a, %d %b %Y %H:%M:%S')
+    
+    @admin.display(description='jalali datetime_created')
+    def datetime_created_to_jalali(self, obj):
+        return datetime2jalali(obj.datetime_created).strftime('%a, %d %b %Y %H:%M:%S')
+    
+    @admin.display(description='jalali datetime_modified')
+    def datetime_modified_to_jalali(self, obj):
+        return datetime2jalali(obj.datetime_modified).strftime('%a, %d %b %Y %H:%M:%S')
+
     @admin.action(description='Convert to deactive status')
     def convert_to_deactive_status(self, request, queryset):
         update_count  = queryset.update(status=Discount.DEACTIVE)
@@ -207,7 +221,7 @@ class DiscountAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'quantity', 'product_category', 'comments_amount', 'activation', 'feature', 'product_price', 'image', 'banner', 'datetime_created', 'datetime_modified', 'size', 'color']
+    list_display = ['name', 'quantity', 'product_category', 'comments_amount', 'activation', 'feature', 'product_price', 'image', 'banner', 'datetime_created_to_jalali', 'datetime_modified_to_jalali', 'size', 'color']
     list_display_links = ['name', 'image', 'banner']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['-datetime_created']
@@ -240,6 +254,14 @@ class ProductAdmin(admin.ModelAdmin):
         url = (reverse('admin:products_comment_changelist')  + '?' + urlencode({'product__id': obj.id}))
         return format_html("<a href='{}'>{}</a>", url,  obj.comments.count())
     
+    @admin.display(description='jalali datetime_created')
+    def datetime_created_to_jalali(self, obj):
+        return datetime2jalali(obj.datetime_created).strftime('%a, %d %b %Y %H:%M:%S')
+    
+    @admin.display(description='jalali datetime_modified')
+    def datetime_modified_to_jalali(self, obj):
+        return datetime2jalali(obj.datetime_modified).strftime('%a, %d %b %Y %H:%M:%S')
+    
     @admin.action(description='Clean products inventory.')
     def clean_inventory(self, request, queryset):
         update_count = queryset.update(quantity=0)
@@ -250,7 +272,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['type', 'get_content_summary', 'author', 'name', 'email', 'comments_product', 'replies', 'comments', 'datetime_created', 'datetime_modified', 'is_spam', 'rating', 'session_token']
+    list_display = ['type', 'get_content_summary', 'author', 'name', 'email', 'comments_product', 'replies', 'comments', 'datetime_created_to_jalali', 'datetime_modified_to_jalali', 'is_spam', 'rating', 'session_token']
     list_per_page = 10
     list_filter = ['is_spam', RepliesFilter]
     search_fields = ['author', 'name', 'email']
@@ -285,6 +307,15 @@ class CommentAdmin(admin.ModelAdmin):
     def comments_product(self, obj):
         url = reverse('admin:products_product_changelist') + '?' + urlencode({'product__id': obj.product.id})
         return format_html('<a href={}>{}</a>', url, obj.product.name)
+    
+    @admin.display(description='jalali datetime_created')
+    def datetime_created_to_jalali(self, obj):
+        return datetime2jalali(obj.datetime_created).strftime('%a, %d %b %Y %H:%M:%S')
+    
+    @admin.display(description='jalali datetime_modified')
+    def datetime_modified_to_jalali(self, obj):
+        return datetime2jalali(obj.datetime_modified).strftime('%a, %d %b %Y %H:%M:%S')
+    
     
     def type(self,obj):
         if obj.parent:

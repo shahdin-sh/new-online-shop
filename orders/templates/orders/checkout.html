@@ -1,5 +1,6 @@
 {% extends '_base.html' %}
 {% load humanize %}
+{% load custom_intcomma %}
 
 
 {% block content %} 
@@ -169,9 +170,9 @@
                                                             <div class="your-order-middle"> 
                                                                 <ul>
                                                                     {% if item.discounted_price %}
-                                                                        <li>{{item.product_obj.name}} X {{item.quantity}} <span>{{item.total_discounted_price|intcomma}} تومان </span></li> 
+                                                                        <li>{{item.product_obj.name}} X {{item.quantity}} <span>{{item.total_discounted_price|custom_intcomma}} تومان </span></li> 
                                                                     {% else %}
-                                                                        <li>{{item.product_obj.name}} X {{item.quantity}} <span>{{item.total_price|intcomma}} تومان </span></li>         
+                                                                        <li>{{item.product_obj.name}} X {{item.quantity}} <span>{{item.total_price|custom_intcomma}} تومان </span></li>         
                                                                     {% endif %}                                                                                                                                                                                    
                                                                 </ul>
                                                                 <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}>Remove</a>
@@ -180,14 +181,14 @@
                                                         <div class="your-order-info order-subtotal"> 
                                                             <ul> 
                                                                 <li>
-                                                                    <strong>جمع</strong> <span>{{cart.get_total_price|intcomma}} تومان</span>
+                                                                    <strong>جمع</strong> <span>{{cart.get_total_price|custom_intcomma}} تومان</span>
                                                                 </li>                                                             
                                                             </ul>                                                         
                                                         </div>                                                     
                                                         <div class="your-order-info order-total"> 
                                                             <ul> 
                                                                 <li>
-                                                                    <strong>جمع با تخفیف</strong> <span>{{cart.get_total_discounted_price|intcomma}} تومان </span>
+                                                                    <strong>جمع با تخفیف</strong> <span>{{cart.get_total_discounted_price|custom_intcomma}} تومان </span>
                                                                 </li>                                                             
                                                             </ul>                                                         
                                                         </div>                                                     

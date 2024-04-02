@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load  static %}
 {% load humanize %}
+{% load jalali_tags %}
 
 {% block styles%}
     <link rel="stylesheet" href="{% static "css/comment.css" %}"/>
@@ -297,7 +298,7 @@
                                             <br>
                                             <p>{% trans 'name' %}: {% if comment.name %}{{comment.name}}{% else %}{{comment.author}}{% endif %}</p>
                                             <p>{% trans 'comment content' %}: {{comment.content}}</p>
-                                            <p>{% trans 'comment publish date' %}: {{comment.datetime_created}}</p>
+                                            <p>{% trans 'comment publish date' %}: {{comment.datetime_modified|to_jalali:'%y/%m/%d'}}</p>
                                             {% if comment.rating %}
                                                 <p>{% trans 'your rate' %} :
                                                     {% if comment.rating == 'PERFECT' %}
@@ -328,7 +329,7 @@
                                                 <div class='reply_section'>
                                                     <p>{% trans 'name' %}: {% if reply.name %}{{reply.name}}{% else %}{{reply.author}}{% endif %}</p>
                                                     <p>{% trans 'reply content' %}: {{reply.content}}</p>
-                                                    <p>{% trans 'reply publish date' %}: {{reply.datetime_created}}</p>
+                                                    <p>{% trans 'reply publish date' %}: {{reply.datetime_modified|to_jalali:'%y/%m/%d'}}</p>
                                                 </div>
                                                 <br>
                                             {% endfor %}

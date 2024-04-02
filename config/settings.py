@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'paymant.apps.PaymantConfig',
     'blog',
+    'jalali_date',
     # Rest Framework
     'rest_framework',
 ]

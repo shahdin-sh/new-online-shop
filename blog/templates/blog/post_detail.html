@@ -1,6 +1,7 @@
 {% extends '_base.html' %}
 {% load humanize %}
 {% load static %}
+{% load jalali_tags %}
 
 
 {% block content %}
@@ -23,7 +24,7 @@
                                         <div class="blog-contents"> 
                                             <h3 class="blog-title-lg"><a href="{{post_detail.get_absolute.url}}"></a>{{post_detail.title}}</h3> 
                                             <div class="meta-tag-box"> 
-                                                <div class="meta date"><span>{{post_detail.published_date}}</span>
+                                                <div class="meta date"><span>{{post_detail.published_date|to_jalali:'%y/%m/%d'}}</span>
                                                 </div>                                                     
                                                 {% comment %} <div class="meta author"><span><a href="#">طراحی</a></span>
                                                 </div>                                                      {% endcomment %}
@@ -146,7 +147,7 @@
                                 <h6 class="mb-20">مطالب اخیر</h6> 
                                 <ul class="widget-nav-list">
                                     {% for latest_post in third_latest_post %} 
-                                        <li><a href={{latest_post.get_absolute_url}}>{{latest_post.title}}<span class="post-date">{{latest_post.published_date}}</span></a> </li>
+                                        <li><span class="post-date">{{latest_post.published_date|to_jalali:'%y/%m/%d'}}</span> | <a href={{latest_post.get_absolute_url}}>{{latest_post.title}}</a></li>
                                     {% endfor %}
                                 </ul>                                     
                             </div>                                 

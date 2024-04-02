@@ -77,8 +77,8 @@ class Discount(models.Model):
     description = models.CharField(max_length=100)
     expiration_date = models.DateTimeField(default=(timezone.now() + timezone.timedelta(days=10)).replace(hour=0, minute=0, second=0, microsecond=0))
     status = models.CharField(max_length=255, choices=DISCOUNT_STATUS_CHOICES, default='AC')
-    datetime_created = models.DateField(auto_now_add=True, blank=True, null=True)
-    datetime_modified = models.DateField(auto_now=True, blank=True, null=True)
+    datetime_created = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    datetime_modified = models.DateTimeField(auto_now=True, blank=True, null=True)
     usage_by = models.ManyToManyField(get_user_model(), related_name='applied_discount', blank=True)
     
 
