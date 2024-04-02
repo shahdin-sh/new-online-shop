@@ -244,3 +244,11 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Zarinpal configuration
 ZARINPAL_MERCHANT_ID = env('DJANG0_ZARINPAL_MERCHANT_ID')
+
+# Message Framework configs
+
+from django.contrib.messages import constants as messages_consts
+
+MESSAGE_TAGS = {
+    messages_consts.ERROR: 'danger',
+} 

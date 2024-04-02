@@ -68,7 +68,7 @@
                                                                     <td>{{order.id}}</td>
                                                                     <td>{{order.datetime_created}}</td>
                                                                     <td>{{order.order_status}}</td>
-                                                                    <td>{{order.get_total_price|custom_intcomma}} تومان</td>
+                                                                    <td>{{order.get_order_total_price|custom_intcomma}} تومان</td>
                                                                     <td><a class="btn btn btn-dark btn-hover-primary btn-sm rounded-0">مشاهده</a></td>
                                                                 </tr>
                                                             {% endfor %}

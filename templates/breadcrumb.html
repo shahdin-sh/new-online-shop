@@ -38,7 +38,15 @@
                                     </ul>
                                 <!-- breadcrumb-list end -->
                             </div>
-                        {% endfor %}
+                            {% endfor %}
+                        {% comment %} Messages {% endcomment %}
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li class="alert alert-{{message.tags}}">{{message}}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     </div>
                 </div>
             </div>
