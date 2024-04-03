@@ -61,13 +61,13 @@
                                 </div>
                             </div>
                         </div>
-                        {% comment %} {% if messages %}
+                        {% if messages %}
                             <ul class="messages">
                                 {% for message in messages %}
-                                    <ul class="">{{ message }}</li>
+                                    <ul class="alert alert-{{message.tags}}">{{ message }}</li>
                                 {% endfor %}
                             </ul>
-                        {% endif %} {% endcomment %}
+                        {% endif %}
                     </div>
                 </div>
             </header>

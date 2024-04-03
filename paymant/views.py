@@ -8,7 +8,7 @@ def paymant_process(request):
     # getting order id from the session
     order_id = request.session.get('order_id')
     order = Order.objects.get(id=order_id)
-    toman_total_price = order.get_total_price()
+    toman_total_price = order.get_order_total_price()
     rial_total_price = toman_total_price * 10
 
     zarinpal_request_url = "https://api.zarinpal.com/pg/v4/payment/request.json"
