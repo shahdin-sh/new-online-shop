@@ -2,6 +2,7 @@ import logging
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db import transaction
 from django.utils.translation import gettext as _
 from cart.cart import Cart
 from cart.decorators import item_in_cart_required
@@ -59,15 +60,14 @@ def create_and_update_customer(request):
    
 
 @login_required
+@transaction.atomic
 def order_create(request):
     # check if user has a customer information or not
     current_user = request.user
     cart = Cart(request)
 
     if request.method == 'POST':
-
         if CustomerWithAddress.objects.filter(user=current_user).exists():
-
             # creating order
             order_obj = Order.objects.create(
                 customer = current_user.customer_info

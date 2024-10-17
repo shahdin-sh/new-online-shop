@@ -105,8 +105,8 @@ class Discount(models.Model):
             promo_code = ''.join(random.choice(letters) for _ in range(4))
             self.promo_code  = promo_code
         else:
-             previous_promo_code = Discount.objects.get(pk=self.pk).promo_code
-             self.promo_code = previous_promo_code
+            previous_promo_code = Discount.objects.get(pk=self.pk).promo_code
+            self.promo_code = previous_promo_code
 
         super(Discount, self).save(*args, **kwargs)
     
