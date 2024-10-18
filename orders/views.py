@@ -1,8 +1,9 @@
-import logging
+import logging, uuid
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db import transaction
+from django.urls import reverse
 from django.utils.translation import gettext as _
 from cart.cart import Cart
 from cart.decorators import item_in_cart_required
@@ -91,20 +92,14 @@ def order_create(request):
                     discounted_price = discounted_price
                 )
 
-            # saving the order in the session for the paymant function
-            request.session['order_id'] = order_obj.id
+            # saving the order and order total price in the session for the payment function
+            order_info = request.session['order_info'] = {} 
+            order_info['order_id'] = order_obj.id
+            order_info['rial_total_price'] = order_obj.get_order_total_price * 10
 
-            # Retrieve 'user_discounts' from session, loop through them to update 'usage_by' for each discount with the current user, and save after order items get created.
-            user_discounts = request.session.get('user_discounts')
-            if user_discounts:
-                for key, value in user_discounts.items():
-                    discount_obj = Discount.objects.get(id=value.get('id'))
-
-                    discount_obj.usage_by.set([current_user])
-                    discount_obj.save()
-                        
-            cart.clear_the_cart()
-
-            return redirect('paymant:paymant_process')
+            # secure the payment process
+            payment_token = str(uuid.uuid4())
+            request.session['payment_token'] = payment_token
+            return redirect(reverse('payment:payment_process') + f'?token={payment_token}')
         else:
             return HttpResponse('please fill out your info and address form first, then submit your order.')

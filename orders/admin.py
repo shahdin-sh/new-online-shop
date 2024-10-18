@@ -23,16 +23,24 @@ class OrderItemInline(admin.TabularInline):
 
 class OrderInline(admin.TabularInline):
     model = Order
-    fileds = ['datetime_created', 'datetime_modified', 'order_status']
+    fileds = ['datetime_created', 'datetime_modified', 'status']
     readonly_fields = fileds
     classes = ('collapse', )
 
 
 # admin models
 class OrderAdmin(admin.ModelAdmin):
-
-    list_display = ['order_id','customer', 'showing_order_items', 'order_total_price', 'datetime_created_to_jalali', 'datetime_modified_to_jalali', 'order_status']
-    list_filter = ['order_status']
+    
+    list_display = [
+        'order_id',
+        'customer', 
+        'showing_order_items', 
+        'order_total_price', 
+        'datetime_created_to_jalali', 
+        'datetime_modified_to_jalali', 
+        'status'
+    ]
+    list_filter = ['status']
     
     inlines = [
         OrderItemInline,
