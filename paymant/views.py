@@ -81,7 +81,7 @@ def payment_process_result(request):
             Cart(request).clear_the_cart()
 
             order = Order.objects.get(id=request.session['order_info']['order_id'])
-            order.status = Order.ORDERS_STATUS_CHOICES[0]
+            order.status = 'Paid'
             order.save()
 
             messages.success(request, f'payment succeeded your refid is {data['ref_id']}')

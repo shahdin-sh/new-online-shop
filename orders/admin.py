@@ -10,7 +10,6 @@ from jalali_date import date2jalali, datetime2jalali
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     fields = ['order', 'product', 'quantity', 'price', 'discounted_price']
-    readonly_fields = fields
     classes = ('collapse', )
     can_delete = False
 

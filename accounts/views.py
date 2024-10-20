@@ -30,7 +30,7 @@ def wishlist_view(request):
 @login_required
 def current_user_account(request):
     # accsesing users order
-    user_orders = Order.objects.prefetch_related('items').filter(customer__user=request.user, status=Order.ORDERS_STATUS_CHOICES[0])
+    user_orders = Order.objects.prefetch_related('items').filter(customer__user=request.user, status='Paid')
 
     breadcrumb_data = [{'lable': breadcrumb_my_account,'title': breadcrumb_my_account}]
 

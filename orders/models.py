@@ -1,5 +1,6 @@
-from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.db import models
 
 
 class CustomerWithAddress(models.Model):
@@ -42,6 +43,8 @@ class Order(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=100, choices=ORDERS_STATUS_CHOICES, default='Unpaid')
+    paid_signal = models.BooleanField(default=False)
+    canceled_signal = models.BooleanField(default=False)
 
 
     def __str__(self):
@@ -58,7 +61,6 @@ class Order(models.Model):
     def get_order_items(self):
         return self.items.all()
     
-    
 
 class OrderItem(models.Model):
 
@@ -72,6 +74,8 @@ class OrderItem(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = [['order', 'product']]
 
     def __str__(self):
         return f'{self.order} items'
@@ -87,4 +91,3 @@ class OrderItem(models.Model):
         
         total_price = self.quantity * self.price
         return total_price
-

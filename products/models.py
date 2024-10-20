@@ -142,7 +142,7 @@ class Product(models.Model):
 
     name = models.CharField(max_length=200)
     description = RichTextField(blank=True, null=True)
-    quantity = models.IntegerField(validators=[MaxValueValidator(limit_value=100), MinValueValidator(limit_value=0)])
+    quantity = models.PositiveIntegerField(validators=[MaxValueValidator(limit_value=100), MinValueValidator(limit_value=0)])
     # price = 120,000 t or 1,000,000 t or 3,456,990 t
     price = models.PositiveIntegerField(validators=[MaxValueValidator(limit_value=10000000), MinValueValidator(limit_value=1000)])
     slug = models.SlugField(unique=True)
