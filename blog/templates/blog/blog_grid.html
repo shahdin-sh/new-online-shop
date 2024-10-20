@@ -1,0 +1,19 @@
+{% extends '_base.html' %}
+{% load humanize %}
+ 
+{% block content %}
+    <!-- breadcrumb-area start -->         
+    {% include 'breadcrumb.html' %}
+    <!-- breadcrumb-area end -->       
+    <div id="main-wrapper"> 
+        <div class="site-wrapper-reveal border-bottom"> 
+            <!-- Blog Page Area Start -->                 
+            {% include "blog/blog_page_area.html" %}          
+            <!-- Blog Page Area End -->                 
+        </div>                      
+    </div>    
+{% endblock content %}
+    
+    
+
+      

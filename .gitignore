@@ -1,0 +1,11 @@
+venv/
+db.sqlite3
+.idea/
+.env/
+__pycache__/
+*.pyc
+/static
+/staticfiles
+/media
+DS_*
+*.mo

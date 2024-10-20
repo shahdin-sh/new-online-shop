@@ -1,0 +1,225 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-20 15:27-0700\n"
+"PO-Revision-Date: 2024-10-21 01:59+0330\n"
+"Last-Translator:   <shahdin.shahdaei@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Translated-Using: django-rosetta 0.10.0\n"
+
+#: templates/categories/category_detail.html:142
+#: templates/categories/category_detail.html:176
+#: templates/categories/category_detail.html:210
+msgid "observing details"
+msgstr "مشاهده جزئیات"
+
+#: templates/categories/category_detail.html:143
+#: templates/categories/category_detail.html:177
+#: templates/categories/category_detail.html:211
+#: templates/products/product_detail_view.html:145
+msgid "add to cart"
+msgstr "افزودن به سبد خرید"
+
+#: templates/categories/category_detail.html:145
+#: templates/categories/category_detail.html:179
+#: templates/categories/category_detail.html:213
+msgid "add to wishlist"
+msgstr "افزودن به علاقه مندی ها"
+
+#: templates/categories/category_detail.html:147
+#: templates/categories/category_detail.html:181
+#: templates/categories/category_detail.html:215
+msgid "remove from wishlist"
+msgstr "حذف از علاقه مندی ها"
+
+#: templates/categories/category_detail.html:239
+msgid "popular products"
+msgstr "محصولات خاص"
+
+#: templates/categories/category_detail.html:245
+msgid "all"
+msgstr "همه"
+
+#: templates/categories/category_detail.html:248
+msgid "accessories"
+msgstr "جانبی"
+
+#: templates/categories/category_detail.html:251
+msgid "chairs"
+msgstr "صندلی"
+
+#: templates/products/product_detail_view.html:100
+msgid "$"
+msgstr "تومان"
+
+#: templates/products/product_detail_view.html:106
+#: templates/products/product_detail_view.html:110
+msgid "status"
+msgstr "وضعیت"
+
+#: templates/products/product_detail_view.html:106
+msgid "out of stock"
+msgstr "ناموجود"
+
+#: templates/products/product_detail_view.html:110
+msgid "in stock"
+msgstr "موجود"
+
+#: templates/products/product_detail_view.html:121
+msgid "big"
+msgstr "بزرگ"
+
+#: templates/products/product_detail_view.html:122
+msgid "medium"
+msgstr "متوسط"
+
+#: templates/products/product_detail_view.html:123
+msgid "small"
+msgstr "کوچک"
+
+#: templates/products/product_detail_view.html:128
+msgid "black"
+msgstr "مشکی"
+
+#: templates/products/product_detail_view.html:129
+msgid "white"
+msgstr "سفید"
+
+#: templates/products/product_detail_view.html:130
+msgid "pink"
+msgstr "صورتی"
+
+#: templates/products/product_detail_view.html:169
+msgid "this product is out of stock when it is available, inform me. "
+msgstr "این محصول موجود نمی باشد، موجود شد اطلاع بده"
+
+#: templates/products/product_detail_view.html:173
+msgid "stock"
+msgstr "موجودی"
+
+#: templates/products/product_detail_view.html:177
+msgid "category"
+msgstr "دسته بندی"
+
+#: templates/products/product_detail_view.html:180
+msgid "tags"
+msgstr "برچسب ها"
+
+#: templates/products/product_detail_view.html:185
+msgid "share"
+msgstr "اشتراک گذاری"
+
+#: templates/products/product_detail_view.html:213
+msgid "description"
+msgstr "شرح"
+
+#: templates/products/product_detail_view.html:216
+msgid "further information"
+msgstr "اطلاعات تکمیلی"
+
+#: templates/products/product_detail_view.html:219
+msgid "overview"
+msgstr "بررسی"
+
+#: templates/products/product_detail_view.html:233
+msgid "detail"
+msgstr "جزئیات"
+
+#: templates/products/product_detail_view.html:249
+msgid "featurs"
+msgstr "امکانات"
+
+#: templates/products/product_detail_view.html:292
+msgid "comments"
+msgstr "نظرها"
+
+#: templates/products/product_detail_view.html:299
+#: templates/products/product_detail_view.html:330
+msgid "name"
+msgstr "نام"
+
+#: templates/products/product_detail_view.html:300
+msgid "comment content"
+msgstr "متن نظر"
+
+#: templates/products/product_detail_view.html:301
+msgid "comment publish date"
+msgstr "تاریخ انتشار نظر"
+
+#: templates/products/product_detail_view.html:303
+msgid "your rate"
+msgstr "امتیاز شما"
+
+#: templates/products/product_detail_view.html:321
+msgid "no rate has been submitted."
+msgstr "هیچ امتیازی ثبت نشده است"
+
+#: templates/products/product_detail_view.html:331
+msgid "reply content"
+msgstr "متن بازخورد"
+
+#: templates/products/product_detail_view.html:332
+msgid "reply publish date"
+msgstr "تاریخ انتشار بازخورد"
+
+#: templates/products/product_detail_view.html:347
+msgid "your reply"
+msgstr "بازخورد شما"
+
+#: templates/products/product_detail_view.html:369
+msgid "rate"
+msgstr "امتیاز"
+
+#: views.py:16
+msgid "store"
+msgstr "محصولات"
+
+#: views.py:113
+#, python-brace-format
+msgid "Opinion added successfully {username}"
+msgstr "{username}،  نظر شما با موفقیت ثبت شد"
+
+#: views.py:115
+#, python-brace-format
+msgid "Reply added successfully {username}"
+msgstr "{username}،  بازخورد شما با موفقیت ثبت شد"
+
+#: views.py:129
+#, python-brace-format
+#| msgid "Opinion added successfully {username}"
+msgid "Opinion added successfully {guest_name}"
+msgstr "{guest_name}،  نظر شما با موفقیت ثبت شد"
+
+#: views.py:171
+#, python-brace-format
+#| msgid "{product_detail.name} add to your wishlist successfuly."
+msgid "{product_name} add to your wishlist successfuly."
+msgstr "{product_name} به لیست علاقه مندی های شما اضافه شد"
+
+#: views.py:186
+#, python-brace-format
+#| msgid "{product_detail.name} remove from your wishlist successfuly."
+msgid "{product_name} remove from your wishlist successfuly."
+msgstr "{product_name} از لیست علاقه مندی های شما حذف شد"
+
+#~ msgid "Opinion added successfully {guest_data[\"name\"]}"
+#~ msgstr "{guest_data[\"name\"]}، نظر شما با موفقیت ثبت شد"
+
+#~ msgid "Reply added successfully"
+#~ msgstr " نظر شما با موفقیت ثبت شد"
+
+#, python-brace-format
+#~ msgid "Reply added successfully {request.user.username}"
+#~ msgstr "{request.user.username}، بازخورد شما با موفقیت ثبت شد"

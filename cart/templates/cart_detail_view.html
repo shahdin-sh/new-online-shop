@@ -1,0 +1,110 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load humanize %}
+{% load custom_intcomma %}
+
+{% block content %}
+    <!-- breadcrumb-area start -->
+    {% include 'breadcrumb.html'%}
+    <!-- breadcrumb-area end -->
+    
+    <!-- cart start -->                 
+    <div class="cart-main-area  section-space--ptb_90"> 
+        <div class="container"> 
+            <div class="row"> 
+                <div class="col-lg-12">
+                    <div class="table-content table-responsive cart-table-content header-color-gray"> 
+                        <table> 
+                            <thead> 
+                                <tr class="bg-gray"> 
+                                    <th></th> 
+                                    <th></th> 
+                                    <th class="product-name">محصول</th> 
+                                    <th class="product-price">قیمت</th> 
+                                    <th>تعداد</th> 
+                                    <th>جمع</th> 
+                                    <th></th> 
+                                </tr>                                                 
+                            </thead>                                             
+                            <tbody>
+                                {% for item in cart %} 
+                                    <tr> 
+                                        <td></td> 
+                                        <td class="product-img"> <a href="#"><img src={% static "images/product/small/cart-01.webp" %} alt=""/></a> </td> 
+                                        <td class="product-name"><a href={% url 'products:product_detail' item.product_obj.slug %}>{{item.product_obj.name}}</a></td> 
+                                        {% if item.discounted_price %}
+                                            <td class="product-price"><span class="amount">{{item.discounted_price|custom_intcomma}} تومان</span></td> 
+                                        {% else %}
+                                            <td class="product-price"><span class="amount">{{item.product_obj.price|custom_intcomma}} تومان</span></td> 
+                                        {% endif %}
+                                        <td class="cart-quality">
+                                            <form action={% url 'cart:add_to_cart' item.product_obj.id %} method='post'>
+                                                {% csrf_token %} 
+                                                <div class="quickview-quality quality-height-dec2"> 
+                                                    <div class="cart-plus-minus"> 
+                                                        <input class="cart-plus-minus-box" type="number" name="quantity" value={{item.quantity}}>    
+                                                    </div>
+                                                    <input type='hidden' name='size' value={{item.size}}>
+                                                    <input type='hidden' name='color' value={{item.color}}>
+                                                    {{item.update_quantity_of_the_current_form.inplace}}
+                                                    <button type='submit'  class="btn btn--sm btn--border_1">به روز رسانی سبد خرید</button>   
+                                                </div>
+
+                                            </form>                                                         
+                                        </td>
+                                        {% if item.total_discounted_price %}                                                     
+                                            <td class="price-total"> <span class="amount">{{item.total_discounted_price|custom_intcomma}} تومان</span> </td>
+                                        {% elif item.total_price%}
+                                            <td class="price-total"> <span class="amount">{{item.total_price|custom_intcomma}} تومان</span> </td> 
+                                        {% endif %}
+                                        <td class="product-remove"> <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}><i class="icon-cross2"></i></a> </td> 
+                                    </tr>
+                                {% endfor %}                                                                                                                          
+                            </tbody>                                             
+                        </table>                                         
+                    </div> 
+                    <div class="shoping-update-area row"> 
+                        <div class="continue-shopping-butotn col-6 mt-30"> 
+                            <a href={% url 'cart:clear_the_cart' %}  class="btn btn--lg btn--border_1"><i class="icon-cross2"></i>&nbsp; حذف سبد خرید</a>
+                        </div>                                     
+                        <div class="update-cart-button col-6 text-end mt-30"> 
+                            <a href={% url 'products:product_categories' %}  class="btn btn--lg btn--black">ادامه خرید <i class="icon-arrow-right"></i>&nbsp;</a>           
+                        </div>                               
+                    </div>                                 
+                    <div class="cart-buttom-area"> 
+                        <div class="row">
+                            <div class="col-lg-6"> 
+                                    <form action={% url 'cart:apply_discount'%} method='post'>
+                                        {% csrf_token %} 
+                                        <div class="discount-code section-space--mt_60"> 
+                                            <h6 class="mb-30">کد تخفیف</h6> 
+                                            <p>اگر کد تخفیف دارید، وارد نمایید.</p> 
+                                            <input type="text" name="promo_code" placeholder="کد تخفیف"/> 
+                                            <button class="coupon-btn btn btn--lg btn--border_1" type="submit">ثبت کد تخفیف</button>                                                 
+                                        </div>                                             
+                                    </form>
+                                </div>
+                            <div class="col-lg-6"> 
+                                <div class="cart_totals section-space--mt_60 ms-md-auto"> 
+                                    <div class="grand-total-wrap"> 
+                                        <div class="grand-total-content"> 
+                                            <ul> 
+                                                <li>مجموع قیمت<span> {{cart.get_total_price|custom_intcomma}} تومان</span>
+                                                </li>                                                  
+                                                <li>مجموع قیمت (با احتساب تخفیف)<span>{{cart.get_total_discounted_price|custom_intcomma}} تومان</span>
+                                                </li>                                                       
+                                            </ul>                                                         
+                                        </div>                                                     
+                                    </div>                                                 
+                                    <div class="grand-btn mt-30"> <a href={% url 'orders:checkout' %} class="btn--black btn--full text-center btn--lg">تسویه حساب</a> 
+                                    </div>                                                 
+                                </div>                                             
+                            </div>                                         
+                        </div>                                     
+                    </div>                                 
+                </div>                             
+            </div>                         
+        </div>                     
+    </div>                 
+    <!-- cart end -->                     
+{% endblock content %}

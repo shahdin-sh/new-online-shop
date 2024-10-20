@@ -1,0 +1,223 @@
+{% extends '_base.html' %}
+{% load humanize %}
+{% load custom_intcomma %}
+
+
+{% block content %} 
+  
+    <!-- breadcrumb-area start -->
+    {% include 'breadcrumb.html'%}
+    <!-- breadcrumb-area end -->
+
+    <div id="main-wrapper"> 
+        <div class="site-wrapper-reveal border-bottom"> 
+            <!-- checkout start -->                 
+            <div class="checkout-main-area section-space--ptb_90"> 
+                <div class="container"> 
+                    <div class="row"> 
+                        <div class="col-lg-7"> 
+                            <div class="customer-zone mb-30"> 
+                                <div class="checkout-login-info"> 
+                                    <p>اگر در سایت ما حساب کاربری دارید، با وارد کردن مشخصات خود وارد شوید.</p> 
+                                    <form action="#" class="account-form-box"> 
+                                        <div class="single-input mt-20"> 
+                                            <label>نام کاربری یا ایمیل <span class="required">*</span>
+                                            </label>                                                 
+                                            <input type="email"/> 
+                                        </div>                                             
+                                        <div class="single-input mt-20"> 
+                                            <label>گذرواژه <span class="required">*</span>
+                                            </label>                                                 
+                                            <input type="password" placeholder="گذرواژه"/> 
+                                        </div>                                             
+                                        <div class="checkbox-wrap mt-10"> 
+                                            <label class="label-for-checkbox inline mt-15"> 
+                                                <input class="input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever"/> <span>من را به خاطر بسپار</span> 
+                                            </label>                                                 
+                                        </div>                                             
+                                        <div class="button-box mt-15"> <a href="#" class="btn btn--lg btn--black">ورود</a> 
+                                        </div>                                             
+                                    </form>                                         
+                                </div>                                     
+                            </div>                                 
+                        </div>                             
+                        <div class="col-lg-5"> 
+                            <div class="customer-zone mb-30"> 
+                                <p class="cart-page-title">کد تخفیف دارید؟ <a class="checkout-click" href="#">برای ثبت اینجا کلیک کنید.</a></p> 
+                                <div class="checkout-coupon-info"> 
+                                    <p>اگر کد تخفیف دارید، جهت ثبت وارد نمایید.</p> 
+                                    <form action={% url 'cart:apply_discount' %} method='post'>
+                                        {% csrf_token %} 
+                                        <input type="text" placeholder="کد تخفیف"/ name='promo_code' required> 
+                                        <input type="submit" value="ثبت"/> 
+                                    </form>                                         
+                                </div>                                     
+                            </div>                                 
+                        </div>                             
+                    </div>  
+                        <div class="checkout-wrap"> 
+                            <div class="row"> 
+                                <div class="col-lg-7">
+                                        <form action={% url 'orders:create_and_update_customer'%} method='post'> 
+                                            {% csrf_token %}
+                                            <div class="billing-info-wrap mr-100"> 
+                                                <h6 class="mb-20">مشخصات شما</h6> 
+                                                <div class="row"> 
+                                                    {% comment %} <div class="col-lg-6 col-md-6"> 
+                                                        <div class="billing-info mb-25"> 
+                                                            <label>نام&nbsp;<span class="required" title="required">*</span>
+                                                            </label>                                                     
+                                                            <input type="text" name='first_name' value="{{user.first_name|safe}}" required> 
+                                                        </div>                                                 
+                                                    </div>                                             
+                                                    <div class="col-lg-6 col-md-6"> 
+                                                        <div class="billing-info mb-25"> 
+                                                            <label>نام خانوادگی&nbsp;<span class="required" title="required">*</span>
+                                                            </label>                                                     
+                                                            <input type="text" name='last_name' value="{{user.last_name|safe}}" required> 
+                                                        </div>                                                 
+                                                    </div>                                              {% endcomment %}
+                                                    <div class="col-lg-12"> 
+                                                        <div class="billing-info mb-25"> 
+                                                            <label>نام شرکت (اختیاری)&nbsp;
+                                                            </label>                                                     
+                                                            <input type="text" name='company' value="{{user.customer_info.company|safe}}"> 
+                                                        </div>                                                 
+                                                    </div>                                             
+                                                    <div class="col-lg-12"> 
+                                                        <div class="billing-select mb-25"> 
+                                                            <label>
+                                                                <span class="required" title="required" required><font color="#000000">کشور&nbsp;</font>*</span>
+                                                            </label>                                                     
+                                                            <select class="select-active" name='country'>
+                                                                <option value="IRAN" {% if user.customer_info.country == 'IRAN' %}selected{% endif %}>ایران</option>
+                                                                <option value="IRAQ" {% if user.customer_info.country == 'IRAQ' %}selected{% endif %}>عراق</option>
+                                                                <option value="BAHRAIN" {% if user.customer_info.country == 'BAHRAIN' %}selected{% endif %}>بحرین</option>
+                                                                <option value="UAE" {% if user.customer_info.country == 'UAE' %}selected{% endif %}>امارات</option>
+                                                                <option value="TURKEY" {% if user.customer_info.country == 'TURKEY' %}selected{% endif %}>ترکیه</option>
+                                                            </select>                                                   
+                                                        </div>                                            
+                                                    </div>                                             
+                                                    <div class="col-lg-12"> 
+                                                        <div class="billing-info mb-25"> 
+                                                            <label>شهر&nbsp;<span class="required" title="required">*</span>
+                                                            </label>                                                     
+                                                            <input type="text" name='town' value="{{user.customer_info.town|safe}}" required> 
+                                                        </div>                                                 
+                                                    </div>                                                                                   
+                                                    <div class="col-lg-12"> 
+                                                        <div class="billing-info mb-25"> 
+                                                            <label>آدرس&nbsp;<span class="required" title="required">*</span>
+                                                            </label>                                                     
+                                                            <input class="billing-address" placeholder="الهیه،خیابان فرشته، پلاک 124 واحد 1" type="text" name='address' value="{{user.customer_info.address|safe}}" required> 
+                                                            {% comment %} <input placeholder="پلاک و شماره واحد" type="text" name='address'/>  {% endcomment %}
+                                                        </div>                                                 
+                                                    </div>                                             
+                                                    <div class="col-lg-12 col-md-12"> 
+                                                        <div class="billing-info mb-25"> 
+                                                            <label>کد پستی&nbsp;<span class="required" title="required">*</span>
+                                                            </label>                                                     
+                                                            <input type="text" name='zip_code' required value="{{user.customer_info.zip_code}}"> 
+                                                        </div>                                                 
+                                                    </div>                                             
+                                                    <div class="col-lg-12 col-md-12"> 
+                                                        <div class="billing-info mb-25"> 
+                                                            <label>تلفن&nbsp;<span class="required" title="required">*</span>
+                                                            </label>                                                     
+                                                            <input type="text" name='phone_number' value="{{user.customer_info.phone_number|safe}}" required> 
+                                                        </div>                                                 
+                                                    </div>                                             
+                                                    {% comment %} <div class="col-lg-12 col-md-12"> 
+                                                        <div class="billing-info mb-25"> 
+                                                            <label>ایمیل&nbsp;<span class="required" title="required">*</span>
+                                                            </label>                                                     
+                                                            <input type="text" name='email' value="{{user.customer_info.email|safe}}" required> 
+                                                        </div>                                                 
+                                                    </div>                                              {% endcomment %}
+                                                </div>                                         
+                                                <div class="additional-info-wrap"> 
+                                                    <h6 class="mb-10">اطلاعات تکمیلی</h6> 
+                                                    <label>یادداشت ها (اختیاری)</label>                                             
+                                                    <textarea placeholder="اگر نکته ای دارید، در این قسمت وارد نمایید. " name="note" value="{{user.customer_info.note|safe}}"></textarea> 
+                                                </div>                                     
+                                            </div> 
+                                            {% if not user.customer_info %} 
+                                                <div class="place-order mt-30"> 
+                                                    <button class="btn--full btn--black btn--lg text-center" type='submit'>ثبت اطلاعات</button> 
+                                                </div>         
+                                            {% else %}
+                                                <div class="place-order mt-30"> 
+                                                    <button class="btn--full btn--black btn--lg text-center" type='submit'>ویرایش اطلاعات</button> 
+                                                </div>  
+                                            {% endif %}
+                                        </form>
+                                </div>                                 
+                                <div class="col-lg-5"> 
+                                    <div class="your-order-wrappwer tablet-mt__60 small-mt__60"> 
+                                        <h6 class="mb-20">سفارش شما</h6>
+                                        <form action={% url 'orders:order_create'%} method='post'>
+                                            {% csrf_token %}
+                                            <div class="your-order-area"> 
+                                                <div class="your-order-wrap gray-bg-4"> 
+                                                    <div class="your-order-info-wrap">
+                                                        <div class="your-order-info"> 
+                                                            <ul> 
+                                                                <li>محصول <span>جمع</span>
+                                                                </li>                                                             
+                                                            </ul>                                                         
+                                                        </div>  
+                                                        {% for item in cart %}                                     
+                                                            <div class="your-order-middle"> 
+                                                                <ul>
+                                                                    {% if item.discounted_price %}
+                                                                        <li>{{item.product_obj.name}} X {{item.quantity}} <span>{{item.total_discounted_price|custom_intcomma}} تومان </span></li> 
+                                                                    {% else %}
+                                                                        <li>{{item.product_obj.name}} X {{item.quantity}} <span>{{item.total_price|custom_intcomma}} تومان </span></li>         
+                                                                    {% endif %}                                                                                                                                                                                    
+                                                                </ul>
+                                                                <a href={% url 'cart:remove_from_the_cart' item.product_obj.id %}>Remove</a>
+                                                            </div>
+                                                        {% endfor %} 
+                                                        <div class="your-order-info order-subtotal"> 
+                                                            <ul> 
+                                                                <li>
+                                                                    <strong>جمع</strong> <span>{{cart.get_total_price|custom_intcomma}} تومان</span>
+                                                                </li>                                                             
+                                                            </ul>                                                         
+                                                        </div>                                                     
+                                                        <div class="your-order-info order-total"> 
+                                                            <ul> 
+                                                                <li>
+                                                                    <strong>جمع با تخفیف</strong> <span>{{cart.get_total_discounted_price|custom_intcomma}} تومان </span>
+                                                                </li>                                                             
+                                                            </ul>                                                         
+                                                        </div>                                                     
+                                                        {% comment %} <div class="payment-area mt-30"> 
+                                                            <div class="single-payment"> 
+                                                                <h6 class="mb-10">سوال شماره یک؟</h6> 
+                                                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p> 
+                                                            </div>                                                         
+                                                            <div class="single-payment mt-20"> 
+                                                                <h6 class="mb-10">سوال شماره دو؟</h6> 
+                                                                <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p> 
+                                                            </div>                                                         
+                                                        </div>  {% endcomment %}
+                                                    </div>                                                 
+                                                </div>                                             
+                                            </div>
+                                            <div class="payment-method"> 
+                                                <p class="mt-30">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است. اگر سوالی دارید، می توانید بخش <a href="#">سوالات متداول</a> را برسی نمایید.</p> 
+                                            </div>                    
+                                            <div class="place-order mt-30"> 
+                                                <button class="btn--full btn--black btn--lg text-center" type='submit'>ثبت و پرداخت سفارش</button> 
+                                            </div>
+                                        </form>
+                                    </div>                                     
+                                </div>                                 
+                            </div>                             
+                        </div>
+                </div>                     
+            </div>                 
+            <!-- checkout end -->                 
+        </div>                    
+{% endblock content %}
