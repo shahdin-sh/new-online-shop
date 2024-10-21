@@ -65,7 +65,7 @@ def remove_product_from_the_cart(request, product_id):
 
     cart.remove_from_the_cart(product)
 
-    messages.success(request, f'{product.name} product deleted from your cart successfully.')
+    messages.success(request, _('{product_name} product deleted from your cart successfully.').format(product_name=product.name))
  
     return redirect(request.META.get('HTTP_REFERER'))
 
@@ -75,7 +75,7 @@ def clear_the_cart(request):
 
     cart.clear_the_cart()
 
-    messages.success(request, 'your cart deleted successfully')
+    messages.success(request, _('your cart deleted successfully'))
 
     #redirect the user to the previous page.
     return redirect(request.META.get('HTTP_REFERER'))
@@ -127,21 +127,38 @@ def apply_discount_for_cart_items(request):
 
             # Give feedback to user if discount applied to targeted product or not 
             if unapplied_discounted_product:
-                messages.success(request, f"{discount_obj.promo_code} applied for {','.join(unapplied_discounted_product)} successfully.")
+                messages.success(
+                    request, 
+                    _("{promo_code} applied for {unapplied_discount_products} successfully.").format(
+                        promo_code = discount_obj.promo_code,
+                        unapplied_discount_products = (','.join(unapplied_discounted_product))
+                    )
+                )
                 return redirect(request.META.get('HTTP_REFERER'))
         
             elif applied_discounted_product:
-                messages.error(request, f"Error: {discount_obj.promo_code} has been applied for {','.join(applied_discounted_product)} before.")
+                messages.error(
+                    request, 
+                    _("{promo_code} has been applied for {applied_discount_products} before.").format(
+                        promo_code = discount_obj.promo_code,
+                        applied_discount_products = (','.join(applied_discounted_product))
+                    )
+                )
                 return redirect(request.Meta.get('HTTP_REFERER'))
             
         else:
-            messages.error(request, f'{discount_obj.promo_code} discount is not match to any items in the cart.')
+            messages.error(
+                request, 
+                _('{promo_code} discount is not match to any items in the cart.').format(
+                    promo_code=discount_obj.promo_code
+                )
+            )
             return redirect(request.META.get('HTTP_REFERER'))
     else:
         # Log form errors
         logger.error("Form validation failed: %s", discount_form.errors)
 
         # creating an error response
-        error_message = f"Form validation failed: {discount_form.errors}"
+        error_message = f'{discount_form.errors}'
         response = HttpResponseBadRequest(error_message)
         return response
